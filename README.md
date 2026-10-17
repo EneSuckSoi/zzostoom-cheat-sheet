@@ -65,6 +65,24 @@ Settings and shortcuts are saved in `zzostoom_cheat_sheet.ini` next to the DLL. 
 - Back up your saves. The mod backs up the active save automatically, but use it at your own risk.
 - Unlocking all Sites of Grace can skip parts of the game.
 
+## Building from source
+
+The DLL is built with the free [llvm-mingw](https://github.com/mstorsjo/llvm-mingw/releases) toolchain (UCRT, x86_64) and Python 3. No Visual Studio needed.
+
+```bash
+set ZZ_LLVM_MINGW=C:\path	o\llvm-mingw-ucrt-x86_64in
+py build.py            # -> build/zzostoom_cheat_sheet.dll
+py build.py --install  # build and copy the DLL into the ME3 eldenring-mods folder
+```
+
+| Folder | What's inside |
+|---|---|
+| `src/` | the mod: overlay (DX12 + ImGui), menu, cheats, controller input, game memory |
+| `src/generated/` | item, map and Site of Grace tables (generated from the game data) |
+| `third_party/` | Dear ImGui and MinHook |
+
+Game addresses are found by pattern scanning (`src/game.cpp`); if a game update breaks them, that's the place to look.
+
 ## License and credits
 
 Free to use. You may share, modify or build on it **only if you credit "zzostoom" and link to this repository** (https://github.com/EneSuckSoi/zzostoom-cheat-sheet). Selling it is not allowed. See [LICENSE](LICENSE).
