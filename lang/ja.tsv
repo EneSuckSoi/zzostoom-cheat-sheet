@@ -1,0 +1,250 @@
+# zzostoom cheat sheet - ja translation. English<TAB>translation, one per line.
+# Keep %d / %s / %u / %.1f in the same order. Run tools/gen_lang.py after editing.
+Items	アイテム
+Cheats	チート
+Movement	移動
+World	ワールド
+Character	キャラクター
+Shortcuts	ショートカット
+Saves	セーブ
+Settings	設定
+Weapon	武器
+Ammunition	矢・ボルト
+Armor	防具
+Talisman	タリスマン
+Ash of War	戦灰
+Spirit Ash	遺灰
+Item	アイテム
+Pick a category on the left, then click an item.	左でカテゴリを選び、アイテムをクリックしてください。
+Double-clicking an item gives it right away with the options below.	ダブルクリックすると、下の設定ですぐにアイテムを入手します。
+Quantity	数量
+Max (%d)	最大 (%d)
+Anything above the inventory limit goes to the Sort Chest, as in the game.	所持上限を超えた分は、ゲームと同じく木箱に送られます。
+Upgrade	強化
+Max	最大
+Affinity	属性
+GIVE	入手
+Category	カテゴリ
+Description	説明
+up to +%d	最大 +%d
+Search items (e.g. rune, smithing, lily)	アイテム検索（例：ルーン、鍛石、すずらん）
+Search results: %d items	検索結果：%d 個
+(%d items)	（%d 個）
+Give all...	すべて入手...
+Give all %d items in "%s"?	%d 個のアイテム（「%s」）をすべて入手しますか？
+Stackable items: x%d, everything else: x1. Weapons at +%d.	スタック可能なアイテム：x%d、それ以外：x1。武器は +%d。
+Yes, give	はい、入手する
+Cancel	キャンセル
+Give Items	アイテム入手
+Categories follow the game's own inventory groups (%d items, DLC included). Open a category or search above.	カテゴリはゲームのインベントリ分類に沿っています（%d 個、DLC含む）。カテゴリを開くか、上で検索してください。
+Items go to the character that is currently loaded, through the game's own "add to inventory" function, so normal and Seamless Coop saves work the same way.	アイテムはゲーム自身の「インベントリに追加」機能で、今ロード中のキャラクターに渡されます。通常セーブと Seamless Coop セーブで同じように動作します。
+Survival	生存
+No Death	死なない
+You take damage but never die; HP stops at 1.	ダメージは受けますが死にません。HPは1で止まります。
+God Mode	ゴッドモード
+You take no damage at all (also keeps HP full and prevents death).	ダメージを一切受けません（HPは満タンのまま、死にません）。
+Attacks Pass Through	攻撃がすり抜ける
+Enemy attacks don't connect at all: no hit reaction, no status buildup.	敵の攻撃がまったく当たりません。被弾リアクションも状態異常の蓄積もありません。
+Infinite HP	HP無限
+HP is refilled every frame.	HPが毎フレーム回復します。
+Infinite FP	FP無限
+Spells and skills cost no FP.	魔術・祈祷や戦技でFPを消費しません。
+Infinite Stamina	スタミナ無限
+Stamina stays full.	スタミナが常に満タンです。
+No Stagger	怯まない
+Poise is kept extremely high, so hits don't stagger you.	強靭度が非常に高く保たれ、攻撃を受けても怯みません。
+Combat & items	戦闘・アイテム
+No Item Consumption	アイテムを消費しない
+Flasks, pots, runes... are not used up.	聖杯瓶、壺、ルーンなどが減りません。
+No Arrow / Bolt Consumption	矢・ボルトを消費しない
+One-Shot Kills	一撃必殺
+Every enemy you hit dies in one hit.	攻撃した敵はすべて一撃で倒れます。
+Stealth (experimental)	隠密（実験的）
+Invisible	透明
+Enemies don't notice you by sight.	敵が視覚であなたに気づきません。
+Silent	無音
+Enemies don't notice you by sound.	敵が音であなたに気づきません。
+World & enemies	ワールド・敵
+Torrent No Death	トレントが死なない
+Freeze Enemy AI	敵AIを停止
+Enemies stop thinking and stand still.	敵が思考を止め、その場に立ち止まります。
+Enemies Can't Move	敵が動かない
+Enemies Don't Attack (experimental)	敵が攻撃しない（実験的）
+A game debug flag; in some situations it can affect your own attacks too.	ゲームのデバッグフラグです。状況によっては自分の攻撃にも影響することがあります。
+Turn all cheats off	すべてのチートをオフ
+Takes effect the moment you tick a box. Everything starts off each time the game starts.	チェックを入れた瞬間に反映されます。ゲームを起動するたびにすべてオフから始まります。
+Speed	速度
+Player Speed	プレイヤー速度
+Multiplies how far you move each frame (walking, running, rolling). Attacks keep their normal speed. Works with Seamless Coop.	1フレームごとの移動距離を倍にします（歩き、走り、ローリング）。攻撃の速さはそのままです。Seamless Coop でも動作します。
+Torrent Speed	トレントの速度
+Multiplies Torrent's movement while you ride.	騎乗中のトレントの移動を倍にします。
+Jump	ジャンプ
+Jump Boost	ジャンプ強化
+Multiplies the rise of a jump (also Torrent's jumps while riding).	ジャンプの上昇を倍にします（騎乗中のトレントのジャンプも）。
+Fly mode (noclip)	飛行モード（noclip）
+Fly Mode	飛行モード
+No gravity and no collision: you float and go through walls. The speed multiplies both rising/sinking and your normal running. Switching it off makes you fall normally.	重力も当たり判定もなし：宙に浮き、壁をすり抜けます。速度は上昇・下降と通常の走りの両方にかかります。オフにすると普通に落下します。
+Rise: RT (R2), A (Cross) or Page Up    Sink: LT (L2) or Page Down    Move: run as usual	上昇：RT (R2)、A（×）または Page Up    下降：LT (L2) または Page Down    移動：普段どおり走る
+Triggers are analog: press lightly to move slowly.	トリガーはアナログです。軽く押すとゆっくり動きます。
+Turns itself off when you die or hit a loading screen.	死亡時やロード画面で自動的にオフになります。
+Teleport	テレポート
+Up +5 m	上へ +5 m
+Up +50 m	上へ +50 m
+Down -5 m	下へ -5 m
+Save position	位置を保存
+Teleport to saved position	保存した位置へテレポート
+Saved: X %.1f  Y %.1f  Z %.1f	保存位置：X %.1f  Y %.1f  Z %.1f
+Map flags set: %d/%d. Rest at a grace or reload the save if the map hasn't updated yet.	マップフラグを設定しました：%d/%d。マップが更新されていなければ、祝福で休むかセーブをロードし直してください。
+Could not set the map flags (are you in game?).	マップフラグを設定できませんでした（ゲーム中ですか？）。
+Sites of Grace unlocked: %d/%d. Rest at a grace or reload the save, then fast travel from the map.	祝福を解放しました：%d/%d。祝福で休むかセーブをロードし直してから、マップで移動してください。
+Could not unlock Sites of Grace (are you in game?).	祝福を解放できませんでした（ゲーム中ですか？）。
+Load a character first.	先にキャラクターをロードしてください。
+Map	地図
+Reveal the whole map	マップをすべて表示
+Sets the same flags as picking up every map fragment (base game and Shadow of the Erdtree). Giving yourself the Map items alone does not reveal anything.	すべての地図断片を拾ったのと同じフラグを設定します（本編と Shadow of the Erdtree）。地図アイテムを入手するだけでは何も表示されません。
+Sites of Grace	祝福
+Unlocks Sites of Grace so you can fast travel to them from the map. Some lie past bosses or story events, so this can skip progress.	祝福を解放し、マップから移動できるようにします。ボスや物語のイベントの先にあるものもあるため、進行を飛ばすことがあります。
+Unlock base game (%d)	本編を解放 (%d)
+Unlock Shadow of the Erdtree (%d)	Shadow of the Erdtree を解放 (%d)
+Unlock every Shadow of the Erdtree Site of Grace?	Shadow of the Erdtree の祝福をすべて解放しますか？
+Unlock every base game Site of Grace?	本編の祝福をすべて解放しますか？
+Your save is backed up first if automatic backups are on.	自動バックアップがオンなら、先にセーブをバックアップします。
+Unlock	解放する
+Runes, stats and blessings show up here once a character is loaded.	キャラクターをロードすると、ルーン・能力値・加護がここに表示されます。
+Runes	ルーン
+Current runes: %s	現在のルーン：%s
+%s runes	%s ルーン
+Add	追加
+Remove	減らす
+Set to 0	0にする
+Attributes	能力値
+Level: %u  ->  %d	レベル：%u  ->  %d
+Apply attributes	能力値を適用
+Attributes applied.	能力値を適用しました。
+Could not write attributes.	能力値を書き込めませんでした。
+Reload from game	ゲームから再読み込み
+Max HP/FP/stamina update after changing equipment or resting at a grace.	最大HP/FP/スタミナは、装備を変えるか祝福で休むと更新されます。
+Shadow of the Erdtree blessings	Shadow of the Erdtree の加護
+Apply blessings	加護を適用
+Blessings applied.	加護を適用しました。
+Could not write blessings.	加護を書き込めませんでした。
+Status	ステータス
+HP %d / %d    FP %d / %d    Stamina %d / %d	HP %d / %d    FP %d / %d    スタミナ %d / %d
+Controller: L3 + R3 (click both sticks) opens/closes the menu. Shortcuts: hold L3 and press A/B/X/Y/RB/RT, or hold R3 and press the D-pad/LB/LT. A short L3 or R3 press on its own still reaches the game (crouch / lock-on).	コントローラー：L3 + R3（両スティック押し込み）でメニューを開閉。ショートカット：L3を押しながら A/B/X/Y/RB/RT、またはR3を押しながら十字キー/LB/LT。L3やR3を単独で短く押した場合は、そのままゲームに届きます（しゃがみ／ロックオン）。
+In the menu: D-pad / left stick to move, A to select, B to go back, LB/RB to switch tabs, Start to close. In fly mode RT rises and LT sinks.	メニュー内：十字キー／左スティックで移動、Aで決定、Bで戻る、LB/RBでタブ切替、Startで閉じる。飛行モードではRTで上昇、LTで下降。
+PlayStation: A=Cross, B=Circle, X=Square, Y=Triangle, LB/RB=L1/R1, LT/RT=L2/R2.	PlayStation：A=×、B=○、X=□、Y=△、LB/RB=L1/R1、LT/RT=L2/R2。
+Controller:	コントローラー：
+XInput not available	XInput が使えません
+connected	接続済み
+not detected	未検出
+hold L3 or R3 on the controller and press a button...	コントローラーでL3かR3を押しながらボタンを押してください...
+press a key... (Esc: cancel, Backspace: clear)	キーを押してください...（Esc：キャンセル、Backspace：解除）
+Action	アクション
+Keyboard	キーボード
+Controller	コントローラー
+%s  (on)	%s  （オン）
+Restore default shortcuts	ショートカットを初期設定に戻す
+Shortcuts restored to defaults.	ショートカットを初期設定に戻しました。
+Items and cheats apply to the character that is loaded in the game right now. To give items to another character, load that character. The game writes the save itself, so normal (.sl2) and Seamless Coop (.%s) saves behave the same.	アイテムとチートは、今ゲームでロードしているキャラクターに適用されます。別のキャラクターに渡すには、そのキャラクターをロードしてください。セーブはゲーム自身が書き込むため、通常 (.sl2) と Seamless Coop (.%s) のセーブは同じように動作します。
+Save type this session:	このセッションのセーブの種類：
+Normal (vanilla)	通常（バニラ）
+Refresh	更新
+No save files found (%APPDATA%\EldenRing).	セーブファイルが見つかりません (%APPDATA%\EldenRing)。
+Steam account %s	Steam アカウント %s
+%s  |  last saved %s	%s  |  最終保存 %s
+Normal	通常
+[IN USE]	[使用中]
+Back up	バックアップ
+Backup failed.	バックアップに失敗しました。
+Backup written to zzostoom_backups.	zzostoom_backups にバックアップしました。
+Open folder	フォルダを開く
+Unreadable: %s	読み込めません：%s
+No characters in this save.	このセーブにキャラクターはいません。
+Slot	スロット
+Level	レベル
+Play time	プレイ時間
+%s  (loaded)	%s  （ロード中）
+About backups	バックアップについて
+Backups go to the 'zzostoom_backups' folder next to the save, named with date and time. To restore one, close the game, copy it back into the save folder and rename it to the original file name (e.g. ER0000.%s).	バックアップはセーブの隣の 'zzostoom_backups' フォルダに、日付と時刻の名前で保存されます。戻すには、ゲームを閉じてセーブフォルダにコピーし、元のファイル名（例：ER0000.%s）に変更してください。
+" / ~  (key under Esc)	半角/全角  (Escの下のキー)
+Language	言語
+Menu language	メニューの言語
+Show item names in English	アイテム名を英語で表示
+Item names normally follow the menu language, using the game's own translations. Searching in English always works.	アイテム名は通常、ゲーム自身の翻訳でメニューの言語に合わせて表示されます。英語での検索はいつでも使えます。
+Menu	メニュー
+Menu key (keyboard)	メニューキー（キーボード）
+Controller: %s	コントローラー：%s
+Text size	文字サイズ
+Block game keyboard/mouse input while the menu is open	メニューを開いている間、ゲームのキーボード/マウス入力をブロック
+Back up the save before the first item of a session	セッションで最初のアイテムを入手する前にセーブをバックアップ
+Show a short hint when the game starts	ゲーム起動時に短いヒントを表示
+About	情報
+Game version (exe): %s	ゲームのバージョン (exe)：%s
+Memory addresses:	メモリアドレス：
+ready	準備完了
+missing (the game may have been updated)	見つかりません（ゲームが更新された可能性があります）
+No Cheat Engine needed; loaded by Mod Engine 3 as a DLL. Offline / Seamless Coop only; don't use it online.	Cheat Engine は不要です。Mod Engine 3 が DLL として読み込みます。オフライン／Seamless Coop 専用です。オンラインでは使わないでください。
+zzostoom cheat sheet ready  -  menu: %s / L3 + R3	zzostoom cheat sheet 準備完了  -  メニュー：%s / L3 + R3
+" (under Esc)	半角/全角 (Escの下)
+Could not give items: load a character first.	アイテムを渡せませんでした：先にキャラクターをロードしてください。
+Save backed up first (zzostoom_backups).	先にセーブをバックアップしました (zzostoom_backups)。
+%d item(s) could not be given (are you in game?).	%d 個のアイテムを渡せませんでした（ゲーム中ですか？）。
+Given: %s x%u	入手：%s x%u
+%d items given.	%d 個のアイテムを入手しました。
+%d items given (%s).	%d 個のアイテムを入手しました（%s）。
+  Level %u    Runes %s	  レベル %u    ルーン %s
+Game addresses not found; the game may have been updated. See Settings > About.	ゲームのアドレスが見つかりません。ゲームが更新された可能性があります。設定 > 情報 を確認してください。
+No character loaded: items and cheats work once you are in game.	キャラクターがロードされていません：アイテムとチートはゲーム中に使えます。
+Save: ER0000.%s (%s)	セーブ：ER0000.%s (%s)
+Teleport failed.	テレポートに失敗しました。
++100,000 runes	+100,000 ルーン
+Could not add runes.	ルーンを追加できませんでした。
+All cheats OFF	すべてのチート オフ
+Enemies Don't Attack	敵が攻撃しない
+Fly Mode (noclip)	飛行モード（noclip）
+Save Position	位置を保存
+Teleport to Saved Position	保存した位置へテレポート
+Teleport Up (+5 m)	上へテレポート (+5 m)
++100,000 Runes	+100,000 ルーン
+Turn All Cheats Off	すべてのチートをオフ
+ON	オン
+OFF	オフ
+Position saved.	位置を保存しました。
+Could not read the position.	位置を読み取れませんでした。
+No saved position yet.	まだ位置が保存されていません。
+Teleported to the saved position.	保存した位置へテレポートしました。
+Saved position is in another area; go there first.	保存した位置は別のエリアです。先にそこへ移動してください。
+Fly mode: OFF (death / loading screen)	飛行モード：オフ（死亡／ロード画面）
+Torrent speed applies while you ride Torrent.	トレントの速度は、トレントに騎乗している間に適用されます。
+Essentials	基本アイテム
+Remembrances	追憶
+Consumables	消費アイテム
+Pots	壺
+Aromatics	香
+Throwables	投擲アイテム
+Greases	脂
+Special Tools	特殊な道具
+Misc Tools	その他の道具
+Rare Tools	貴重な道具
+Multiplayer	マルチプレイ
+Flora	植物
+Fauna	動物
+Stones & Misc	石・その他
+Smithing Stones	鍛石
+Somber Smithing Stones	喪色の鍛石
+Gloveworts	墓すずらん
+Seeds & Tears	種子・雫
+Scadutree & Revered Spirit Ash	影樹・霊灰
+Great Runes	大ルーン
+Memory Stone & Talisman Pouch	メモリ・ストーン・お守り袋
+Pots & Bottles	壺・瓶
+Keys	鍵
+Quest Items	イベントアイテム
+Tools & Cookbooks	道具・製法書
+Scrolls & Prayerbooks	スクロール・祈祷書
+Maps	地図
+Merchant Bell Bearings	商人の鈴玉
+NPC Bell Bearings	NPCの鈴玉
+Notes & Letters	文書・手紙
+DLC Notes & Maps	DLCの文書・地図
+About...	説明...

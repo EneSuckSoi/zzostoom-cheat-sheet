@@ -1,0 +1,250 @@
+# zzostoom cheat sheet - ru translation. English<TAB>translation, one per line.
+# Keep %d / %s / %u / %.1f in the same order. Run tools/gen_lang.py after editing.
+Items	Предметы
+Cheats	Читы
+Movement	Движение
+World	Мир
+Character	Персонаж
+Shortcuts	Горячие клавиши
+Saves	Сохранения
+Settings	Настройки
+Weapon	Оружие
+Ammunition	Боеприпасы
+Armor	Доспехи
+Talisman	Талисман
+Ash of War	Пепел войны
+Spirit Ash	Прах духов
+Item	Предмет
+Pick a category on the left, then click an item.	Выберите категорию слева, затем нажмите на предмет.
+Double-clicking an item gives it right away with the options below.	Двойной щелчок сразу выдаёт предмет с настройками ниже.
+Quantity	Количество
+Max (%d)	Макс. (%d)
+Anything above the inventory limit goes to the Sort Chest, as in the game.	Всё, что сверх лимита инвентаря, попадает в сундук, как в игре.
+Upgrade	Улучшение
+Max	Макс.
+Affinity	Закалка
+GIVE	ВЫДАТЬ
+Category	Категория
+Description	Описание
+up to +%d	до +%d
+Search items (e.g. rune, smithing, lily)	Поиск предметов (напр. руна, кузнечный, ландыш)
+Search results: %d items	Найдено: %d предметов
+(%d items)	(%d предметов)
+Give all...	Выдать все...
+Give all %d items in "%s"?	Выдать все %d предметов из «%s»?
+Stackable items: x%d, everything else: x1. Weapons at +%d.	Складываемые предметы: x%d, остальное: x1. Оружие на +%d.
+Yes, give	Да, выдать
+Cancel	Отмена
+Give Items	Выдать предметы
+Categories follow the game's own inventory groups (%d items, DLC included). Open a category or search above.	Категории повторяют группы инвентаря игры (%d предметов, включая DLC). Откройте категорию или воспользуйтесь поиском выше.
+Items go to the character that is currently loaded, through the game's own "add to inventory" function, so normal and Seamless Coop saves work the same way.	Предметы получает загруженный сейчас персонаж через собственную функцию игры «добавить в инвентарь», поэтому обычные сохранения и Seamless Coop работают одинаково.
+Survival	Выживание
+No Death	Без смерти
+You take damage but never die; HP stops at 1.	Вы получаете урон, но не умираете; ОЗ останавливаются на 1.
+God Mode	Режим бога
+You take no damage at all (also keeps HP full and prevents death).	Вы совсем не получаете урона (ОЗ всегда полные, смерти нет).
+Attacks Pass Through	Атаки проходят насквозь
+Enemy attacks don't connect at all: no hit reaction, no status buildup.	Вражеские атаки вообще не попадают: нет реакции на удар и накопления эффектов.
+Infinite HP	Бесконечные ОЗ
+HP is refilled every frame.	ОЗ восполняются каждый кадр.
+Infinite FP	Бесконечные ОК
+Spells and skills cost no FP.	Заклинания и навыки не тратят ОК.
+Infinite Stamina	Бесконечная выносливость
+Stamina stays full.	Выносливость всегда полная.
+No Stagger	Без оглушения
+Poise is kept extremely high, so hits don't stagger you.	Баланс держится очень высоким, поэтому удары не оглушают вас.
+Combat & items	Бой и предметы
+No Item Consumption	Без расхода предметов
+Flasks, pots, runes... are not used up.	Фляги, горшки, руны... не расходуются.
+No Arrow / Bolt Consumption	Без расхода стрел / болтов
+One-Shot Kills	Убийство с одного удара
+Every enemy you hit dies in one hit.	Любой враг, которого вы ударите, умирает с одного удара.
+Stealth (experimental)	Скрытность (экспериментально)
+Invisible	Невидимость
+Enemies don't notice you by sight.	Враги не замечают вас зрением.
+Silent	Бесшумность
+Enemies don't notice you by sound.	Враги не замечают вас на слух.
+World & enemies	Мир и враги
+Torrent No Death	Поток не умирает
+Freeze Enemy AI	Заморозить ИИ врагов
+Enemies stop thinking and stand still.	Враги перестают думать и стоят на месте.
+Enemies Can't Move	Враги не двигаются
+Enemies Don't Attack (experimental)	Враги не атакуют (экспериментально)
+A game debug flag; in some situations it can affect your own attacks too.	Отладочный флаг игры; в некоторых ситуациях он может влиять и на ваши атаки.
+Turn all cheats off	Выключить все читы
+Takes effect the moment you tick a box. Everything starts off each time the game starts.	Работает сразу, как только вы ставите галочку. При каждом запуске игры всё выключено.
+Speed	Скорость
+Player Speed	Скорость игрока
+Multiplies how far you move each frame (walking, running, rolling). Attacks keep their normal speed. Works with Seamless Coop.	Умножает расстояние, которое вы проходите за кадр (ходьба, бег, перекат). Атаки сохраняют обычную скорость. Работает с Seamless Coop.
+Torrent Speed	Скорость Потока
+Multiplies Torrent's movement while you ride.	Умножает движение Потока, пока вы в седле.
+Jump	Прыжок
+Jump Boost	Усиленный прыжок
+Multiplies the rise of a jump (also Torrent's jumps while riding).	Умножает высоту прыжка (и прыжки Потока верхом).
+Fly mode (noclip)	Режим полёта (noclip)
+Fly Mode	Режим полёта
+No gravity and no collision: you float and go through walls. The speed multiplies both rising/sinking and your normal running. Switching it off makes you fall normally.	Без гравитации и столкновений: вы парите и проходите сквозь стены. Скорость умножает подъём/спуск и обычный бег. При выключении вы падаете как обычно.
+Rise: RT (R2), A (Cross) or Page Up    Sink: LT (L2) or Page Down    Move: run as usual	Вверх: RT (R2), A (Крест) или Page Up    Вниз: LT (L2) или Page Down    Движение: бег как обычно
+Triggers are analog: press lightly to move slowly.	Курки аналоговые: нажимайте слегка, чтобы двигаться медленно.
+Turns itself off when you die or hit a loading screen.	Выключается сам, когда вы умираете или начинается загрузка.
+Teleport	Телепорт
+Up +5 m	Вверх +5 м
+Up +50 m	Вверх +50 м
+Down -5 m	Вниз -5 м
+Save position	Запомнить позицию
+Teleport to saved position	Телепорт к сохранённой позиции
+Saved: X %.1f  Y %.1f  Z %.1f	Сохранено: X %.1f  Y %.1f  Z %.1f
+Map flags set: %d/%d. Rest at a grace or reload the save if the map hasn't updated yet.	Флаги карты установлены: %d/%d. Отдохните у места благодати или перезагрузите сохранение, если карта ещё не обновилась.
+Could not set the map flags (are you in game?).	Не удалось установить флаги карты (вы в игре?).
+Sites of Grace unlocked: %d/%d. Rest at a grace or reload the save, then fast travel from the map.	Места благодати открыты: %d/%d. Отдохните у места благодати или перезагрузите сохранение, затем перемещайтесь через карту.
+Could not unlock Sites of Grace (are you in game?).	Не удалось открыть места благодати (вы в игре?).
+Load a character first.	Сначала загрузите персонажа.
+Map	Карта
+Reveal the whole map	Открыть всю карту
+Sets the same flags as picking up every map fragment (base game and Shadow of the Erdtree). Giving yourself the Map items alone does not reveal anything.	Ставит те же флаги, что и подбор всех фрагментов карты (основная игра и Shadow of the Erdtree). Сами предметы карт ничего не открывают.
+Sites of Grace	Места благодати
+Unlocks Sites of Grace so you can fast travel to them from the map. Some lie past bosses or story events, so this can skip progress.	Открывает места благодати, чтобы перемещаться к ним через карту. Некоторые находятся за боссами или сюжетными событиями, так что можно пропустить часть прохождения.
+Unlock base game (%d)	Открыть основную игру (%d)
+Unlock Shadow of the Erdtree (%d)	Открыть Shadow of the Erdtree (%d)
+Unlock every Shadow of the Erdtree Site of Grace?	Открыть все места благодати Shadow of the Erdtree?
+Unlock every base game Site of Grace?	Открыть все места благодати основной игры?
+Your save is backed up first if automatic backups are on.	Если автокопии включены, сначала создаётся копия сохранения.
+Unlock	Открыть
+Runes, stats and blessings show up here once a character is loaded.	Руны, характеристики и благословения появятся здесь, когда персонаж загружен.
+Runes	Руны
+Current runes: %s	Текущие руны: %s
+%s runes	%s рун
+Add	Добавить
+Remove	Убрать
+Set to 0	Обнулить
+Attributes	Характеристики
+Level: %u  ->  %d	Уровень: %u  ->  %d
+Apply attributes	Применить характеристики
+Attributes applied.	Характеристики применены.
+Could not write attributes.	Не удалось записать характеристики.
+Reload from game	Загрузить из игры
+Max HP/FP/stamina update after changing equipment or resting at a grace.	Макс. ОЗ/ОК/выносливость обновятся после смены снаряжения или отдыха у места благодати.
+Shadow of the Erdtree blessings	Благословения Shadow of the Erdtree
+Apply blessings	Применить благословения
+Blessings applied.	Благословения применены.
+Could not write blessings.	Не удалось записать благословения.
+Status	Статус
+HP %d / %d    FP %d / %d    Stamina %d / %d	ОЗ %d / %d    ОК %d / %d    Выносливость %d / %d
+Controller: L3 + R3 (click both sticks) opens/closes the menu. Shortcuts: hold L3 and press A/B/X/Y/RB/RT, or hold R3 and press the D-pad/LB/LT. A short L3 or R3 press on its own still reaches the game (crouch / lock-on).	Геймпад: L3 + R3 (нажать оба стика) открывает/закрывает меню. Сочетания: удерживайте L3 и нажмите A/B/X/Y/RB/RT, или удерживайте R3 и нажмите крестовину/LB/LT. Короткое нажатие L3 или R3 само по себе по-прежнему идёт в игру (присесть / захват цели).
+In the menu: D-pad / left stick to move, A to select, B to go back, LB/RB to switch tabs, Start to close. In fly mode RT rises and LT sinks.	В меню: крестовина / левый стик — перемещение, A — выбор, B — назад, LB/RB — вкладки, Start — закрыть. В режиме полёта RT поднимает, LT опускает.
+PlayStation: A=Cross, B=Circle, X=Square, Y=Triangle, LB/RB=L1/R1, LT/RT=L2/R2.	PlayStation: A=Крест, B=Круг, X=Квадрат, Y=Треугольник, LB/RB=L1/R1, LT/RT=L2/R2.
+Controller:	Геймпад:
+XInput not available	XInput недоступен
+connected	подключён
+not detected	не найден
+hold L3 or R3 on the controller and press a button...	удерживайте L3 или R3 на геймпаде и нажмите кнопку...
+press a key... (Esc: cancel, Backspace: clear)	нажмите клавишу... (Esc: отмена, Backspace: очистить)
+Action	Действие
+Keyboard	Клавиатура
+Controller	Геймпад
+%s  (on)	%s  (вкл.)
+Restore default shortcuts	Восстановить сочетания по умолчанию
+Shortcuts restored to defaults.	Сочетания сброшены по умолчанию.
+Items and cheats apply to the character that is loaded in the game right now. To give items to another character, load that character. The game writes the save itself, so normal (.sl2) and Seamless Coop (.%s) saves behave the same.	Предметы и читы действуют на персонажа, загруженного сейчас в игре. Чтобы выдать предметы другому персонажу, загрузите его. Игра сама записывает сохранение, поэтому обычные (.sl2) и Seamless Coop (.%s) сохранения ведут себя одинаково.
+Save type this session:	Тип сохранения в этой сессии:
+Normal (vanilla)	Обычное (vanilla)
+Refresh	Обновить
+No save files found (%APPDATA%\EldenRing).	Сохранения не найдены (%APPDATA%\EldenRing).
+Steam account %s	Аккаунт Steam %s
+%s  |  last saved %s	%s  |  сохранено %s
+Normal	Обычное
+[IN USE]	[ИСПОЛЬЗУЕТСЯ]
+Back up	Копия
+Backup failed.	Не удалось сделать копию.
+Backup written to zzostoom_backups.	Копия записана в zzostoom_backups.
+Open folder	Открыть папку
+Unreadable: %s	Не читается: %s
+No characters in this save.	В этом сохранении нет персонажей.
+Slot	Слот
+Level	Уровень
+Play time	Время игры
+%s  (loaded)	%s  (загружен)
+About backups	О резервных копиях
+Backups go to the 'zzostoom_backups' folder next to the save, named with date and time. To restore one, close the game, copy it back into the save folder and rename it to the original file name (e.g. ER0000.%s).	Копии сохраняются в папку 'zzostoom_backups' рядом с сохранением, с датой и временем в имени. Чтобы восстановить копию, закройте игру, скопируйте её обратно в папку сохранений и переименуйте в исходное имя (напр. ER0000.%s).
+" / ~  (key under Esc)	Ё / ~  (клавиша под Esc)
+Language	Язык
+Menu language	Язык меню
+Show item names in English	Показывать названия предметов на английском
+Item names normally follow the menu language, using the game's own translations. Searching in English always works.	Названия предметов обычно следуют языку меню и берутся из перевода самой игры. Поиск на английском работает всегда.
+Menu	Меню
+Menu key (keyboard)	Клавиша меню (клавиатура)
+Controller: %s	Геймпад: %s
+Text size	Размер текста
+Block game keyboard/mouse input while the menu is open	Блокировать клавиатуру/мышь игры, пока открыто меню
+Back up the save before the first item of a session	Делать копию сохранения перед первым предметом в сессии
+Show a short hint when the game starts	Показывать короткую подсказку при запуске игры
+About	О моде
+Game version (exe): %s	Версия игры (exe): %s
+Memory addresses:	Адреса памяти:
+ready	готовы
+missing (the game may have been updated)	не найдены (возможно, игра обновилась)
+No Cheat Engine needed; loaded by Mod Engine 3 as a DLL. Offline / Seamless Coop only; don't use it online.	Cheat Engine не нужен; загружается Mod Engine 3 как DLL. Только офлайн / Seamless Coop; не используйте онлайн.
+zzostoom cheat sheet ready  -  menu: %s / L3 + R3	zzostoom cheat sheet готов  -  меню: %s / L3 + R3
+" (under Esc)	Ё (под Esc)
+Could not give items: load a character first.	Не удалось выдать предметы: сначала загрузите персонажа.
+Save backed up first (zzostoom_backups).	Сначала сделана копия сохранения (zzostoom_backups).
+%d item(s) could not be given (are you in game?).	Не удалось выдать предметов: %d (вы в игре?).
+Given: %s x%u	Получено: %s x%u
+%d items given.	Выдано предметов: %d.
+%d items given (%s).	Выдано предметов: %d (%s).
+  Level %u    Runes %s	  Уровень %u    Руны %s
+Game addresses not found; the game may have been updated. See Settings > About.	Адреса игры не найдены; возможно, игра обновилась. См. Настройки > О моде.
+No character loaded: items and cheats work once you are in game.	Персонаж не загружен: предметы и читы работают, когда вы в игре.
+Save: ER0000.%s (%s)	Сохранение: ER0000.%s (%s)
+Teleport failed.	Телепорт не удался.
++100,000 runes	+100 000 рун
+Could not add runes.	Не удалось добавить руны.
+All cheats OFF	Все читы ВЫКЛ.
+Enemies Don't Attack	Враги не атакуют
+Fly Mode (noclip)	Режим полёта (noclip)
+Save Position	Запомнить позицию
+Teleport to Saved Position	Телепорт к сохранённой позиции
+Teleport Up (+5 m)	Телепорт вверх (+5 м)
++100,000 Runes	+100 000 рун
+Turn All Cheats Off	Выключить все читы
+ON	ВКЛ.
+OFF	ВЫКЛ.
+Position saved.	Позиция сохранена.
+Could not read the position.	Не удалось прочитать позицию.
+No saved position yet.	Позиция ещё не сохранена.
+Teleported to the saved position.	Телепорт к сохранённой позиции выполнен.
+Saved position is in another area; go there first.	Сохранённая позиция в другой области; сначала отправьтесь туда.
+Fly mode: OFF (death / loading screen)	Режим полёта: ВЫКЛ. (смерть / загрузка)
+Torrent speed applies while you ride Torrent.	Скорость Потока действует, пока вы едете на Потоке.
+Essentials	Основное
+Remembrances	Воспоминания
+Consumables	Расходуемые
+Pots	Горшки
+Aromatics	Благовония
+Throwables	Метательные
+Greases	Смазки
+Special Tools	Особые инструменты
+Misc Tools	Разные инструменты
+Rare Tools	Редкие инструменты
+Multiplayer	Сетевая игра
+Flora	Растения
+Fauna	Животные
+Stones & Misc	Камни и прочее
+Smithing Stones	Кузнечные камни
+Somber Smithing Stones	Кузнечные камни мрака
+Gloveworts	Ландыши
+Seeds & Tears	Семена и слёзы
+Scadutree & Revered Spirit Ash	Древо Упадка и прах славного духа
+Great Runes	Великие руны
+Memory Stone & Talisman Pouch	Камень памяти и сумка для талисманов
+Pots & Bottles	Горшки и сосуды
+Keys	Ключи
+Quest Items	Предметы заданий
+Tools & Cookbooks	Инструменты и справочники
+Scrolls & Prayerbooks	Свитки и молитвенники
+Maps	Карты
+Merchant Bell Bearings	Сферы торговцев
+NPC Bell Bearings	Сферы NPC
+Notes & Letters	Заметки и письма
+DLC Notes & Maps	Заметки и карты DLC
+About...	Справка...

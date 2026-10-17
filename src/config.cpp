@@ -79,6 +79,8 @@ void Load(const std::wstring& dll_dir) {
     g_config.block_game_input = ReadString(L"block_game_input", L"1") != "0";
     g_config.auto_backup = ReadString(L"auto_backup", L"1") != "0";
     g_config.show_hint = ReadString(L"show_hint", L"1") != "0";
+    g_config.language = ReadString(L"language", L"en");
+    g_config.english_item_names = ReadString(L"english_item_names", L"0") != "0";
     if (!exists) Save();
     ZZ_LOG("Config: toggle=%s ui_scale=%.2f block_input=%d auto_backup=%d",
            g_config.toggle_key_name.c_str(), g_config.ui_scale, g_config.block_game_input,
@@ -94,6 +96,8 @@ void Save() {
     WriteString(L"block_game_input", g_config.block_game_input ? "1" : "0");
     WriteString(L"auto_backup", g_config.auto_backup ? "1" : "0");
     WriteString(L"show_hint", g_config.show_hint ? "1" : "0");
+    WriteString(L"language", g_config.language);
+    WriteString(L"english_item_names", g_config.english_item_names ? "1" : "0");
 }
 
 }  // namespace zz::config

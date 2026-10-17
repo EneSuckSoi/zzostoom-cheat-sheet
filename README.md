@@ -16,6 +16,7 @@ Loaded by [Mod Engine 3](https://github.com/garyttierney/me3) as a DLL. Give you
 - **World**: reveal the whole map, unlock all Sites of Grace (base game and Shadow of the Erdtree separately).
 - **Character**: add runes, edit attributes, Scadutree and Revered Spirit Ash blessings.
 - **Shortcuts**: bind any cheat to a key and/or a controller combo (hold L3 or R3 + a button). Saved between sessions.
+- **10 languages**: English, Deutsch, Français, Español, Português (Brasil), Русский, 日本語, 한국어, 简体中文, Türkçe. Item names use the game's official translations.
 - **Saves**: list of your save files and characters, automatic backup before the first item of a session.
 
 | | |
@@ -79,6 +80,7 @@ py build.py --install  # build and copy the DLL into the ME3 eldenring-mods fold
 |---|---|
 | `src/` | the mod: overlay (DX12 + ImGui), menu, cheats, controller input, game memory |
 | `src/generated/` | item, map and Site of Grace tables (generated from the game data) |
+| `lang/` | menu translations, one `English<TAB>translation` file per language (`py tools/gen_lang.py` after editing) |
 | `third_party/` | Dear ImGui and MinHook |
 
 Game addresses are found by pattern scanning (`src/game.cpp`); if a game update breaks them, that's the place to look.

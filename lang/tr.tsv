@@ -1,0 +1,339 @@
+# zzostoom cheat sheet - tr translation. English<TAB>translation, one per line.
+# Keep %d / %s / %u / %.1f in the same order. Run tools/gen_lang.py after editing.
+Items	Itemler
+Cheats	Hileler
+Movement	Hareket
+World	Dünya
+Character	Karakter
+Shortcuts	Kısayollar
+Saves	Kayıtlar
+Settings	Ayarlar
+Weapon	Silah
+Ammunition	Mühimmat
+Armor	Zırh
+Talisman	Tılsım
+Ash of War	Savaş Külü
+Spirit Ash	Ruh Külü
+Item	Item
+Pick a category on the left, then click an item.	Soldan bir kategori seç, sonra bir iteme tıkla.
+Double-clicking an item gives it right away with the options below.	Bir iteme çift tıklarsan aşağıdaki seçeneklerle hemen verilir.
+Quantity	Adet
+Max (%d)	Maks (%d)
+Anything above the inventory limit goes to the Sort Chest, as in the game.	Envanter sınırını aşan kısım, oyundaki gibi sandığa (Sort Chest) gider.
+Upgrade	Güçlendirme
+Max	Maks
+Affinity	Affinity
+GIVE	VER
+Category	Kategori
+Description	Açıklama
+up to +%d	en fazla +%d
+Search items (e.g. rune, smithing, lily)	Item ara (ör. rune, smithing, lily)
+Search results: %d items	Arama sonuçları: %d item
+(%d items)	(%d item)
+Give all...	Hepsini ver...
+Give all %d items in "%s"?	%d itemin hepsi verilsin mi ("%s")?
+Stackable items: x%d, everything else: x1. Weapons at +%d.	Yığılabilen itemler: x%d, diğer her şey: x1. Silahlar +%d.
+Yes, give	Evet, ver
+Cancel	İptal
+Give Items	Item Ver
+Categories follow the game's own inventory groups (%d items, DLC included). Open a category or search above.	Kategoriler oyunun kendi envanter gruplarını izler (%d item, DLC dahil). Bir kategori aç ya da yukarıdan ara.
+Items go to the character that is currently loaded, through the game's own "add to inventory" function, so normal and Seamless Coop saves work the same way.	Itemler, oyunun kendi "envantere ekle" fonksiyonuyla o an yüklü karaktere gider; bu yüzden normal ve Seamless Coop kayıtları aynı şekilde çalışır.
+Survival	Hayatta Kalma
+No Death	Ölümsüzlük
+You take damage but never die; HP stops at 1.	Hasar alırsın ama asla ölmezsin; HP 1'de durur.
+God Mode	God Mode
+You take no damage at all (also keeps HP full and prevents death).	Hiç hasar almazsın (HP dolu kalır, ölmezsin).
+Attacks Pass Through	Saldırılar İçinden Geçer
+Enemy attacks don't connect at all: no hit reaction, no status buildup.	Düşman saldırıları hiç değmez: sarsılma yok, durum etkisi birikmez.
+Infinite HP	Sınırsız HP
+HP is refilled every frame.	HP her karede doldurulur.
+Infinite FP	Sınırsız FP
+Spells and skills cost no FP.	Büyüler ve yetenekler FP harcamaz.
+Infinite Stamina	Sınırsız Stamina
+Stamina stays full.	Stamina hep dolu kalır.
+No Stagger	Sendeleme Yok
+Poise is kept extremely high, so hits don't stagger you.	Poise çok yüksek tutulur, darbeler seni sendeletmez.
+Combat & items	Savaş & Itemler
+No Item Consumption	Item Tüketimi Yok
+Flasks, pots, runes... are not used up.	Şişeler, çömlekler, rünler... azalmaz.
+No Arrow / Bolt Consumption	Ok / Cıvata Tüketimi Yok
+One-Shot Kills	Tek Vuruşta Öldür
+Every enemy you hit dies in one hit.	Vurduğun her düşman tek vuruşta ölür.
+Stealth (experimental)	Gizlilik (deneysel)
+Invisible	Görünmez
+Enemies don't notice you by sight.	Düşmanlar seni görerek fark etmez.
+Silent	Sessiz
+Enemies don't notice you by sound.	Düşmanlar seni sesinden fark etmez.
+World & enemies	Dünya & Düşmanlar
+Torrent No Death	Torrent Ölmez
+Freeze Enemy AI	Düşman AI'ını Dondur
+Enemies stop thinking and stand still.	Düşmanlar düşünmeyi bırakır ve yerinde durur.
+Enemies Can't Move	Düşmanlar Hareket Edemez
+Enemies Don't Attack (experimental)	Düşmanlar Saldırmaz (deneysel)
+A game debug flag; in some situations it can affect your own attacks too.	Oyunun bir debug bayrağı; bazı durumlarda senin saldırılarını da etkileyebilir.
+Turn all cheats off	Tüm hileleri kapat
+Takes effect the moment you tick a box. Everything starts off each time the game starts.	Kutuyu işaretlediğin an etkili olur. Oyun her açıldığında hepsi kapalı başlar.
+Speed	Hız
+Player Speed	Oyuncu Hızı
+Multiplies how far you move each frame (walking, running, rolling). Attacks keep their normal speed. Works with Seamless Coop.	Her karede ne kadar ilerlediğini katlar (yürüme, koşma, yuvarlanma). Saldırılar normal hızında kalır. Seamless Coop ile çalışır.
+Torrent Speed	Torrent Hızı
+Multiplies Torrent's movement while you ride.	Binerken Torrent'in hareketini katlar.
+Jump	Zıplama
+Jump Boost	Zıplama Gücü
+Multiplies the rise of a jump (also Torrent's jumps while riding).	Zıplamanın yükselişini katlar (binerken Torrent'in zıplamaları da).
+Fly mode (noclip)	Uçuş modu (noclip)
+Fly Mode	Uçuş Modu
+No gravity and no collision: you float and go through walls. The speed multiplies both rising/sinking and your normal running. Switching it off makes you fall normally.	Yerçekimi ve çarpışma yok: havada süzülür, duvarlardan geçersin. Hız hem yükselme/alçalmayı hem normal koşunu katlar. Kapatınca normal şekilde düşersin.
+Rise: RT (R2), A (Cross) or Page Up    Sink: LT (L2) or Page Down    Move: run as usual	Yüksel: RT (R2), A (Çarpı) veya Page Up    Alçal: LT (L2) veya Page Down    Hareket: normal koş
+Triggers are analog: press lightly to move slowly.	Tetikler analog: yavaş gitmek için hafifçe bas.
+Turns itself off when you die or hit a loading screen.	Ölünce ya da yükleme ekranına girince kendiliğinden kapanır.
+Teleport	Işınlanma
+Up +5 m	Yukarı +5 m
+Up +50 m	Yukarı +50 m
+Down -5 m	Aşağı -5 m
+Save position	Konumu kaydet
+Teleport to saved position	Kaydedilen konuma ışınlan
+Saved: X %.1f  Y %.1f  Z %.1f	Kayıtlı: X %.1f  Y %.1f  Z %.1f
+Map flags set: %d/%d. Rest at a grace or reload the save if the map hasn't updated yet.	Harita bayrakları ayarlandı: %d/%d. Harita henüz güncellenmediyse bir grace'te dinlen ya da kaydı yeniden yükle.
+Could not set the map flags (are you in game?).	Harita bayrakları ayarlanamadı (oyunda mısın?).
+Sites of Grace unlocked: %d/%d. Rest at a grace or reload the save, then fast travel from the map.	Site of Grace'ler açıldı: %d/%d. Bir grace'te dinlen ya da kaydı yeniden yükle, sonra haritadan ışınlan.
+Could not unlock Sites of Grace (are you in game?).	Site of Grace'ler açılamadı (oyunda mısın?).
+Load a character first.	Önce bir karakter yükle.
+Map	Harita
+Reveal the whole map	Tüm haritayı aç
+Sets the same flags as picking up every map fragment (base game and Shadow of the Erdtree). Giving yourself the Map items alone does not reveal anything.	Bütün harita parçalarını almakla aynı bayrakları ayarlar (ana oyun ve Shadow of the Erdtree). Harita itemlerini kendine vermek tek başına hiçbir şeyi açmaz.
+Sites of Grace	Site of Grace'ler
+Unlocks Sites of Grace so you can fast travel to them from the map. Some lie past bosses or story events, so this can skip progress.	Site of Grace'leri açar, böylece haritadan onlara ışınlanabilirsin. Bazıları boss'ların ya da hikaye olaylarının ardında olduğu için ilerlemeyi atlatabilir.
+Unlock base game (%d)	Ana oyunu aç (%d)
+Unlock Shadow of the Erdtree (%d)	Shadow of the Erdtree'yi aç (%d)
+Unlock every Shadow of the Erdtree Site of Grace?	Shadow of the Erdtree'deki tüm Site of Grace'ler açılsın mı?
+Unlock every base game Site of Grace?	Ana oyundaki tüm Site of Grace'ler açılsın mı?
+Your save is backed up first if automatic backups are on.	Otomatik yedek açıksa önce kaydın yedeklenir.
+Unlock	Aç
+Runes, stats and blessings show up here once a character is loaded.	Bir karakter yüklenince rünler, statlar ve kutsamalar burada görünür.
+Runes	Rünler
+Current runes: %s	Mevcut rün: %s
+%s runes	%s rün
+Add	Ekle
+Remove	Çıkar
+Set to 0	0 yap
+Attributes	Statlar
+Level: %u  ->  %d	Seviye: %u  ->  %d
+Apply attributes	Statları uygula
+Attributes applied.	Statlar uygulandı.
+Could not write attributes.	Statlar yazılamadı.
+Reload from game	Oyundan yeniden oku
+Max HP/FP/stamina update after changing equipment or resting at a grace.	Maks HP/FP/stamina, ekipman değiştirince ya da bir grace'te dinlenince güncellenir.
+Shadow of the Erdtree blessings	Shadow of the Erdtree kutsamaları
+Apply blessings	Kutsamaları uygula
+Blessings applied.	Kutsamalar uygulandı.
+Could not write blessings.	Kutsamalar yazılamadı.
+Status	Durum
+HP %d / %d    FP %d / %d    Stamina %d / %d	HP %d / %d    FP %d / %d    Stamina %d / %d
+Controller: L3 + R3 (click both sticks) opens/closes the menu. Shortcuts: hold L3 and press A/B/X/Y/RB/RT, or hold R3 and press the D-pad/LB/LT. A short L3 or R3 press on its own still reaches the game (crouch / lock-on).	Kol: L3 + R3 (iki analoğa birlikte bas) menüyü açar/kapatır. Kısayollar: L3'ü basılı tutup A/B/X/Y/RB/RT'ye, ya da R3'ü basılı tutup D-pad/LB/LT'ye bas. Tek başına kısa bir L3 veya R3 basışı yine oyuna gider (eğilme / kilitlenme).
+In the menu: D-pad / left stick to move, A to select, B to go back, LB/RB to switch tabs, Start to close. In fly mode RT rises and LT sinks.	Menüde: D-pad / sol analog ile gez, A seç, B geri, LB/RB sekme değiştir, Start kapat. Uçuş modunda RT yükseltir, LT alçaltır.
+PlayStation: A=Cross, B=Circle, X=Square, Y=Triangle, LB/RB=L1/R1, LT/RT=L2/R2.	PlayStation: A=Çarpı, B=Daire, X=Kare, Y=Üçgen, LB/RB=L1/R1, LT/RT=L2/R2.
+Controller:	Kol:
+XInput not available	XInput kullanılamıyor
+connected	bağlı
+not detected	algılanmadı
+hold L3 or R3 on the controller and press a button...	kolda L3 veya R3'ü basılı tut ve bir tuşa bas...
+press a key... (Esc: cancel, Backspace: clear)	bir tuşa bas... (Esc: iptal, Backspace: temizle)
+Action	Eylem
+Keyboard	Klavye
+Controller	Kol
+%s  (on)	%s  (açık)
+Restore default shortcuts	Varsayılan kısayollara dön
+Shortcuts restored to defaults.	Kısayollar varsayılana döndürüldü.
+Items and cheats apply to the character that is loaded in the game right now. To give items to another character, load that character. The game writes the save itself, so normal (.sl2) and Seamless Coop (.%s) saves behave the same.	Itemler ve hileler, oyunda şu an yüklü olan karaktere uygulanır. Başka bir karaktere item vermek için o karakteri yükle. Kaydı oyunun kendisi yazar, bu yüzden normal (.sl2) ve Seamless Coop (.%s) kayıtları aynı şekilde davranır.
+Save type this session:	Bu oturumdaki kayıt türü:
+Normal (vanilla)	Normal (vanilla)
+Refresh	Yenile
+No save files found (%APPDATA%\EldenRing).	Kayıt dosyası bulunamadı (%APPDATA%\EldenRing).
+Steam account %s	Steam hesabı %s
+%s  |  last saved %s	%s  |  son kayıt %s
+Normal	Normal
+[IN USE]	[KULLANIMDA]
+Back up	Yedekle
+Backup failed.	Yedekleme başarısız.
+Backup written to zzostoom_backups.	Yedek zzostoom_backups klasörüne yazıldı.
+Open folder	Klasörü aç
+Unreadable: %s	Okunamadı: %s
+No characters in this save.	Bu kayıtta karakter yok.
+Slot	Slot
+Level	Seviye
+Play time	Oynama süresi
+%s  (loaded)	%s  (yüklü)
+About backups	Yedekler hakkında
+Backups go to the 'zzostoom_backups' folder next to the save, named with date and time. To restore one, close the game, copy it back into the save folder and rename it to the original file name (e.g. ER0000.%s).	Yedekler, kaydın yanındaki 'zzostoom_backups' klasörüne tarih ve saatle adlandırılarak yazılır. Birini geri yüklemek için oyunu kapat, yedeği kayıt klasörüne geri kopyala ve asıl dosya adına çevir (ör. ER0000.%s).
+" / ~  (key under Esc)	" / é  (Esc'nin altındaki tuş)
+Language	Dil
+Menu language	Menü dili
+Show item names in English	Item isimlerini İngilizce göster
+Item names normally follow the menu language, using the game's own translations. Searching in English always works.	Item isimleri normalde menü dilini izler ve oyunun kendi çevirilerini kullanır. İngilizce arama her zaman çalışır.
+Menu	Menü
+Menu key (keyboard)	Menü tuşu (klavye)
+Controller: %s	Kol: %s
+Text size	Yazı boyutu
+Block game keyboard/mouse input while the menu is open	Menü açıkken oyunun klavye/fare girişini engelle
+Back up the save before the first item of a session	Bir oturumdaki ilk itemden önce kaydı yedekle
+Show a short hint when the game starts	Oyun açılınca kısa bir ipucu göster
+About	Hakkında
+Game version (exe): %s	Oyun sürümü (exe): %s
+Memory addresses:	Bellek adresleri:
+ready	hazır
+missing (the game may have been updated)	eksik (oyun güncellenmiş olabilir)
+No Cheat Engine needed; loaded by Mod Engine 3 as a DLL. Offline / Seamless Coop only; don't use it online.	Cheat Engine gerekmez; Mod Engine 3 tarafından DLL olarak yüklenir. Sadece çevrimdışı / Seamless Coop; çevrimiçi kullanma.
+zzostoom cheat sheet ready  -  menu: %s / L3 + R3	zzostoom cheat sheet hazır  -  menü: %s / L3 + R3
+" (under Esc)	" (Esc'nin altı)
+Could not give items: load a character first.	Item verilemedi: önce bir karakter yükle.
+Save backed up first (zzostoom_backups).	Önce kayıt yedeklendi (zzostoom_backups).
+%d item(s) could not be given (are you in game?).	%d item verilemedi (oyunda mısın?).
+Given: %s x%u	Verildi: %s x%u
+%d items given.	%d item verildi.
+%d items given (%s).	%d item verildi (%s).
+  Level %u    Runes %s	  Seviye %u    Rün %s
+Game addresses not found; the game may have been updated. See Settings > About.	Oyun adresleri bulunamadı; oyun güncellenmiş olabilir. Ayarlar > Hakkında kısmına bak.
+No character loaded: items and cheats work once you are in game.	Yüklü karakter yok: itemler ve hileler oyuna girince çalışır.
+Save: ER0000.%s (%s)	Kayıt: ER0000.%s (%s)
+Teleport failed.	Işınlanma başarısız.
++100,000 runes	+100.000 rün
+Could not add runes.	Rün eklenemedi.
+All cheats OFF	Tüm hileler KAPALI
+Enemies Don't Attack	Düşmanlar Saldırmaz
+Fly Mode (noclip)	Uçuş Modu (noclip)
+Save Position	Konumu Kaydet
+Teleport to Saved Position	Kaydedilen Konuma Işınlan
+Teleport Up (+5 m)	Yukarı Işınlan (+5 m)
++100,000 Runes	+100.000 Rün
+Turn All Cheats Off	Tüm Hileleri Kapat
+ON	AÇIK
+OFF	KAPALI
+Position saved.	Konum kaydedildi.
+Could not read the position.	Konum okunamadı.
+No saved position yet.	Henüz kayıtlı konum yok.
+Teleported to the saved position.	Kaydedilen konuma ışınlandın.
+Saved position is in another area; go there first.	Kayıtlı konum başka bir bölgede; önce oraya git.
+Fly mode: OFF (death / loading screen)	Uçuş modu: KAPALI (ölüm / yükleme ekranı)
+Torrent speed applies while you ride Torrent.	Torrent hızı, Torrent'e binerken uygulanır.
+Essentials	Temel Aletler (Essentials)
+Remembrances	Hatıralar (Remembrances)
+Consumables	Tüketilebilirler (Consumables)
+Pots	Çömlekler (Pots)
+Aromatics	Aromatikler (Aromatics)
+Throwables	Fırlatılabilirler (Throwables)
+Greases	Yağlar (Greases)
+Special Tools	Özel Aletler (Special Tools)
+Misc Tools	Çeşitli Aletler (Misc Tools)
+Rare Tools	Nadir Aletler (Rare Tools)
+Multiplayer	Çok Oyunculu (Multiplayer)
+Flora	Bitkiler (Flora)
+Fauna	Hayvan Parçaları (Fauna)
+Stones & Misc	Taşlar & Diğer (Stones & Misc)
+Smithing Stones	Demirci Taşları (Smithing Stones)
+Somber Smithing Stones	Kasvetli Demirci Taşları (Somber Smithing Stones)
+Gloveworts	Gloveworts
+Seeds & Tears	Tohum & Gözyaşı (Seeds & Tears)
+Scadutree & Revered Spirit Ash	Scadutree & Revered Spirit Ash
+Great Runes	Büyük Rünler (Great Runes)
+Memory Stone & Talisman Pouch	Memory Stone & Talisman Pouch
+Pots & Bottles	Çömlek & Şişeler (Pots & Bottles)
+Keys	Anahtarlar (Keys)
+Quest Items	Görev Itemleri (Quest Items)
+Tools & Cookbooks	Araçlar & Tarif Kitapları (Tools & Cookbooks)
+Scrolls & Prayerbooks	Parşömenler & Dua Kitapları (Scrolls & Prayerbooks)
+Maps	Haritalar (Maps)
+Merchant Bell Bearings	Tüccar Çanları (Merchant Bell Bearings)
+NPC Bell Bearings	NPC Çanları (NPC Bell Bearings)
+Notes & Letters	Notlar & Mektuplar (Notes & Letters)
+DLC Notes & Maps	DLC Notları & Haritaları (DLC Notes & Maps)
+About...	Öğreticiler (About...)
+Daggers	Hançerler (Daggers)
+Straight Swords	Düz Kılıçlar (Straight Swords)
+Light Greatswords	Hafif Büyük Kılıçlar (Light Greatswords)
+Greatswords	Büyük Kılıçlar (Greatswords)
+Colossal Swords	Devasa Kılıçlar (Colossal Swords)
+Thrusting Swords	Saplama Kılıçları (Thrusting Swords)
+Heavy Thrusting Swords	Ağır Saplama Kılıçları (Heavy Thrusting Swords)
+Curved Swords	Eğri Kılıçlar (Curved Swords)
+Curved Greatswords	Eğri Büyük Kılıçlar (Curved Greatswords)
+Katanas	Katanalar (Katanas)
+Great Katanas	Büyük Katanalar (Great Katanas)
+Twinblades	Çift Bıçaklar (Twinblades)
+Hammers	Çekiçler (Hammers)
+Great Hammers	Büyük Çekiçler (Great Hammers)
+Flails	Gürzler (Flails)
+Axes	Baltalar (Axes)
+Greataxes	Büyük Baltalar (Greataxes)
+Spears	Mızraklar (Spears)
+Great Spears	Büyük Mızraklar (Great Spears)
+Halberds	Teberler (Halberds)
+Reapers	Tırpanlar (Reapers)
+Whips	Kamçılar (Whips)
+Fists	Yumruk Silahları (Fists)
+Claws	Pençeler (Claws)
+Beast Claws	Canavar Pençeleri (Beast Claws)
+Backhand Blades	Ters Bıçaklar (Backhand Blades)
+Throwing Blades	Fırlatma Bıçakları (Throwing Blades)
+Hand-to-Hand Arts	Dövüş Sanatları (Hand-to-Hand Arts)
+Perfume Bottles	Parfüm Şişeleri (Perfume Bottles)
+Colossal Weapons	Devasa Silahlar (Colossal Weapons)
+Torches	Meşaleler (Torches)
+Light Bows	Kısa Yaylar (Light Bows)
+Bows	Yaylar (Bows)
+Greatbows	Büyük Yaylar (Greatbows)
+Crossbows	Arbaletler (Crossbows)
+Ballistas	Balistalar (Ballistas)
+Glintstone Staffs	Asalar (Glintstone Staffs)
+Sacred Seals	Mühürler (Sacred Seals)
+Arrows	Oklar (Arrows)
+Greatarrows	Büyük Oklar (Greatarrows)
+Bolts	Cıvatalar (Bolts)
+Greatbolts	Büyük Cıvatalar (Greatbolts)
+Small Shields	Küçük Kalkanlar (Small Shields)
+Medium Shields	Orta Kalkanlar (Medium Shields)
+Greatshields	Büyük Kalkanlar (Greatshields)
+Thrusting Shields	Saplama Kalkanları (Thrusting Shields)
+Head	Kafa (Head)
+Chest	Gövde (Chest)
+Arms	Kollar (Arms)
+Legs	Bacaklar (Legs)
+Talismans	Tılsımlar (Talismans)
+Ashes of War	Savaş Külleri (Ashes of War)
+Sorceries	Büyücülükler (Sorceries)
+Incantations	Dualar (Incantations)
+Spirit Ashes	Ruh Külleri (Spirit Ashes)
+Crystal Tears	Kristal Gözyaşları (Crystal Tears)
+Weapons	Silahlar (Weapons)
+Ranged Weapons & Catalysts	Menzilli Silahlar & Asalar
+Arrows & Bolts	Oklar & Cıvatalar
+Shields	Kalkanlar (Shields)
+Spells	Büyüler (Spells)
+Tools	Aletler (Tools)
+Crafting Materials	Üretim Malzemeleri (Crafting Materials)
+Bolstering Materials	Güçlendirme Malzemeleri (Bolstering Materials)
+Key Items	Anahtar Itemler (Key Items)
+Info & Notes	Bilgi & Notlar (Info & Notes)
+Vigor	Vigor
+Endurance	Endurance
+Mind	Mind
+Strength	Strength
+Dexterity	Dexterity
+Intelligence	Intelligence
+Faith	Faith
+Arcane	Arcane
+Scadutree Blessing	Scadutree Blessing
+Revered Spirit Ash Blessing	Revered Spirit Ash Blessing
+Standard	Standard
+Heavy	Heavy
+Keen	Keen
+Quality	Quality
+Fire	Fire
+Flame Art	Flame Art
+Lightning	Lightning
+Sacred	Sacred
+Magic	Magic
+Occult	Occult
+Cold	Cold
+Poison	Poison
+Blood	Blood

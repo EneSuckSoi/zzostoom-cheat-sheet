@@ -1,11 +1,13 @@
 // zzostoom cheat sheet - Elden Ring in-game cheat menu loaded by Mod Engine 3 as a native DLL.
 #include <windows.h>
 
+#include <algorithm>
 #include <string>
 
 #include "config.h"
 #include "game.h"
 #include "hotkeys.h"
+#include "i18n.h"
 #include "log.h"
 #include "memory.h"
 #include "overlay.h"
@@ -45,6 +47,8 @@ DWORD WINAPI MainThread(LPVOID) {
     zz::mem::Init();
     ZZ_LOG("zzostoom cheat sheet starting");
     zz::config::Load(dir);
+    zz::i18n::SetLanguage(std::max(0, zz::i18n::FromCode(zz::config::Get().language.c_str())));
+    zz::i18n::SetEnglishItemNames(zz::config::Get().english_item_names);
     zz::hotkeys::Load();
 
     // The game unpacks its code and creates its D3D12 device before the window shows up.

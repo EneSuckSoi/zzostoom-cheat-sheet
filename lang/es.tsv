@@ -1,0 +1,250 @@
+# zzostoom cheat sheet - es translation. English<TAB>translation, one per line.
+# Keep %d / %s / %u / %.1f in the same order. Run tools/gen_lang.py after editing.
+Items	Objetos
+Cheats	Trucos
+Movement	Movimiento
+World	Mundo
+Character	Personaje
+Shortcuts	Atajos
+Saves	Partidas
+Settings	Ajustes
+Weapon	Arma
+Ammunition	Munición
+Armor	Armadura
+Talisman	Talismán
+Ash of War	Ceniza de guerra
+Spirit Ash	Ceniza espiritual
+Item	Objeto
+Pick a category on the left, then click an item.	Elige una categoría a la izquierda y luego haz clic en un objeto.
+Double-clicking an item gives it right away with the options below.	Con doble clic el objeto se entrega al momento con las opciones de abajo.
+Quantity	Cantidad
+Max (%d)	Máx. (%d)
+Anything above the inventory limit goes to the Sort Chest, as in the game.	Lo que supere el límite del inventario va al cofre, como en el juego.
+Upgrade	Mejora
+Max	Máx.
+Affinity	Afinidad
+GIVE	DAR
+Category	Categoría
+Description	Descripción
+up to +%d	hasta +%d
+Search items (e.g. rune, smithing, lily)	Buscar objetos (p. ej. runa, forja, convalaria)
+Search results: %d items	Resultados: %d objetos
+(%d items)	(%d objetos)
+Give all...	Dar todo...
+Give all %d items in "%s"?	¿Dar los %d objetos de «%s»?
+Stackable items: x%d, everything else: x1. Weapons at +%d.	Objetos apilables: x%d, todo lo demás: x1. Armas a +%d.
+Yes, give	Sí, dar
+Cancel	Cancelar
+Give Items	Dar objetos
+Categories follow the game's own inventory groups (%d items, DLC included). Open a category or search above.	Las categorías siguen los grupos del inventario del juego (%d objetos, DLC incluido). Abre una categoría o busca arriba.
+Items go to the character that is currently loaded, through the game's own "add to inventory" function, so normal and Seamless Coop saves work the same way.	Los objetos van al personaje cargado en este momento, mediante la función del propio juego de «añadir al inventario», así que las partidas normales y de Seamless Coop funcionan igual.
+Survival	Supervivencia
+No Death	Sin muerte
+You take damage but never die; HP stops at 1.	Recibes daño pero nunca mueres; los PS se quedan en 1.
+God Mode	Modo Dios
+You take no damage at all (also keeps HP full and prevents death).	No recibes ningún daño (los PS siguen llenos y no mueres).
+Attacks Pass Through	Ataques atraviesan
+Enemy attacks don't connect at all: no hit reaction, no status buildup.	Los ataques enemigos no impactan: sin reacción al golpe ni acumulación de estados.
+Infinite HP	PS infinitos
+HP is refilled every frame.	Los PS se rellenan en cada fotograma.
+Infinite FP	PC infinitos
+Spells and skills cost no FP.	Los hechizos y habilidades no gastan PC.
+Infinite Stamina	Resistencia infinita
+Stamina stays full.	La resistencia se mantiene llena.
+No Stagger	Sin tambaleo
+Poise is kept extremely high, so hits don't stagger you.	El aplomo se mantiene altísimo, así que los golpes no te tambalean.
+Combat & items	Combate y objetos
+No Item Consumption	Sin consumo de objetos
+Flasks, pots, runes... are not used up.	Viales, tarros, runas... no se gastan.
+No Arrow / Bolt Consumption	Sin consumo de flechas / virotes
+One-Shot Kills	Muerte de un golpe
+Every enemy you hit dies in one hit.	Todo enemigo que golpees muere de un solo golpe.
+Stealth (experimental)	Sigilo (experimental)
+Invisible	Invisible
+Enemies don't notice you by sight.	Los enemigos no te detectan por la vista.
+Silent	Silencioso
+Enemies don't notice you by sound.	Los enemigos no te detectan por el sonido.
+World & enemies	Mundo y enemigos
+Torrent No Death	Torrentera no muere
+Freeze Enemy AI	Congelar IA enemiga
+Enemies stop thinking and stand still.	Los enemigos dejan de pensar y se quedan quietos.
+Enemies Can't Move	Los enemigos no se mueven
+Enemies Don't Attack (experimental)	Los enemigos no atacan (experimental)
+A game debug flag; in some situations it can affect your own attacks too.	Un flag de depuración del juego; en algunos casos también puede afectar a tus propios ataques.
+Turn all cheats off	Desactivar todos los trucos
+Takes effect the moment you tick a box. Everything starts off each time the game starts.	Se aplica en cuanto marcas una casilla. Todo empieza desactivado cada vez que se inicia el juego.
+Speed	Velocidad
+Player Speed	Velocidad del jugador
+Multiplies how far you move each frame (walking, running, rolling). Attacks keep their normal speed. Works with Seamless Coop.	Multiplica la distancia que recorres en cada fotograma (andar, correr, rodar). Los ataques mantienen su velocidad normal. Funciona con Seamless Coop.
+Torrent Speed	Velocidad de Torrentera
+Multiplies Torrent's movement while you ride.	Multiplica el movimiento de Torrentera mientras cabalgas.
+Jump	Salto
+Jump Boost	Salto potenciado
+Multiplies the rise of a jump (also Torrent's jumps while riding).	Multiplica la altura de un salto (también los saltos de Torrentera al cabalgar).
+Fly mode (noclip)	Modo vuelo (noclip)
+Fly Mode	Modo vuelo
+No gravity and no collision: you float and go through walls. The speed multiplies both rising/sinking and your normal running. Switching it off makes you fall normally.	Sin gravedad ni colisiones: flotas y atraviesas paredes. La velocidad multiplica la subida/bajada y tu carrera normal. Al desactivarlo caes con normalidad.
+Rise: RT (R2), A (Cross) or Page Up    Sink: LT (L2) or Page Down    Move: run as usual	Subir: RT (R2), A (Cruz) o Re Pág    Bajar: LT (L2) o Av Pág    Moverse: correr como siempre
+Triggers are analog: press lightly to move slowly.	Los gatillos son analógicos: pulsa suave para ir despacio.
+Turns itself off when you die or hit a loading screen.	Se desactiva solo al morir o en una pantalla de carga.
+Teleport	Teletransporte
+Up +5 m	Arriba +5 m
+Up +50 m	Arriba +50 m
+Down -5 m	Abajo -5 m
+Save position	Guardar posición
+Teleport to saved position	Teletransportarse a la posición guardada
+Saved: X %.1f  Y %.1f  Z %.1f	Guardada: X %.1f  Y %.1f  Z %.1f
+Map flags set: %d/%d. Rest at a grace or reload the save if the map hasn't updated yet.	Flags de mapa activados: %d/%d. Descansa en un lugar de gracia o recarga la partida si el mapa aún no se ha actualizado.
+Could not set the map flags (are you in game?).	No se pudieron activar los flags de mapa (¿estás en la partida?).
+Sites of Grace unlocked: %d/%d. Rest at a grace or reload the save, then fast travel from the map.	Lugares de gracia desbloqueados: %d/%d. Descansa en un lugar de gracia o recarga la partida y luego viaja desde el mapa.
+Could not unlock Sites of Grace (are you in game?).	No se pudieron desbloquear los lugares de gracia (¿estás en la partida?).
+Load a character first.	Carga primero un personaje.
+Map	Mapa
+Reveal the whole map	Revelar todo el mapa
+Sets the same flags as picking up every map fragment (base game and Shadow of the Erdtree). Giving yourself the Map items alone does not reveal anything.	Activa los mismos flags que recoger todos los fragmentos de mapa (juego base y Shadow of the Erdtree). Darte los objetos de mapa por sí solos no revela nada.
+Sites of Grace	Lugares de gracia
+Unlocks Sites of Grace so you can fast travel to them from the map. Some lie past bosses or story events, so this can skip progress.	Desbloquea los lugares de gracia para poder viajar a ellos desde el mapa. Algunos están tras jefes o eventos de la historia, así que esto puede saltarse progreso.
+Unlock base game (%d)	Desbloquear juego base (%d)
+Unlock Shadow of the Erdtree (%d)	Desbloquear Shadow of the Erdtree (%d)
+Unlock every Shadow of the Erdtree Site of Grace?	¿Desbloquear todos los lugares de gracia de Shadow of the Erdtree?
+Unlock every base game Site of Grace?	¿Desbloquear todos los lugares de gracia del juego base?
+Your save is backed up first if automatic backups are on.	Si las copias automáticas están activadas, antes se hace una copia de tu partida.
+Unlock	Desbloquear
+Runes, stats and blessings show up here once a character is loaded.	Las runas, los atributos y las bendiciones aparecen aquí cuando hay un personaje cargado.
+Runes	Runas
+Current runes: %s	Runas actuales: %s
+%s runes	%s runas
+Add	Añadir
+Remove	Quitar
+Set to 0	Poner a 0
+Attributes	Atributos
+Level: %u  ->  %d	Nivel: %u  ->  %d
+Apply attributes	Aplicar atributos
+Attributes applied.	Atributos aplicados.
+Could not write attributes.	No se pudieron escribir los atributos.
+Reload from game	Recargar del juego
+Max HP/FP/stamina update after changing equipment or resting at a grace.	Los PS/PC/resistencia máximos se actualizan al cambiar de equipo o descansar en un lugar de gracia.
+Shadow of the Erdtree blessings	Bendiciones de Shadow of the Erdtree
+Apply blessings	Aplicar bendiciones
+Blessings applied.	Bendiciones aplicadas.
+Could not write blessings.	No se pudieron escribir las bendiciones.
+Status	Estado
+HP %d / %d    FP %d / %d    Stamina %d / %d	PS %d / %d    PC %d / %d    Resistencia %d / %d
+Controller: L3 + R3 (click both sticks) opens/closes the menu. Shortcuts: hold L3 and press A/B/X/Y/RB/RT, or hold R3 and press the D-pad/LB/LT. A short L3 or R3 press on its own still reaches the game (crouch / lock-on).	Mando: L3 + R3 (pulsar ambos sticks) abre/cierra el menú. Atajos: mantén L3 y pulsa A/B/X/Y/RB/RT, o mantén R3 y pulsa la cruceta/LB/LT. Una pulsación corta de L3 o R3 sola sigue llegando al juego (agacharse / fijar objetivo).
+In the menu: D-pad / left stick to move, A to select, B to go back, LB/RB to switch tabs, Start to close. In fly mode RT rises and LT sinks.	En el menú: cruceta / stick izquierdo para moverse, A para elegir, B para volver, LB/RB para cambiar de pestaña, Start para cerrar. En modo vuelo, RT sube y LT baja.
+PlayStation: A=Cross, B=Circle, X=Square, Y=Triangle, LB/RB=L1/R1, LT/RT=L2/R2.	PlayStation: A=Cruz, B=Círculo, X=Cuadrado, Y=Triángulo, LB/RB=L1/R1, LT/RT=L2/R2.
+Controller:	Mando:
+XInput not available	XInput no disponible
+connected	conectado
+not detected	no detectado
+hold L3 or R3 on the controller and press a button...	mantén L3 o R3 en el mando y pulsa un botón...
+press a key... (Esc: cancel, Backspace: clear)	pulsa una tecla... (Esc: cancelar, Retroceso: borrar)
+Action	Acción
+Keyboard	Teclado
+Controller	Mando
+%s  (on)	%s  (activado)
+Restore default shortcuts	Restaurar atajos por defecto
+Shortcuts restored to defaults.	Atajos restaurados por defecto.
+Items and cheats apply to the character that is loaded in the game right now. To give items to another character, load that character. The game writes the save itself, so normal (.sl2) and Seamless Coop (.%s) saves behave the same.	Los objetos y trucos se aplican al personaje cargado ahora mismo en el juego. Para dar objetos a otro personaje, carga ese personaje. El juego guarda la partida por sí mismo, así que las partidas normales (.sl2) y de Seamless Coop (.%s) se comportan igual.
+Save type this session:	Tipo de partida en esta sesión:
+Normal (vanilla)	Normal (vanilla)
+Refresh	Actualizar
+No save files found (%APPDATA%\EldenRing).	No se encontraron partidas (%APPDATA%\EldenRing).
+Steam account %s	Cuenta de Steam %s
+%s  |  last saved %s	%s  |  guardada por última vez %s
+Normal	Normal
+[IN USE]	[EN USO]
+Back up	Copia
+Backup failed.	Error al hacer la copia.
+Backup written to zzostoom_backups.	Copia guardada en zzostoom_backups.
+Open folder	Abrir carpeta
+Unreadable: %s	Ilegible: %s
+No characters in this save.	No hay personajes en esta partida.
+Slot	Ranura
+Level	Nivel
+Play time	Tiempo de juego
+%s  (loaded)	%s  (cargado)
+About backups	Sobre las copias
+Backups go to the 'zzostoom_backups' folder next to the save, named with date and time. To restore one, close the game, copy it back into the save folder and rename it to the original file name (e.g. ER0000.%s).	Las copias van a la carpeta 'zzostoom_backups' junto a la partida, con la fecha y la hora en el nombre. Para restaurar una, cierra el juego, cópiala de nuevo a la carpeta de partidas y renómbrala con el nombre original (p. ej. ER0000.%s).
+" / ~  (key under Esc)	º / ~  (tecla bajo Esc)
+Language	Idioma
+Menu language	Idioma del menú
+Show item names in English	Mostrar nombres de objetos en inglés
+Item names normally follow the menu language, using the game's own translations. Searching in English always works.	Los nombres de objetos siguen normalmente el idioma del menú, con las traducciones del propio juego. Buscar en inglés siempre funciona.
+Menu	Menú
+Menu key (keyboard)	Tecla del menú (teclado)
+Controller: %s	Mando: %s
+Text size	Tamaño del texto
+Block game keyboard/mouse input while the menu is open	Bloquear teclado/ratón del juego con el menú abierto
+Back up the save before the first item of a session	Hacer copia de la partida antes del primer objeto de una sesión
+Show a short hint when the game starts	Mostrar un aviso breve al iniciar el juego
+About	Acerca de
+Game version (exe): %s	Versión del juego (exe): %s
+Memory addresses:	Direcciones de memoria:
+ready	listas
+missing (the game may have been updated)	faltan (puede que el juego se haya actualizado)
+No Cheat Engine needed; loaded by Mod Engine 3 as a DLL. Offline / Seamless Coop only; don't use it online.	No necesita Cheat Engine; Mod Engine 3 lo carga como DLL. Solo sin conexión / Seamless Coop; no lo uses en línea.
+zzostoom cheat sheet ready  -  menu: %s / L3 + R3	zzostoom cheat sheet listo  -  menú: %s / L3 + R3
+" (under Esc)	º (bajo Esc)
+Could not give items: load a character first.	No se pudieron dar objetos: carga primero un personaje.
+Save backed up first (zzostoom_backups).	Partida copiada primero (zzostoom_backups).
+%d item(s) could not be given (are you in game?).	%d objeto(s) no se pudieron dar (¿estás en la partida?).
+Given: %s x%u	Recibido: %s x%u
+%d items given.	%d objetos dados.
+%d items given (%s).	%d objetos dados (%s).
+  Level %u    Runes %s	  Nivel %u    Runas %s
+Game addresses not found; the game may have been updated. See Settings > About.	No se encontraron las direcciones del juego; puede que se haya actualizado. Mira Ajustes > Acerca de.
+No character loaded: items and cheats work once you are in game.	No hay personaje cargado: los objetos y trucos funcionan cuando estás en la partida.
+Save: ER0000.%s (%s)	Partida: ER0000.%s (%s)
+Teleport failed.	Error al teletransportarse.
++100,000 runes	+100.000 runas
+Could not add runes.	No se pudieron añadir runas.
+All cheats OFF	Todos los trucos DESACTIVADOS
+Enemies Don't Attack	Los enemigos no atacan
+Fly Mode (noclip)	Modo vuelo (noclip)
+Save Position	Guardar posición
+Teleport to Saved Position	Teletransportarse a la posición guardada
+Teleport Up (+5 m)	Teletransportarse arriba (+5 m)
++100,000 Runes	+100.000 runas
+Turn All Cheats Off	Desactivar todos los trucos
+ON	ACTIVADO
+OFF	DESACTIVADO
+Position saved.	Posición guardada.
+Could not read the position.	No se pudo leer la posición.
+No saved position yet.	Aún no hay posición guardada.
+Teleported to the saved position.	Teletransportado a la posición guardada.
+Saved position is in another area; go there first.	La posición guardada está en otra zona; ve allí primero.
+Fly mode: OFF (death / loading screen)	Modo vuelo: DESACTIVADO (muerte / pantalla de carga)
+Torrent speed applies while you ride Torrent.	La velocidad de Torrentera se aplica mientras lo cabalgas.
+Essentials	Esenciales
+Remembrances	Recuerdos
+Consumables	Consumibles
+Pots	Tarros
+Aromatics	Aromáticos
+Throwables	Arrojadizos
+Greases	Grasas
+Special Tools	Herramientas especiales
+Misc Tools	Herramientas varias
+Rare Tools	Herramientas raras
+Multiplayer	Multijugador
+Flora	Flora
+Fauna	Fauna
+Stones & Misc	Piedras y varios
+Smithing Stones	Piedras de forja
+Somber Smithing Stones	Umbrapiedras de forja
+Gloveworts	Convalarias
+Seeds & Tears	Semillas y lágrimas
+Scadutree & Revered Spirit Ash	Árbol Umbrío y Cenizas veneradas
+Great Runes	Grandes Runas
+Memory Stone & Talisman Pouch	Piedra de la memoria y bolsa para talismán
+Pots & Bottles	Tarros y frascos
+Keys	Llaves
+Quest Items	Objetos de misión
+Tools & Cookbooks	Herramientas y manuales
+Scrolls & Prayerbooks	Pergaminos y libros de oraciones
+Maps	Mapas
+Merchant Bell Bearings	Esferas de mercaderes
+NPC Bell Bearings	Esferas de PNJ
+Notes & Letters	Notas y cartas
+DLC Notes & Maps	Notas y mapas del DLC
+About...	Acerca de...

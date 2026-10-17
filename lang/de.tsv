@@ -1,0 +1,250 @@
+# zzostoom cheat sheet - de translation. English<TAB>translation, one per line.
+# Keep %d / %s / %u / %.1f in the same order. Run tools/gen_lang.py after editing.
+Items	Gegenstände
+Cheats	Cheats
+Movement	Bewegung
+World	Welt
+Character	Charakter
+Shortcuts	Tastenkürzel
+Saves	Spielstände
+Settings	Einstellungen
+Weapon	Waffe
+Ammunition	Munition
+Armor	Rüstung
+Talisman	Talisman
+Ash of War	Kriegsasche
+Spirit Ash	Geisterasche
+Item	Gegenstand
+Pick a category on the left, then click an item.	Wähle links eine Kategorie und klicke dann auf einen Gegenstand.
+Double-clicking an item gives it right away with the options below.	Ein Doppelklick gibt den Gegenstand sofort mit den Optionen unten.
+Quantity	Anzahl
+Max (%d)	Max (%d)
+Anything above the inventory limit goes to the Sort Chest, as in the game.	Alles über dem Inventarlimit landet wie im Spiel in der Sortiertruhe.
+Upgrade	Verbesserung
+Max	Max
+Affinity	Affinität
+GIVE	GEBEN
+Category	Kategorie
+Description	Beschreibung
+up to +%d	bis +%d
+Search items (e.g. rune, smithing, lily)	Gegenstände suchen (z. B. Rune, Schmiedestein, Lilie)
+Search results: %d items	Suchergebnisse: %d Gegenstände
+(%d items)	(%d Gegenstände)
+Give all...	Alle geben...
+Give all %d items in "%s"?	Alle %d Gegenstände in "%s" geben?
+Stackable items: x%d, everything else: x1. Weapons at +%d.	Stapelbare Gegenstände: x%d, alles andere: x1. Waffen auf +%d.
+Yes, give	Ja, geben
+Cancel	Abbrechen
+Give Items	Gegenstände geben
+Categories follow the game's own inventory groups (%d items, DLC included). Open a category or search above.	Die Kategorien folgen den Inventargruppen des Spiels (%d Gegenstände, inkl. DLC). Öffne eine Kategorie oder suche oben.
+Items go to the character that is currently loaded, through the game's own "add to inventory" function, so normal and Seamless Coop saves work the same way.	Gegenstände gehen an den gerade geladenen Charakter, über die spieleigene Funktion „zum Inventar hinzufügen“. Normale und Seamless-Coop-Spielstände funktionieren daher gleich.
+Survival	Überleben
+No Death	Kein Tod
+You take damage but never die; HP stops at 1.	Du nimmst Schaden, stirbst aber nie; LP bleiben bei 1 stehen.
+God Mode	Gottmodus
+You take no damage at all (also keeps HP full and prevents death).	Du nimmst überhaupt keinen Schaden (LP bleiben voll, kein Tod).
+Attacks Pass Through	Angriffe gehen durch
+Enemy attacks don't connect at all: no hit reaction, no status buildup.	Gegnerische Angriffe treffen gar nicht: keine Trefferreaktion, kein Statusaufbau.
+Infinite HP	Unendliche LP
+HP is refilled every frame.	LP werden jedes Frame aufgefüllt.
+Infinite FP	Unendliche FP
+Spells and skills cost no FP.	Zauber und Fertigkeiten kosten keine FP.
+Infinite Stamina	Unendliche Ausdauer
+Stamina stays full.	Die Ausdauer bleibt voll.
+No Stagger	Kein Taumeln
+Poise is kept extremely high, so hits don't stagger you.	Das Gleichgewicht bleibt extrem hoch, Treffer bringen dich nicht ins Taumeln.
+Combat & items	Kampf & Gegenstände
+No Item Consumption	Kein Gegenstandsverbrauch
+Flasks, pots, runes... are not used up.	Flaschen, Töpfe, Runen... werden nicht verbraucht.
+No Arrow / Bolt Consumption	Kein Pfeil-/Bolzenverbrauch
+One-Shot Kills	Ein-Treffer-Kills
+Every enemy you hit dies in one hit.	Jeder Gegner, den du triffst, stirbt mit einem Treffer.
+Stealth (experimental)	Tarnung (experimentell)
+Invisible	Unsichtbar
+Enemies don't notice you by sight.	Gegner bemerken dich nicht durch Sicht.
+Silent	Lautlos
+Enemies don't notice you by sound.	Gegner bemerken dich nicht durch Geräusche.
+World & enemies	Welt & Gegner
+Torrent No Death	Sturmwind stirbt nicht
+Freeze Enemy AI	Gegner-KI einfrieren
+Enemies stop thinking and stand still.	Gegner hören auf zu denken und bleiben stehen.
+Enemies Can't Move	Gegner können sich nicht bewegen
+Enemies Don't Attack (experimental)	Gegner greifen nicht an (experimentell)
+A game debug flag; in some situations it can affect your own attacks too.	Ein Debug-Flag des Spiels; in manchen Situationen betrifft es auch deine eigenen Angriffe.
+Turn all cheats off	Alle Cheats ausschalten
+Takes effect the moment you tick a box. Everything starts off each time the game starts.	Wirkt sofort, wenn du ein Kästchen anhakst. Bei jedem Spielstart ist alles aus.
+Speed	Geschwindigkeit
+Player Speed	Spielertempo
+Multiplies how far you move each frame (walking, running, rolling). Attacks keep their normal speed. Works with Seamless Coop.	Vervielfacht, wie weit du dich pro Frame bewegst (Gehen, Laufen, Rollen). Angriffe behalten ihr normales Tempo. Funktioniert mit Seamless Coop.
+Torrent Speed	Sturmwind-Tempo
+Multiplies Torrent's movement while you ride.	Vervielfacht Sturmwinds Bewegung, während du reitest.
+Jump	Sprung
+Jump Boost	Sprungkraft
+Multiplies the rise of a jump (also Torrent's jumps while riding).	Vervielfacht die Höhe eines Sprungs (auch Sturmwinds Sprünge beim Reiten).
+Fly mode (noclip)	Flugmodus (Noclip)
+Fly Mode	Flugmodus
+No gravity and no collision: you float and go through walls. The speed multiplies both rising/sinking and your normal running. Switching it off makes you fall normally.	Keine Schwerkraft und keine Kollision: Du schwebst und gehst durch Wände. Das Tempo vervielfacht Steigen/Sinken und dein normales Laufen. Beim Ausschalten fällst du ganz normal.
+Rise: RT (R2), A (Cross) or Page Up    Sink: LT (L2) or Page Down    Move: run as usual	Steigen: RT (R2), A (Kreuz) oder Bild auf    Sinken: LT (L2) oder Bild ab    Bewegen: normal laufen
+Triggers are analog: press lightly to move slowly.	Die Trigger sind analog: leicht drücken, um langsam zu bewegen.
+Turns itself off when you die or hit a loading screen.	Schaltet sich ab, wenn du stirbst oder ein Ladebildschirm kommt.
+Teleport	Teleport
+Up +5 m	Hoch +5 m
+Up +50 m	Hoch +50 m
+Down -5 m	Runter -5 m
+Save position	Position speichern
+Teleport to saved position	Zur gespeicherten Position teleportieren
+Saved: X %.1f  Y %.1f  Z %.1f	Gespeichert: X %.1f  Y %.1f  Z %.1f
+Map flags set: %d/%d. Rest at a grace or reload the save if the map hasn't updated yet.	Karten-Flags gesetzt: %d/%d. Ruhe an einem Ort der Gnade oder lade den Spielstand neu, falls die Karte noch nicht aktualisiert ist.
+Could not set the map flags (are you in game?).	Karten-Flags konnten nicht gesetzt werden (bist du im Spiel?).
+Sites of Grace unlocked: %d/%d. Rest at a grace or reload the save, then fast travel from the map.	Orte der Gnade freigeschaltet: %d/%d. Ruhe an einem Ort der Gnade oder lade den Spielstand neu und reise dann über die Karte.
+Could not unlock Sites of Grace (are you in game?).	Orte der Gnade konnten nicht freigeschaltet werden (bist du im Spiel?).
+Load a character first.	Lade zuerst einen Charakter.
+Map	Karte
+Reveal the whole map	Ganze Karte aufdecken
+Sets the same flags as picking up every map fragment (base game and Shadow of the Erdtree). Giving yourself the Map items alone does not reveal anything.	Setzt dieselben Flags wie das Aufheben aller Kartenfragmente (Hauptspiel und Shadow of the Erdtree). Die Karten-Gegenstände allein decken nichts auf.
+Sites of Grace	Orte der Gnade
+Unlocks Sites of Grace so you can fast travel to them from the map. Some lie past bosses or story events, so this can skip progress.	Schaltet Orte der Gnade frei, damit du von der Karte aus dorthin reisen kannst. Manche liegen hinter Bossen oder Story-Ereignissen, du kannst damit also Fortschritt überspringen.
+Unlock base game (%d)	Hauptspiel freischalten (%d)
+Unlock Shadow of the Erdtree (%d)	Shadow of the Erdtree freischalten (%d)
+Unlock every Shadow of the Erdtree Site of Grace?	Alle Orte der Gnade von Shadow of the Erdtree freischalten?
+Unlock every base game Site of Grace?	Alle Orte der Gnade des Hauptspiels freischalten?
+Your save is backed up first if automatic backups are on.	Dein Spielstand wird vorher gesichert, wenn automatische Backups an sind.
+Unlock	Freischalten
+Runes, stats and blessings show up here once a character is loaded.	Runen, Attribute und Segen erscheinen hier, sobald ein Charakter geladen ist.
+Runes	Runen
+Current runes: %s	Aktuelle Runen: %s
+%s runes	%s Runen
+Add	Hinzufügen
+Remove	Entfernen
+Set to 0	Auf 0 setzen
+Attributes	Attribute
+Level: %u  ->  %d	Stufe: %u  ->  %d
+Apply attributes	Attribute anwenden
+Attributes applied.	Attribute angewendet.
+Could not write attributes.	Attribute konnten nicht geschrieben werden.
+Reload from game	Aus dem Spiel neu laden
+Max HP/FP/stamina update after changing equipment or resting at a grace.	Max. LP/FP/Ausdauer aktualisieren sich nach einem Ausrüstungswechsel oder beim Ruhen an einem Ort der Gnade.
+Shadow of the Erdtree blessings	Segen von Shadow of the Erdtree
+Apply blessings	Segen anwenden
+Blessings applied.	Segen angewendet.
+Could not write blessings.	Segen konnten nicht geschrieben werden.
+Status	Status
+HP %d / %d    FP %d / %d    Stamina %d / %d	LP %d / %d    FP %d / %d    Ausdauer %d / %d
+Controller: L3 + R3 (click both sticks) opens/closes the menu. Shortcuts: hold L3 and press A/B/X/Y/RB/RT, or hold R3 and press the D-pad/LB/LT. A short L3 or R3 press on its own still reaches the game (crouch / lock-on).	Controller: L3 + R3 (beide Sticks drücken) öffnet/schließt das Menü. Kürzel: L3 halten und A/B/X/Y/RB/RT drücken, oder R3 halten und Steuerkreuz/LB/LT drücken. Ein kurzer Druck auf L3 oder R3 allein geht weiterhin an das Spiel (Ducken / Anvisieren).
+In the menu: D-pad / left stick to move, A to select, B to go back, LB/RB to switch tabs, Start to close. In fly mode RT rises and LT sinks.	Im Menü: Steuerkreuz / linker Stick zum Bewegen, A zum Auswählen, B zurück, LB/RB wechselt Tabs, Start schließt. Im Flugmodus steigt man mit RT und sinkt mit LT.
+PlayStation: A=Cross, B=Circle, X=Square, Y=Triangle, LB/RB=L1/R1, LT/RT=L2/R2.	PlayStation: A=Kreuz, B=Kreis, X=Quadrat, Y=Dreieck, LB/RB=L1/R1, LT/RT=L2/R2.
+Controller:	Controller:
+XInput not available	XInput nicht verfügbar
+connected	verbunden
+not detected	nicht erkannt
+hold L3 or R3 on the controller and press a button...	L3 oder R3 am Controller halten und eine Taste drücken...
+press a key... (Esc: cancel, Backspace: clear)	Taste drücken... (Esc: abbrechen, Rücktaste: löschen)
+Action	Aktion
+Keyboard	Tastatur
+Controller	Controller
+%s  (on)	%s  (an)
+Restore default shortcuts	Standard-Kürzel wiederherstellen
+Shortcuts restored to defaults.	Kürzel auf Standard zurückgesetzt.
+Items and cheats apply to the character that is loaded in the game right now. To give items to another character, load that character. The game writes the save itself, so normal (.sl2) and Seamless Coop (.%s) saves behave the same.	Gegenstände und Cheats gelten für den Charakter, der gerade im Spiel geladen ist. Um einem anderen Charakter etwas zu geben, lade diesen Charakter. Das Spiel schreibt den Spielstand selbst, daher verhalten sich normale (.sl2) und Seamless-Coop-Spielstände (.%s) gleich.
+Save type this session:	Spielstand-Typ in dieser Sitzung:
+Normal (vanilla)	Normal (Vanilla)
+Refresh	Aktualisieren
+No save files found (%APPDATA%\EldenRing).	Keine Spielstände gefunden (%APPDATA%\EldenRing).
+Steam account %s	Steam-Konto %s
+%s  |  last saved %s	%s  |  zuletzt gespeichert %s
+Normal	Normal
+[IN USE]	[IN BENUTZUNG]
+Back up	Sichern
+Backup failed.	Sicherung fehlgeschlagen.
+Backup written to zzostoom_backups.	Sicherung in zzostoom_backups geschrieben.
+Open folder	Ordner öffnen
+Unreadable: %s	Nicht lesbar: %s
+No characters in this save.	Keine Charaktere in diesem Spielstand.
+Slot	Platz
+Level	Stufe
+Play time	Spielzeit
+%s  (loaded)	%s  (geladen)
+About backups	Über Sicherungen
+Backups go to the 'zzostoom_backups' folder next to the save, named with date and time. To restore one, close the game, copy it back into the save folder and rename it to the original file name (e.g. ER0000.%s).	Sicherungen landen im Ordner 'zzostoom_backups' neben dem Spielstand, benannt mit Datum und Uhrzeit. Zum Wiederherstellen das Spiel schließen, die Datei zurück in den Spielstand-Ordner kopieren und in den ursprünglichen Dateinamen umbenennen (z. B. ER0000.%s).
+" / ~  (key under Esc)	^ / ~  (Taste unter Esc)
+Language	Sprache
+Menu language	Menüsprache
+Show item names in English	Gegenstandsnamen auf Englisch anzeigen
+Item names normally follow the menu language, using the game's own translations. Searching in English always works.	Gegenstandsnamen folgen normalerweise der Menüsprache und nutzen die Übersetzungen des Spiels. Suchen auf Englisch funktioniert immer.
+Menu	Menü
+Menu key (keyboard)	Menütaste (Tastatur)
+Controller: %s	Controller: %s
+Text size	Textgröße
+Block game keyboard/mouse input while the menu is open	Tastatur-/Mauseingaben des Spiels sperren, solange das Menü offen ist
+Back up the save before the first item of a session	Spielstand vor dem ersten Gegenstand einer Sitzung sichern
+Show a short hint when the game starts	Beim Spielstart einen kurzen Hinweis zeigen
+About	Info
+Game version (exe): %s	Spielversion (exe): %s
+Memory addresses:	Speicheradressen:
+ready	bereit
+missing (the game may have been updated)	fehlen (das Spiel wurde eventuell aktualisiert)
+No Cheat Engine needed; loaded by Mod Engine 3 as a DLL. Offline / Seamless Coop only; don't use it online.	Kein Cheat Engine nötig; wird von Mod Engine 3 als DLL geladen. Nur offline / Seamless Coop; nicht online verwenden.
+zzostoom cheat sheet ready  -  menu: %s / L3 + R3	zzostoom cheat sheet bereit  -  Menü: %s / L3 + R3
+" (under Esc)	^ (unter Esc)
+Could not give items: load a character first.	Gegenstände konnten nicht gegeben werden: lade zuerst einen Charakter.
+Save backed up first (zzostoom_backups).	Spielstand zuerst gesichert (zzostoom_backups).
+%d item(s) could not be given (are you in game?).	%d Gegenstand/Gegenstände konnten nicht gegeben werden (bist du im Spiel?).
+Given: %s x%u	Erhalten: %s x%u
+%d items given.	%d Gegenstände gegeben.
+%d items given (%s).	%d Gegenstände gegeben (%s).
+  Level %u    Runes %s	  Stufe %u    Runen %s
+Game addresses not found; the game may have been updated. See Settings > About.	Spieladressen nicht gefunden; das Spiel wurde eventuell aktualisiert. Siehe Einstellungen > Info.
+No character loaded: items and cheats work once you are in game.	Kein Charakter geladen: Gegenstände und Cheats funktionieren, sobald du im Spiel bist.
+Save: ER0000.%s (%s)	Spielstand: ER0000.%s (%s)
+Teleport failed.	Teleport fehlgeschlagen.
++100,000 runes	+100.000 Runen
+Could not add runes.	Runen konnten nicht hinzugefügt werden.
+All cheats OFF	Alle Cheats AUS
+Enemies Don't Attack	Gegner greifen nicht an
+Fly Mode (noclip)	Flugmodus (Noclip)
+Save Position	Position speichern
+Teleport to Saved Position	Zur gespeicherten Position teleportieren
+Teleport Up (+5 m)	Hochteleportieren (+5 m)
++100,000 Runes	+100.000 Runen
+Turn All Cheats Off	Alle Cheats ausschalten
+ON	AN
+OFF	AUS
+Position saved.	Position gespeichert.
+Could not read the position.	Position konnte nicht gelesen werden.
+No saved position yet.	Noch keine Position gespeichert.
+Teleported to the saved position.	Zur gespeicherten Position teleportiert.
+Saved position is in another area; go there first.	Die gespeicherte Position liegt in einem anderen Gebiet; geh zuerst dorthin.
+Fly mode: OFF (death / loading screen)	Flugmodus: AUS (Tod / Ladebildschirm)
+Torrent speed applies while you ride Torrent.	Das Sturmwind-Tempo gilt, während du auf Sturmwind reitest.
+Essentials	Grundausstattung
+Remembrances	Echos
+Consumables	Verbrauchsgüter
+Pots	Töpfe
+Aromatics	Duftstoffe
+Throwables	Wurfgegenstände
+Greases	Fette
+Special Tools	Spezielle Werkzeuge
+Misc Tools	Sonstige Werkzeuge
+Rare Tools	Seltene Werkzeuge
+Multiplayer	Mehrspieler
+Flora	Pflanzen
+Fauna	Tiere
+Stones & Misc	Steine & Sonstiges
+Smithing Stones	Schmiedesteine
+Somber Smithing Stones	Dunkelschmiedesteine
+Gloveworts	Grabtallilien
+Seeds & Tears	Saaten & Tränen
+Scadutree & Revered Spirit Ash	Scadubaum & Verehrte Geisterasche
+Great Runes	Große Runen
+Memory Stone & Talisman Pouch	Speicherstein & Talismanbeutel
+Pots & Bottles	Töpfe & Flaschen
+Keys	Schlüssel
+Quest Items	Quest-Gegenstände
+Tools & Cookbooks	Werkzeuge & Handbücher
+Scrolls & Prayerbooks	Schriftrollen & Gebetsbücher
+Maps	Karten
+Merchant Bell Bearings	Klangperlen der Händler
+NPC Bell Bearings	Klangperlen von NPCs
+Notes & Letters	Notizen & Briefe
+DLC Notes & Maps	DLC-Notizen & Karten
+About...	Über...

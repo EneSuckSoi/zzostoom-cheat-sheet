@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.4.0 - languages
+- The menu is now available in 10 languages: English, German, French, Spanish, Portuguese (Brazil),
+  Russian, Japanese, Korean, Simplified Chinese and Turkish. English is the default; pick one in
+  Settings > Language (it is remembered).
+- Item names, descriptions, weapon types, attributes and affinities use the game's own official
+  translations, so they match your inventory. "Show item names in English" switches them back,
+  and searching by the English name works in every language.
+- Chinese, Japanese and Korean text uses the Windows fonts (Microsoft YaHei UI, Yu Gothic UI,
+  Malgun Gothic).
+
 ## 1.3.0 - first public release
 - Reveal the whole map and unlock all Sites of Grace (base game and DLC) now work: the event
   flags are written directly and verified by reading them back.

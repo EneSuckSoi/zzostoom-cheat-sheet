@@ -6,6 +6,7 @@
 #include <cmath>
 
 #include "game.h"
+#include "i18n.h"
 #include "log.h"
 #include "memory.h"
 #include "pad.h"
@@ -185,7 +186,7 @@ void Tick(float dt, bool game_focused, bool menu_open) {
     if ((player != g_last_player && g_last_player) || dead || !in_game) {
         if (g_state.fly_mode && (dead || g_last_player)) {
             g_state.fly_mode = false;
-            ui::Notify("Fly mode: OFF (death / loading screen)");
+            ui::Notify(i18n::T("Fly mode: OFF (death / loading screen)"));
         }
         g_motion.valid = false;
     }

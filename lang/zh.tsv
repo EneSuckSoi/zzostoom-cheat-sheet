@@ -1,0 +1,250 @@
+# zzostoom cheat sheet - zh translation. English<TAB>translation, one per line.
+# Keep %d / %s / %u / %.1f in the same order. Run tools/gen_lang.py after editing.
+Items	道具
+Cheats	作弊
+Movement	移动
+World	世界
+Character	角色
+Shortcuts	快捷键
+Saves	存档
+Settings	设置
+Weapon	武器
+Ammunition	箭矢
+Armor	防具
+Talisman	护符
+Ash of War	战灰
+Spirit Ash	骨灰
+Item	道具
+Pick a category on the left, then click an item.	先在左侧选择一个分类，再点击道具。
+Double-clicking an item gives it right away with the options below.	双击道具会按下方的选项立即获得。
+Quantity	数量
+Max (%d)	最大 (%d)
+Anything above the inventory limit goes to the Sort Chest, as in the game.	超出持有上限的部分会像游戏中一样送进木箱。
+Upgrade	强化
+Max	最大
+Affinity	质变
+GIVE	获得
+Category	分类
+Description	说明
+up to +%d	最高 +%d
+Search items (e.g. rune, smithing, lily)	搜索道具（例如：卢恩、锻造石、铃兰）
+Search results: %d items	搜索结果：%d 个
+(%d items)	（%d 个）
+Give all...	全部获得...
+Give all %d items in "%s"?	获得全部 %d 个道具（“%s”）？
+Stackable items: x%d, everything else: x1. Weapons at +%d.	可堆叠道具：x%d，其他：x1。武器为 +%d。
+Yes, give	确定获得
+Cancel	取消
+Give Items	获得道具
+Categories follow the game's own inventory groups (%d items, DLC included). Open a category or search above.	分类与游戏自身的道具栏分组一致（共 %d 个，含 DLC）。打开一个分类或在上方搜索。
+Items go to the character that is currently loaded, through the game's own "add to inventory" function, so normal and Seamless Coop saves work the same way.	道具通过游戏自带的“加入道具栏”功能发给当前载入的角色，因此普通存档和 Seamless Coop 存档的效果完全相同。
+Survival	生存
+No Death	不会死亡
+You take damage but never die; HP stops at 1.	会受到伤害但不会死亡，血量最低停在 1。
+God Mode	无敌模式
+You take no damage at all (also keeps HP full and prevents death).	完全不受伤害（血量保持全满，不会死亡）。
+Attacks Pass Through	攻击穿透
+Enemy attacks don't connect at all: no hit reaction, no status buildup.	敌人的攻击完全打不中你：没有受击硬直，也不会累积异常状态。
+Infinite HP	无限血量
+HP is refilled every frame.	每一帧都会补满血量。
+Infinite FP	无限专注值
+Spells and skills cost no FP.	魔法、祷告和战技都不消耗专注值。
+Infinite Stamina	无限精力
+Stamina stays full.	精力始终保持全满。
+No Stagger	不会硬直
+Poise is kept extremely high, so hits don't stagger you.	强韧度保持极高，受到攻击也不会硬直。
+Combat & items	战斗与道具
+No Item Consumption	不消耗道具
+Flasks, pots, runes... are not used up.	圣杯瓶、壶、卢恩等不会减少。
+No Arrow / Bolt Consumption	不消耗箭矢 / 弩箭
+One-Shot Kills	一击必杀
+Every enemy you hit dies in one hit.	你打中的每个敌人都会一击毙命。
+Stealth (experimental)	潜行（实验性）
+Invisible	隐身
+Enemies don't notice you by sight.	敌人无法通过视觉发现你。
+Silent	静音
+Enemies don't notice you by sound.	敌人无法通过声音发现你。
+World & enemies	世界与敌人
+Torrent No Death	托雷特不会死亡
+Freeze Enemy AI	冻结敌人 AI
+Enemies stop thinking and stand still.	敌人停止思考，原地不动。
+Enemies Can't Move	敌人无法移动
+Enemies Don't Attack (experimental)	敌人不攻击（实验性）
+A game debug flag; in some situations it can affect your own attacks too.	这是游戏的调试标志，在某些情况下也可能影响你自己的攻击。
+Turn all cheats off	关闭所有作弊
+Takes effect the moment you tick a box. Everything starts off each time the game starts.	勾选后立即生效。每次启动游戏时全部为关闭状态。
+Speed	速度
+Player Speed	玩家速度
+Multiplies how far you move each frame (walking, running, rolling). Attacks keep their normal speed. Works with Seamless Coop.	放大每一帧的移动距离（行走、奔跑、翻滚）。攻击速度保持不变。支持 Seamless Coop。
+Torrent Speed	托雷特速度
+Multiplies Torrent's movement while you ride.	骑乘时放大托雷特的移动速度。
+Jump	跳跃
+Jump Boost	跳跃强化
+Multiplies the rise of a jump (also Torrent's jumps while riding).	放大跳跃的上升高度（骑乘时托雷特的跳跃也适用）。
+Fly mode (noclip)	飞行模式（穿墙）
+Fly Mode	飞行模式
+No gravity and no collision: you float and go through walls. The speed multiplies both rising/sinking and your normal running. Switching it off makes you fall normally.	没有重力也没有碰撞：你会漂浮并能穿过墙壁。速度同时作用于上升/下降和正常奔跑。关闭后会正常落下。
+Rise: RT (R2), A (Cross) or Page Up    Sink: LT (L2) or Page Down    Move: run as usual	上升：RT (R2)、A（×）或 Page Up    下降：LT (L2) 或 Page Down    移动：照常奔跑
+Triggers are analog: press lightly to move slowly.	扳机是模拟的：轻按即可缓慢移动。
+Turns itself off when you die or hit a loading screen.	死亡或进入读取画面时会自动关闭。
+Teleport	传送
+Up +5 m	向上 +5 米
+Up +50 m	向上 +50 米
+Down -5 m	向下 -5 米
+Save position	保存位置
+Teleport to saved position	传送到保存的位置
+Saved: X %.1f  Y %.1f  Z %.1f	已保存：X %.1f  Y %.1f  Z %.1f
+Map flags set: %d/%d. Rest at a grace or reload the save if the map hasn't updated yet.	已设置地图标志：%d/%d。如果地图还没更新，请在赐福处休息或重新载入存档。
+Could not set the map flags (are you in game?).	无法设置地图标志（你在游戏中吗？）。
+Sites of Grace unlocked: %d/%d. Rest at a grace or reload the save, then fast travel from the map.	已解锁赐福：%d/%d。请在赐福处休息或重新载入存档，然后从地图传送。
+Could not unlock Sites of Grace (are you in game?).	无法解锁赐福（你在游戏中吗？）。
+Load a character first.	请先载入角色。
+Map	地图
+Reveal the whole map	显示全部地图
+Sets the same flags as picking up every map fragment (base game and Shadow of the Erdtree). Giving yourself the Map items alone does not reveal anything.	设置与拾取全部地图碎片相同的标志（本体和 Shadow of the Erdtree）。只获得地图道具本身不会显示任何地图。
+Sites of Grace	赐福
+Unlocks Sites of Grace so you can fast travel to them from the map. Some lie past bosses or story events, so this can skip progress.	解锁赐福，让你可以从地图传送过去。有些赐福位于头目或剧情事件之后，因此可能会跳过部分进度。
+Unlock base game (%d)	解锁本体 (%d)
+Unlock Shadow of the Erdtree (%d)	解锁 Shadow of the Erdtree (%d)
+Unlock every Shadow of the Erdtree Site of Grace?	解锁 Shadow of the Erdtree 的全部赐福？
+Unlock every base game Site of Grace?	解锁本体的全部赐福？
+Your save is backed up first if automatic backups are on.	如果开启了自动备份，会先备份你的存档。
+Unlock	解锁
+Runes, stats and blessings show up here once a character is loaded.	载入角色后，卢恩、属性和庇佑会显示在这里。
+Runes	卢恩
+Current runes: %s	当前卢恩：%s
+%s runes	%s 卢恩
+Add	增加
+Remove	减少
+Set to 0	设为 0
+Attributes	属性
+Level: %u  ->  %d	等级：%u  ->  %d
+Apply attributes	应用属性
+Attributes applied.	属性已应用。
+Could not write attributes.	无法写入属性。
+Reload from game	从游戏重新读取
+Max HP/FP/stamina update after changing equipment or resting at a grace.	最大血量/专注值/精力会在更换装备或在赐福处休息后更新。
+Shadow of the Erdtree blessings	Shadow of the Erdtree 庇佑
+Apply blessings	应用庇佑
+Blessings applied.	庇佑已应用。
+Could not write blessings.	无法写入庇佑。
+Status	状态
+HP %d / %d    FP %d / %d    Stamina %d / %d	血量 %d / %d    专注值 %d / %d    精力 %d / %d
+Controller: L3 + R3 (click both sticks) opens/closes the menu. Shortcuts: hold L3 and press A/B/X/Y/RB/RT, or hold R3 and press the D-pad/LB/LT. A short L3 or R3 press on its own still reaches the game (crouch / lock-on).	手柄：L3 + R3（同时按下两个摇杆）打开/关闭菜单。快捷键：按住 L3 再按 A/B/X/Y/RB/RT，或按住 R3 再按方向键/LB/LT。单独短按 L3 或 R3 仍会传给游戏（蹲下 / 锁定）。
+In the menu: D-pad / left stick to move, A to select, B to go back, LB/RB to switch tabs, Start to close. In fly mode RT rises and LT sinks.	菜单中：方向键 / 左摇杆移动，A 确认，B 返回，LB/RB 切换标签页，Start 关闭。飞行模式下 RT 上升，LT 下降。
+PlayStation: A=Cross, B=Circle, X=Square, Y=Triangle, LB/RB=L1/R1, LT/RT=L2/R2.	PlayStation：A=×、B=○、X=□、Y=△、LB/RB=L1/R1、LT/RT=L2/R2。
+Controller:	手柄：
+XInput not available	XInput 不可用
+connected	已连接
+not detected	未检测到
+hold L3 or R3 on the controller and press a button...	在手柄上按住 L3 或 R3 再按一个按键...
+press a key... (Esc: cancel, Backspace: clear)	请按一个键...（Esc：取消，Backspace：清除）
+Action	功能
+Keyboard	键盘
+Controller	手柄
+%s  (on)	%s  （开启）
+Restore default shortcuts	恢复默认快捷键
+Shortcuts restored to defaults.	快捷键已恢复默认。
+Items and cheats apply to the character that is loaded in the game right now. To give items to another character, load that character. The game writes the save itself, so normal (.sl2) and Seamless Coop (.%s) saves behave the same.	道具和作弊作用于当前在游戏中载入的角色。要给其他角色道具，请载入那个角色。存档由游戏自己写入，因此普通 (.sl2) 和 Seamless Coop (.%s) 存档的效果相同。
+Save type this session:	本次会话的存档类型：
+Normal (vanilla)	普通（原版）
+Refresh	刷新
+No save files found (%APPDATA%\EldenRing).	未找到存档文件 (%APPDATA%\EldenRing)。
+Steam account %s	Steam 账号 %s
+%s  |  last saved %s	%s  |  最后保存 %s
+Normal	普通
+[IN USE]	[使用中]
+Back up	备份
+Backup failed.	备份失败。
+Backup written to zzostoom_backups.	已备份到 zzostoom_backups。
+Open folder	打开文件夹
+Unreadable: %s	无法读取：%s
+No characters in this save.	此存档中没有角色。
+Slot	栏位
+Level	等级
+Play time	游戏时间
+%s  (loaded)	%s  （已载入）
+About backups	关于备份
+Backups go to the 'zzostoom_backups' folder next to the save, named with date and time. To restore one, close the game, copy it back into the save folder and rename it to the original file name (e.g. ER0000.%s).	备份保存在存档旁边的 'zzostoom_backups' 文件夹中，以日期和时间命名。要恢复备份，请关闭游戏，把它复制回存档文件夹，并改回原来的文件名（例如 ER0000.%s）。
+" / ~  (key under Esc)	` / ~  （Esc 下方的键）
+Language	语言
+Menu language	菜单语言
+Show item names in English	用英文显示道具名称
+Item names normally follow the menu language, using the game's own translations. Searching in English always works.	道具名称通常会使用游戏自身的翻译，跟随菜单语言。用英文搜索始终有效。
+Menu	菜单
+Menu key (keyboard)	菜单键（键盘）
+Controller: %s	手柄：%s
+Text size	文字大小
+Block game keyboard/mouse input while the menu is open	菜单打开时屏蔽游戏的键盘/鼠标输入
+Back up the save before the first item of a session	每次会话获得第一个道具前备份存档
+Show a short hint when the game starts	游戏启动时显示简短提示
+About	关于
+Game version (exe): %s	游戏版本 (exe)：%s
+Memory addresses:	内存地址：
+ready	就绪
+missing (the game may have been updated)	缺失（游戏可能已更新）
+No Cheat Engine needed; loaded by Mod Engine 3 as a DLL. Offline / Seamless Coop only; don't use it online.	无需 Cheat Engine，由 Mod Engine 3 作为 DLL 载入。仅限离线 / Seamless Coop，请勿在线使用。
+zzostoom cheat sheet ready  -  menu: %s / L3 + R3	zzostoom cheat sheet 已就绪  -  菜单：%s / L3 + R3
+" (under Esc)	` （Esc 下方）
+Could not give items: load a character first.	无法获得道具：请先载入角色。
+Save backed up first (zzostoom_backups).	已先备份存档 (zzostoom_backups)。
+%d item(s) could not be given (are you in game?).	有 %d 个道具无法获得（你在游戏中吗？）。
+Given: %s x%u	已获得：%s x%u
+%d items given.	已获得 %d 个道具。
+%d items given (%s).	已获得 %d 个道具（%s）。
+  Level %u    Runes %s	  等级 %u    卢恩 %s
+Game addresses not found; the game may have been updated. See Settings > About.	找不到游戏地址，游戏可能已更新。请查看 设置 > 关于。
+No character loaded: items and cheats work once you are in game.	未载入角色：进入游戏后道具和作弊才会生效。
+Save: ER0000.%s (%s)	存档：ER0000.%s (%s)
+Teleport failed.	传送失败。
++100,000 runes	+100,000 卢恩
+Could not add runes.	无法增加卢恩。
+All cheats OFF	所有作弊 已关闭
+Enemies Don't Attack	敌人不攻击
+Fly Mode (noclip)	飞行模式（穿墙）
+Save Position	保存位置
+Teleport to Saved Position	传送到保存的位置
+Teleport Up (+5 m)	向上传送 (+5 米)
++100,000 Runes	+100,000 卢恩
+Turn All Cheats Off	关闭所有作弊
+ON	开启
+OFF	关闭
+Position saved.	位置已保存。
+Could not read the position.	无法读取位置。
+No saved position yet.	还没有保存位置。
+Teleported to the saved position.	已传送到保存的位置。
+Saved position is in another area; go there first.	保存的位置在其他区域，请先前往那里。
+Fly mode: OFF (death / loading screen)	飞行模式：已关闭（死亡 / 读取画面）
+Torrent speed applies while you ride Torrent.	托雷特速度仅在骑乘托雷特时生效。
+Essentials	基本道具
+Remembrances	追忆
+Consumables	消耗道具
+Pots	壶
+Aromatics	香
+Throwables	投掷道具
+Greases	油脂
+Special Tools	特殊道具
+Misc Tools	其他道具
+Rare Tools	珍贵道具
+Multiplayer	多人联机
+Flora	植物
+Fauna	动物
+Stones & Misc	石头与其他
+Smithing Stones	锻造石
+Somber Smithing Stones	失色锻造石
+Gloveworts	墓地铃兰
+Seeds & Tears	种子与露滴
+Scadutree & Revered Spirit Ash	幽影树与灵灰
+Great Runes	大卢恩
+Memory Stone & Talisman Pouch	记忆石与护符皮袋
+Pots & Bottles	壶与瓶
+Keys	钥匙
+Quest Items	任务道具
+Tools & Cookbooks	工具与制作笔记
+Scrolls & Prayerbooks	卷轴与祷告书
+Maps	地图
+Merchant Bell Bearings	商人的铃珠
+NPC Bell Bearings	NPC 的铃珠
+Notes & Letters	文件与信件
+DLC Notes & Maps	DLC 文件与地图
+About...	说明...

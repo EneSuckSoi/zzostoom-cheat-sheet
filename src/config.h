@@ -15,6 +15,8 @@ struct Config {
     bool block_game_input = true;   // block keyboard/mouse game input while the menu is open
     bool auto_backup = true;        // back up the active save before the first item of a session
     bool show_hint = true;          // small "INSERT: menu" hint on screen when the menu is closed
+    std::string language = "en";    // menu language code (i18n.cpp)
+    bool english_item_names = false;  // item names in English whatever the menu language
 };
 
 void Load(const std::wstring& dll_dir);

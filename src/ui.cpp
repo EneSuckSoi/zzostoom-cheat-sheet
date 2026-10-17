@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cctype>
 #include <chrono>
+#include <cstdarg>
 #include <cstdio>
 #include <cstring>
 #include <deque>
@@ -16,6 +17,7 @@
 #include "config.h"
 #include "game.h"
 #include "hotkeys.h"
+#include "i18n.h"
 #include "imgui.h"
 #include "item_db.h"
 #include "log.h"
@@ -28,8 +30,11 @@ namespace zz::ui {
 
 namespace {
 
-constexpr const char* kModVersion = "1.3.0";
+using i18n::T;
 
+constexpr const char* kModVersion = "1.4.0";
+
+// English names; T() turns them into the game's own word in every language.
 const char* const kAffinityNames[13] = {
     "Standard", "Heavy",  "Keen", "Quality", "Fire",  "Flame Art", "Lightning",
     "Sacred",   "Magic",  "Cold", "Poison",  "Blood", "Occult",
@@ -81,6 +86,7 @@ int g_selected_sub = -1;
 int g_selected_item = -1;
 char g_search[96] = {};
 std::string g_applied_search;
+int g_search_lang = -1;
 std::vector<int> g_search_results;
 int g_quantity = 1;
 int g_upgrade = 0;
@@ -106,6 +112,20 @@ int TestEnvInt(const wchar_t* name) {
     wchar_t buf[16];
     DWORD n = GetEnvironmentVariableW(name, buf, 16);
     return (n > 0 && n < 16) ? _wtoi(buf) : -1;
+}
+
+// Translated label whose ImGui ID stays the same in every language.
+std::string Id(const char* english, const char* id) {
+    return std::string(T(english)) + "###" + id;
+}
+
+std::string Fmt(const char* format, ...) {
+    char buf[512];
+    va_list args;
+    va_start(args, format);
+    std::vsnprintf(buf, sizeof(buf), format, args);
+    va_end(args);
+    return buf;
 }
 
 std::string FormatNumber(uint64_t value) {
@@ -151,11 +171,12 @@ uint32_t BuildItemId(const db::ItemDef& item, int upgrade, int affinity) {
     return id;
 }
 
-std::string ItemLabel(const db::ItemDef& item, int upgrade, int affinity) {
-    std::string label = item.name;
+std::string ItemLabel(int index, int upgrade, int affinity) {
+    const db::ItemDef& item = db::kItems[index];
+    std::string label = i18n::ItemName(index);
     if (item.kind == db::kKindWeapon) {
         if (affinity > 0 && (item.affinities & (1u << affinity)))
-            label = std::string(kAffinityNames[affinity]) + " " + label;
+            label = std::string(T(kAffinityNames[affinity])) + " " + label;
         if (upgrade > 0 && item.max_upgrade)
             label += " +" + std::to_string(std::min<int>(upgrade, item.max_upgrade));
     } else if (item.kind == db::kKindSpiritAsh && upgrade > 0 && item.max_upgrade) {
@@ -166,38 +187,41 @@ std::string ItemLabel(const db::ItemDef& item, int upgrade, int affinity) {
 
 const char* KindLabel(uint8_t kind) {
     switch (kind) {
-        case db::kKindWeapon: return "Weapon";
-        case db::kKindAmmo: return "Ammunition";
-        case db::kKindProtector: return "Armor";
-        case db::kKindAccessory: return "Talisman";
-        case db::kKindGem: return "Ash of War";
-        case db::kKindSpiritAsh: return "Spirit Ash";
-        default: return "Item";
+        case db::kKindWeapon: return T("Weapon");
+        case db::kKindAmmo: return T("Ammunition");
+        case db::kKindProtector: return T("Armor");
+        case db::kKindAccessory: return T("Talisman");
+        case db::kKindGem: return T("Ash of War");
+        case db::kKindSpiritAsh: return T("Spirit Ash");
+        default: return T("Item");
     }
 }
 
-void Enqueue(const db::ItemDef& item, int quantity, int upgrade, int affinity) {
+void Enqueue(int index, int quantity, int upgrade, int affinity) {
+    const db::ItemDef& item = db::kItems[index];
     quantity = std::clamp(quantity, 1, MaxQuantity(item));
     g_queue.push_back({BuildItemId(item, upgrade, affinity), static_cast<uint32_t>(quantity),
-                       ItemLabel(item, upgrade, affinity)});
+                       ItemLabel(index, upgrade, affinity)});
 }
 
 void HelpMarker(const char* text) {
     ImGui::SameLine();
     ImGui::TextDisabled("(?)");
-    ImGui::SetItemTooltip("%s", text);
+    ImGui::SetItemTooltip("%s", T(text));
 }
 
 void Toggle(const char* label, bool* value, const char* help = nullptr) {
-    ImGui::Checkbox(label, value);
+    ImGui::Checkbox(T(label), value);
     if (help) HelpMarker(help);
 }
 
-// Checkbox + slider on one line, the slider aligned in a column.
+// Checkbox + slider on one line, the slider aligned in a column (pushed right by long labels).
 void ToggleSlider(const char* label, bool* on, const char* slider_id, float* value, float min,
                   float max, const char* format, const char* help) {
-    ImGui::Checkbox(label, on);
-    ImGui::SameLine(230 * g_scale);
+    ImGui::Checkbox(T(label), on);
+    const float label_end = ImGui::GetItemRectMax().x - ImGui::GetWindowPos().x +
+                            ImGui::GetScrollX() + ImGui::GetStyle().ItemSpacing.x * 2;
+    ImGui::SameLine(std::max(230 * g_scale, label_end));
     ImGui::SetNextItemWidth(260 * g_scale);
     ImGui::SliderFloat(slider_id, value, min, max, format);
     if (help) HelpMarker(help);
@@ -208,6 +232,8 @@ void Header(const char* text) {
     ImGui::TextColored(kGold, "%s", text);
     ImGui::PopFont();
 }
+
+void Separator(const char* english) { ImGui::SeparatorText(T(english)); }
 
 void ApplyStyle() {
     ImGuiStyle& style = ImGui::GetStyle();
@@ -271,31 +297,35 @@ void ApplyStyle() {
 
 void RebuildSearch() {
     g_applied_search = g_search;
+    g_search_lang = i18n::Language();
     g_search_results.clear();
     std::string needle = Lower(g_search);
     if (needle.empty()) return;
+    // Matches the shown name and the English one, so English searches work in every language.
     for (int i = 0; i < db::kItemCount; ++i)
-        if (Lower(db::kItems[i].name).find(needle) != std::string::npos) g_search_results.push_back(i);
+        if (Lower(i18n::ItemName(i)).find(needle) != std::string::npos ||
+            Lower(db::kItems[i].name).find(needle) != std::string::npos)
+            g_search_results.push_back(i);
 }
 
 void DrawItemDetails(float height) {
     ImGui::BeginChild("details", ImVec2(0, height), ImGuiChildFlags_Borders);
     if (g_selected_item < 0) {
-        ImGui::TextDisabled("Pick a category on the left, then click an item.");
-        ImGui::TextDisabled("Double-clicking an item gives it right away with the options below.");
+        ImGui::TextDisabled("%s", T("Pick a category on the left, then click an item."));
+        ImGui::TextDisabled("%s", T("Double-clicking an item gives it right away with the options below."));
         ImGui::EndChild();
         return;
     }
     const db::ItemDef& item = db::kItems[g_selected_item];
-    Header(item.name);
+    Header(i18n::ItemName(g_selected_item));
     ImGui::TextDisabled("%s  |  ID 0x%08X  |  %s", KindLabel(item.kind),
                         BuildItemId(item, g_upgrade, g_affinity),
-                        db::kSubCategories[item.sub].name);
-    if (item.info) ImGui::TextWrapped("%s", item.info);
+                        T(db::kSubCategories[item.sub].name));
+    if (const char* info = i18n::ItemInfo(g_selected_item)) ImGui::TextWrapped("%s", info);
 
     const int max_qty = MaxQuantity(item);
     ImGui::SetNextItemWidth(130 * g_scale);
-    ImGui::InputInt("Quantity", &g_quantity, 1, 10);
+    ImGui::InputInt(Id("Quantity", "qty").c_str(), &g_quantity, 1, 10);
     g_quantity = std::clamp(g_quantity, 1, max_qty);
     ImGui::SameLine();
     if (ImGui::SmallButton("1")) g_quantity = 1;
@@ -305,35 +335,37 @@ void DrawItemDetails(float height) {
         ImGui::SameLine();
         if (ImGui::SmallButton("99")) g_quantity = 99;
         ImGui::SameLine();
-        char max_label[32];
-        std::snprintf(max_label, sizeof(max_label), "Max (%d)", std::max<int>(1, item.max_num));
-        if (ImGui::SmallButton(max_label)) g_quantity = std::max<int>(1, item.max_num);
+        const std::string max_label =
+            Fmt(T("Max (%d)"), std::max<int>(1, item.max_num)) + "###max_qty";
+        if (ImGui::SmallButton(max_label.c_str())) g_quantity = std::max<int>(1, item.max_num);
         HelpMarker("Anything above the inventory limit goes to the Sort Chest, as in the game.");
     }
 
     if ((item.kind == db::kKindWeapon || item.kind == db::kKindSpiritAsh) && item.max_upgrade) {
         ImGui::SetNextItemWidth(220 * g_scale);
-        ImGui::SliderInt("Upgrade", &g_upgrade, 0, item.max_upgrade, "+%d");
+        ImGui::SliderInt(Id("Upgrade", "upgrade").c_str(), &g_upgrade, 0, item.max_upgrade, "+%d");
         ImGui::SameLine();
-        if (ImGui::SmallButton("Max##upgrade")) g_upgrade = item.max_upgrade;
+        if (ImGui::SmallButton(Id("Max", "upgrade_max").c_str())) g_upgrade = item.max_upgrade;
     }
     if (item.kind == db::kKindWeapon && item.affinities) {
         if (!(item.affinities & (1u << g_affinity))) g_affinity = 0;
         ImGui::SetNextItemWidth(220 * g_scale);
-        if (ImGui::BeginCombo("Affinity", kAffinityNames[g_affinity])) {
+        if (ImGui::BeginCombo(Id("Affinity", "affinity").c_str(), T(kAffinityNames[g_affinity]))) {
             for (int a = 0; a < 13; ++a) {
                 if (a && !(item.affinities & (1u << a))) continue;
-                if (ImGui::Selectable(kAffinityNames[a], a == g_affinity)) g_affinity = a;
+                if (ImGui::Selectable(T(kAffinityNames[a]), a == g_affinity)) g_affinity = a;
             }
             ImGui::EndCombo();
         }
     }
     ImGui::Spacing();
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.50f, 0.38f, 0.12f, 1.0f));
-    if (ImGui::Button("GIVE", ImVec2(160 * g_scale, 0))) Enqueue(item, g_quantity, g_upgrade, g_affinity);
+    if (ImGui::Button(Id("GIVE", "give").c_str(), ImVec2(160 * g_scale, 0)))
+        Enqueue(g_selected_item, g_quantity, g_upgrade, g_affinity);
     ImGui::PopStyleColor();
     ImGui::SameLine();
-    ImGui::TextDisabled("%s  x%d", ItemLabel(item, g_upgrade, g_affinity).c_str(), g_quantity);
+    ImGui::TextDisabled("%s  x%d", ItemLabel(g_selected_item, g_upgrade, g_affinity).c_str(),
+                        g_quantity);
     ImGui::EndChild();
 }
 
@@ -342,9 +374,10 @@ void DrawItemList(const std::vector<int>& items, bool show_category) {
                                   ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchProp;
     if (!ImGui::BeginTable("items", show_category ? 3 : 2, flags)) return;
     ImGui::TableSetupScrollFreeze(0, 1);
-    ImGui::TableSetupColumn("Item", ImGuiTableColumnFlags_WidthStretch, 3.0f);
-    if (show_category) ImGui::TableSetupColumn("Category", ImGuiTableColumnFlags_WidthStretch, 2.0f);
-    ImGui::TableSetupColumn("Description", ImGuiTableColumnFlags_WidthStretch, 2.5f);
+    ImGui::TableSetupColumn(T("Item"), ImGuiTableColumnFlags_WidthStretch, 3.0f);
+    if (show_category)
+        ImGui::TableSetupColumn(T("Category"), ImGuiTableColumnFlags_WidthStretch, 2.0f);
+    ImGui::TableSetupColumn(T("Description"), ImGuiTableColumnFlags_WidthStretch, 2.5f);
     ImGui::TableHeadersRow();
     ImGuiListClipper clipper;
     clipper.Begin(static_cast<int>(items.size()));
@@ -352,10 +385,11 @@ void DrawItemList(const std::vector<int>& items, bool show_category) {
         for (int row = clipper.DisplayStart; row < clipper.DisplayEnd; ++row) {
             const int index = items[row];
             const db::ItemDef& item = db::kItems[index];
+            const char* info = i18n::ItemInfo(index);
             ImGui::TableNextRow();
             ImGui::TableNextColumn();
             ImGui::PushID(index);
-            if (ImGui::Selectable(item.name, index == g_selected_item,
+            if (ImGui::Selectable(i18n::ItemName(index), index == g_selected_item,
                                   ImGuiSelectableFlags_SpanAllColumns |
                                       ImGuiSelectableFlags_AllowDoubleClick)) {
                 if (g_selected_item != index) {
@@ -365,19 +399,19 @@ void DrawItemList(const std::vector<int>& items, bool show_category) {
                     if (!Stackable(item)) g_quantity = 1;
                 }
                 if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-                    Enqueue(item, g_quantity, g_upgrade, g_affinity);
+                    Enqueue(index, g_quantity, g_upgrade, g_affinity);
             }
-            if (item.info) ImGui::SetItemTooltip("%s", item.info);
+            if (info) ImGui::SetItemTooltip("%s", info);
             ImGui::PopID();
             if (show_category) {
                 ImGui::TableNextColumn();
-                ImGui::TextDisabled("%s", db::kSubCategories[item.sub].name);
+                ImGui::TextDisabled("%s", T(db::kSubCategories[item.sub].name));
             }
             ImGui::TableNextColumn();
-            if (item.info)
-                ImGui::TextDisabled("%s", item.info);
+            if (info)
+                ImGui::TextDisabled("%s", info);
             else if (item.max_upgrade)
-                ImGui::TextDisabled("up to +%d", item.max_upgrade);
+                ImGui::TextDisabled(T("up to +%d"), item.max_upgrade);
         }
     }
     ImGui::EndTable();
@@ -387,9 +421,9 @@ void DrawItemsTab() {
     const float left_width = 330 * g_scale;
     ImGui::BeginChild("categories", ImVec2(left_width, 0), ImGuiChildFlags_Borders);
     ImGui::SetNextItemWidth(-1);
-    ImGui::InputTextWithHint("##search", "Search items (e.g. rune, smithing, lily)", g_search,
+    ImGui::InputTextWithHint("##search", T("Search items (e.g. rune, smithing, lily)"), g_search,
                              sizeof(g_search));
-    if (g_applied_search != g_search) RebuildSearch();
+    if (g_applied_search != g_search || g_search_lang != i18n::Language()) RebuildSearch();
     ImGui::Spacing();
     for (int top = 0; top < db::kTopCategoryCount; ++top) {
         const auto& subs = g_subs_by_top[top];
@@ -397,14 +431,14 @@ void DrawItemsTab() {
         ImGui::PushID(top);
         int total = 0;
         for (int s : subs) total += static_cast<int>(g_items_by_sub[s].size());
-        char label[160];
-        std::snprintf(label, sizeof(label), "%s (%d)###top", db::kTopCategories[top], total);
+        char label[192];
+        std::snprintf(label, sizeof(label), "%s (%d)###top", T(db::kTopCategories[top]), total);
         if (g_selected_sub >= 0 && db::kSubCategories[g_selected_sub].top == top)
             ImGui::SetNextItemOpen(true, ImGuiCond_Once);
         if (ImGui::TreeNodeEx(label, ImGuiTreeNodeFlags_SpanAvailWidth)) {
             for (int s : subs) {
-                std::snprintf(label, sizeof(label), "%s (%d)", db::kSubCategories[s].name,
-                              static_cast<int>(g_items_by_sub[s].size()));
+                std::snprintf(label, sizeof(label), "%s (%d)###sub%d", T(db::kSubCategories[s].name),
+                              static_cast<int>(g_items_by_sub[s].size()), s);
                 if (ImGui::Selectable(label, s == g_selected_sub && g_search[0] == 0)) {
                     g_selected_sub = s;
                     g_search[0] = 0;
@@ -424,47 +458,45 @@ void DrawItemsTab() {
         ImGui::GetContentRegionAvail().y - details_height - ImGui::GetStyle().ItemSpacing.y;
     ImGui::BeginChild("list", ImVec2(0, list_height), ImGuiChildFlags_Borders);
     if (g_search[0]) {
-        ImGui::Text("Search results: %d items", static_cast<int>(g_search_results.size()));
+        ImGui::Text(T("Search results: %d items"), static_cast<int>(g_search_results.size()));
         DrawItemList(g_search_results, true);
     } else if (g_selected_sub >= 0) {
         const auto& items = g_items_by_sub[g_selected_sub];
         ImGui::AlignTextToFramePadding();
-        ImGui::TextColored(kGold, "%s", db::kSubCategories[g_selected_sub].name);
+        ImGui::TextColored(kGold, "%s", T(db::kSubCategories[g_selected_sub].name));
         ImGui::SameLine();
-        ImGui::TextDisabled("(%d items)", static_cast<int>(items.size()));
+        ImGui::TextDisabled(T("(%d items)"), static_cast<int>(items.size()));
         ImGui::SameLine();
-        if (ImGui::SmallButton("Give all...")) {
+        if (ImGui::SmallButton(Id("Give all...", "give_all_button").c_str())) {
             g_give_all_sub = g_selected_sub;
-            ImGui::OpenPopup("give_all");
+            ImGui::OpenPopup("###give_all");
         }
-        if (ImGui::BeginPopupModal("give_all", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+        if (ImGui::BeginPopupModal(Id("Give all...", "give_all").c_str(), nullptr,
+                                   ImGuiWindowFlags_AlwaysAutoResize)) {
             const auto& all = g_items_by_sub[g_give_all_sub];
-            ImGui::Text("Give all %d items in \"%s\"?", static_cast<int>(all.size()),
-                        db::kSubCategories[g_give_all_sub].name);
-            ImGui::TextDisabled("Stackable items: x%d, everything else: x1. Weapons at +%d.",
+            ImGui::Text(T("Give all %d items in \"%s\"?"), static_cast<int>(all.size()),
+                        T(db::kSubCategories[g_give_all_sub].name));
+            ImGui::TextDisabled(T("Stackable items: x%d, everything else: x1. Weapons at +%d."),
                                 g_quantity, g_upgrade);
-            if (ImGui::Button("Yes, give", ImVec2(140 * g_scale, 0))) {
-                for (int i : all) {
-                    const auto& it = db::kItems[i];
-                    Enqueue(it, Stackable(it) ? g_quantity : 1, g_upgrade, 0);
-                }
-                g_batch_label = db::kSubCategories[g_give_all_sub].name;
+            if (ImGui::Button(Id("Yes, give", "yes").c_str(), ImVec2(140 * g_scale, 0))) {
+                for (int i : all) Enqueue(i, Stackable(db::kItems[i]) ? g_quantity : 1, g_upgrade, 0);
+                g_batch_label = T(db::kSubCategories[g_give_all_sub].name);
                 ImGui::CloseCurrentPopup();
             }
             ImGui::SameLine();
-            if (ImGui::Button("Cancel", ImVec2(140 * g_scale, 0))) ImGui::CloseCurrentPopup();
+            if (ImGui::Button(Id("Cancel", "cancel").c_str(), ImVec2(140 * g_scale, 0)))
+                ImGui::CloseCurrentPopup();
             ImGui::EndPopup();
         }
         DrawItemList(items, false);
     } else {
-        Header("Give Items");
-        ImGui::TextWrapped(
-            "Categories follow the game's own inventory groups (%d items, DLC included). Open a "
-            "category or search above.",
-            db::kItemCount);
-        ImGui::TextWrapped(
-            "Items go to the character that is currently loaded, through the game's own "
-            "\"add to inventory\" function, so normal and Seamless Coop saves work the same way.");
+        Header(T("Give Items"));
+        ImGui::TextWrapped(T("Categories follow the game's own inventory groups (%d items, DLC "
+                             "included). Open a category or search above."),
+                           db::kItemCount);
+        ImGui::TextWrapped("%s", T("Items go to the character that is currently loaded, through "
+                                   "the game's own \"add to inventory\" function, so normal and "
+                                   "Seamless Coop saves work the same way."));
     }
     ImGui::EndChild();
     DrawItemDetails(details_height);
@@ -476,7 +508,7 @@ void DrawItemsTab() {
 void DrawCheatsTab() {
     auto& s = cheats::Get();
     // One column on purpose: controller navigation (D-pad down) walks the list top to bottom.
-    ImGui::SeparatorText("Survival");
+    Separator("Survival");
     Toggle("No Death", &s.no_death, "You take damage but never die; HP stops at 1.");
     Toggle("God Mode", &s.god_mode, "You take no damage at all (also keeps HP full and prevents death).");
     Toggle("Attacks Pass Through", &s.no_hit,
@@ -486,16 +518,16 @@ void DrawCheatsTab() {
     Toggle("Infinite Stamina", &s.inf_stamina, "Stamina stays full.");
     Toggle("No Stagger", &s.no_stagger, "Poise is kept extremely high, so hits don't stagger you.");
 
-    ImGui::SeparatorText("Combat & items");
+    Separator("Combat & items");
     Toggle("No Item Consumption", &s.no_goods_consume, "Flasks, pots, runes... are not used up.");
     Toggle("No Arrow / Bolt Consumption", &s.no_arrow_consume);
     Toggle("One-Shot Kills", &s.one_shot, "Every enemy you hit dies in one hit.");
 
-    ImGui::SeparatorText("Stealth (experimental)");
+    Separator("Stealth (experimental)");
     Toggle("Invisible", &s.hide, "Enemies don't notice you by sight.");
     Toggle("Silent", &s.silence, "Enemies don't notice you by sound.");
 
-    ImGui::SeparatorText("World & enemies");
+    Separator("World & enemies");
     Toggle("Torrent No Death", &s.torrent_no_death);
     Toggle("Freeze Enemy AI", &s.freeze_ai, "Enemies stop thinking and stand still.");
     Toggle("Enemies Can't Move", &s.enemies_no_move);
@@ -503,55 +535,56 @@ void DrawCheatsTab() {
            "A game debug flag; in some situations it can affect your own attacks too.");
 
     ImGui::Spacing();
-    if (ImGui::Button("Turn all cheats off")) cheats::DisableAll();
-    ImGui::TextDisabled("Takes effect the moment you tick a box. Everything starts off each time "
-                        "the game starts.");
+    if (ImGui::Button(Id("Turn all cheats off", "all_off").c_str())) cheats::DisableAll();
+    ImGui::TextDisabled("%s", T("Takes effect the moment you tick a box. Everything starts off "
+                                "each time the game starts."));
 }
 
 // ---- Movement -----------------------------------------------------------------------------
 
 void DrawMovementTab() {
     auto& s = cheats::Get();
-    ImGui::SeparatorText("Speed");
+    Separator("Speed");
     ToggleSlider("Player Speed", &s.player_speed_on, "##player_speed", &s.player_speed, 1.0f, 5.0f,
                  "%.2fx", "Multiplies how far you move each frame (walking, running, rolling). "
                  "Attacks keep their normal speed. Works with Seamless Coop.");
     ToggleSlider("Torrent Speed", &s.torrent_speed_on, "##torrent_speed", &s.torrent_speed, 1.0f,
                  5.0f, "%.2fx", "Multiplies Torrent's movement while you ride.");
     if (const char* status = cheats::TorrentStatus(); status && *status)
-        ImGui::TextColored(kRed, "%s", status);
+        ImGui::TextColored(kRed, "%s", T(status));
 
-    ImGui::SeparatorText("Jump");
+    Separator("Jump");
     ToggleSlider("Jump Boost", &s.jump_boost_on, "##jump_boost", &s.jump_boost, 1.0f, 5.0f, "%.1fx",
                  "Multiplies the rise of a jump (also Torrent's jumps while riding).");
 
-    ImGui::SeparatorText("Fly mode (noclip)");
+    Separator("Fly mode (noclip)");
     ToggleSlider("Fly Mode", &s.fly_mode, "##fly_speed", &s.fly_speed, 1.0f, 10.0f, "%.1fx",
                  "No gravity and no collision: you float and go through walls. The speed multiplies "
                  "both rising/sinking and your normal running. Switching it off makes you fall "
                  "normally.");
-    ImGui::TextDisabled("Rise: RT (R2), A (Cross) or Page Up    Sink: LT (L2) or Page Down    "
-                        "Move: run as usual");
-    ImGui::TextDisabled("Triggers are analog: press lightly to move slowly.");
-    ImGui::TextDisabled("Turns itself off when you die or hit a loading screen.");
+    ImGui::TextDisabled("%s", T("Rise: RT (R2), A (Cross) or Page Up    Sink: LT (L2) or Page Down"
+                                "    Move: run as usual"));
+    ImGui::TextDisabled("%s", T("Triggers are analog: press lightly to move slowly."));
+    ImGui::TextDisabled("%s", T("Turns itself off when you die or hit a loading screen."));
 
-    ImGui::SeparatorText("Teleport");
+    Separator("Teleport");
     const bool in_game = game::InGame();
     if (!in_game) ImGui::BeginDisabled();
-    if (ImGui::Button("Up +5 m")) game::NudgePosition(0, 5, 0);
+    if (ImGui::Button(Id("Up +5 m", "up5").c_str())) game::NudgePosition(0, 5, 0);
     ImGui::SameLine();
-    if (ImGui::Button("Up +50 m")) game::NudgePosition(0, 50, 0);
+    if (ImGui::Button(Id("Up +50 m", "up50").c_str())) game::NudgePosition(0, 50, 0);
     ImGui::SameLine();
-    if (ImGui::Button("Down -5 m")) game::NudgePosition(0, -5, 0);
-    if (ImGui::Button("Save position")) hotkeys::SavePosition();
+    if (ImGui::Button(Id("Down -5 m", "down5").c_str())) game::NudgePosition(0, -5, 0);
+    if (ImGui::Button(Id("Save position", "save_pos").c_str())) hotkeys::SavePosition();
     ImGui::SameLine();
     const bool has_saved = hotkeys::HasSavedPosition();
     if (!has_saved) ImGui::BeginDisabled();
-    if (ImGui::Button("Teleport to saved position")) hotkeys::LoadPosition();
+    if (ImGui::Button(Id("Teleport to saved position", "load_pos").c_str())) hotkeys::LoadPosition();
     if (!has_saved) ImGui::EndDisabled();
     if (has_saved) {
         const auto& t = hotkeys::SavedPosition();
-        ImGui::TextDisabled("Saved: X %.1f  Y %.1f  Z %.1f", t.global[0], t.global[1], t.global[2]);
+        ImGui::TextDisabled(T("Saved: X %.1f  Y %.1f  Z %.1f"), t.global[0], t.global[1],
+                            t.global[2]);
     }
     if (!in_game) ImGui::EndDisabled();
 }
@@ -561,12 +594,10 @@ void DrawMovementTab() {
 void RevealMaps() {
     int set = 0;
     for (int i = 0; i < world::kMapFlagCount; ++i) set += game::SetEventFlag(world::kMapFlags[i], true);
-    char text[160];
-    std::snprintf(text, sizeof(text),
-                  "Map flags set: %d/%d. Rest at a grace or reload the save if the map hasn't "
-                  "updated yet.",
-                  set, world::kMapFlagCount);
-    Notify(set ? text : "Could not set the map flags (are you in game?).");
+    Notify(set ? Fmt(T("Map flags set: %d/%d. Rest at a grace or reload the save if the map "
+                       "hasn't updated yet."),
+                     set, world::kMapFlagCount)
+               : T("Could not set the map flags (are you in game?)."));
     ZZ_LOG("RevealMaps: %d/%d flags verified", set, world::kMapFlagCount);
 }
 
@@ -578,49 +609,51 @@ void UnlockGraces(int which) {  // 0 = base game, 1 = DLC
         ++total;
         set += game::SetEventFlag(g.flag, true);
     }
-    char text[160];
-    std::snprintf(text, sizeof(text),
-                  "Sites of Grace unlocked: %d/%d. Rest at a grace or reload the save, then fast "
-                  "travel from the map.",
-                  set, total);
-    Notify(set ? text : "Could not unlock Sites of Grace (are you in game?).");
+    Notify(set ? Fmt(T("Sites of Grace unlocked: %d/%d. Rest at a grace or reload the save, then "
+                       "fast travel from the map."),
+                     set, total)
+               : T("Could not unlock Sites of Grace (are you in game?)."));
     ZZ_LOG("UnlockGraces(%d): %d/%d flags verified", which, set, total);
 }
 
 void DrawWorldTab() {
     const bool in_game = game::InGame();
-    if (!in_game && TestEnvInt(L"ZZ_UI_TEST_SHOWCASE") <= 0) ImGui::TextDisabled("Load a character first.");
+    if (!in_game && TestEnvInt(L"ZZ_UI_TEST_SHOWCASE") <= 0)
+        ImGui::TextDisabled("%s", T("Load a character first."));
     if (!in_game) ImGui::BeginDisabled();
 
-    ImGui::SeparatorText("Map");
-    if (ImGui::Button("Reveal the whole map")) RevealMaps();
+    Separator("Map");
+    if (ImGui::Button(Id("Reveal the whole map", "reveal").c_str())) RevealMaps();
     HelpMarker("Sets the same flags as picking up every map fragment (base game and Shadow of the "
                "Erdtree). Giving yourself the Map items alone does not reveal anything.");
 
-    ImGui::SeparatorText("Sites of Grace");
-    ImGui::TextWrapped("Unlocks Sites of Grace so you can fast travel to them from the map. "
-                       "Some lie past bosses or story events, so this can skip progress.");
+    Separator("Sites of Grace");
+    ImGui::TextWrapped("%s", T("Unlocks Sites of Grace so you can fast travel to them from the "
+                               "map. Some lie past bosses or story events, so this can skip "
+                               "progress."));
     int dlc = 0;
     for (int i = 0; i < world::kGraceCount; ++i) dlc += world::kGraces[i].dlc;
-    char label[64];
-    std::snprintf(label, sizeof(label), "Unlock base game (%d)", world::kGraceCount - dlc);
-    if (ImGui::Button(label)) ImGui::OpenPopup("graces_base");
+    if (ImGui::Button((Fmt(T("Unlock base game (%d)"), world::kGraceCount - dlc) + "###g_base").c_str()))
+        ImGui::OpenPopup("###graces_base");
     ImGui::SameLine();
-    std::snprintf(label, sizeof(label), "Unlock Shadow of the Erdtree (%d)", dlc);
-    if (ImGui::Button(label)) ImGui::OpenPopup("graces_dlc");
+    if (ImGui::Button((Fmt(T("Unlock Shadow of the Erdtree (%d)"), dlc) + "###g_dlc").c_str()))
+        ImGui::OpenPopup("###graces_dlc");
     for (int which = 0; which < 2; ++which) {
-        if (!ImGui::BeginPopupModal(which ? "graces_dlc" : "graces_base", nullptr,
-                                    ImGuiWindowFlags_AlwaysAutoResize))
+        const std::string title = std::string(T("Sites of Grace")) +
+                                  (which ? "###graces_dlc" : "###graces_base");
+        if (!ImGui::BeginPopupModal(title.c_str(), nullptr, ImGuiWindowFlags_AlwaysAutoResize))
             continue;
-        ImGui::Text("Unlock every %s Site of Grace?", which ? "Shadow of the Erdtree" : "base game");
-        ImGui::TextDisabled("Your save is backed up first if automatic backups are on.");
-        if (ImGui::Button("Unlock", ImVec2(140 * g_scale, 0))) {
+        ImGui::TextUnformatted(which ? T("Unlock every Shadow of the Erdtree Site of Grace?")
+                                     : T("Unlock every base game Site of Grace?"));
+        ImGui::TextDisabled("%s", T("Your save is backed up first if automatic backups are on."));
+        if (ImGui::Button(Id("Unlock", "unlock").c_str(), ImVec2(140 * g_scale, 0))) {
             if (config::Get().auto_backup) saves::BackupActive(false);
             UnlockGraces(which);
             ImGui::CloseCurrentPopup();
         }
         ImGui::SameLine();
-        if (ImGui::Button("Cancel", ImVec2(140 * g_scale, 0))) ImGui::CloseCurrentPopup();
+        if (ImGui::Button(Id("Cancel", "cancel").c_str(), ImVec2(140 * g_scale, 0)))
+            ImGui::CloseCurrentPopup();
         ImGui::EndPopup();
     }
     if (!in_game) ImGui::EndDisabled();
@@ -630,32 +663,32 @@ void DrawWorldTab() {
 
 void DrawCharacterTab(const game::CharacterInfo& ci, bool in_game) {
     if (!in_game) {
-        ImGui::TextDisabled("Runes, stats and blessings show up here once a character is loaded.");
+        ImGui::TextDisabled("%s", T("Runes, stats and blessings show up here once a character is loaded."));
         g_attr_loaded = g_bless_loaded = false;
         return;
     }
-    ImGui::SeparatorText("Runes");
-    ImGui::Text("Current runes: %s", FormatNumber(ci.runes).c_str());
+    Separator("Runes");
+    ImGui::Text(T("Current runes: %s"), FormatNumber(ci.runes).c_str());
     const int64_t presets[] = {10000, 100000, 1000000, 10000000};
     const char* preset_labels[] = {"+10,000", "+100,000", "+1,000,000", "+10,000,000"};
     for (int i = 0; i < 4; ++i) {
         if (i) ImGui::SameLine();
         if (ImGui::Button(preset_labels[i])) {
             game::AddRunes(presets[i]);
-            Notify(std::string(preset_labels[i]) + " runes");
+            Notify(Fmt(T("%s runes"), preset_labels[i]));
         }
     }
     ImGui::SetNextItemWidth(160 * g_scale);
     ImGui::InputInt("##custom_runes", &g_custom_runes, 1000, 100000);
     g_custom_runes = std::clamp(g_custom_runes, 0, 999999999);
     ImGui::SameLine();
-    if (ImGui::Button("Add")) game::AddRunes(g_custom_runes);
+    if (ImGui::Button(Id("Add", "add").c_str())) game::AddRunes(g_custom_runes);
     ImGui::SameLine();
-    if (ImGui::Button("Remove")) game::AddRunes(-static_cast<int64_t>(g_custom_runes));
+    if (ImGui::Button(Id("Remove", "remove").c_str())) game::AddRunes(-static_cast<int64_t>(g_custom_runes));
     ImGui::SameLine();
-    if (ImGui::Button("Set to 0")) game::AddRunes(-static_cast<int64_t>(ci.runes));
+    if (ImGui::Button(Id("Set to 0", "zero").c_str())) game::AddRunes(-static_cast<int64_t>(ci.runes));
 
-    ImGui::SeparatorText("Attributes");
+    Separator("Attributes");
     static const char* names[8] = {"Vigor",     "Mind",         "Endurance", "Strength",
                                    "Dexterity", "Intelligence", "Faith",     "Arcane"};
     if (!g_attr_loaded) {
@@ -664,73 +697,73 @@ void DrawCharacterTab(const game::CharacterInfo& ci, bool in_game) {
     }
     for (int i = 0; i < 8; ++i) {
         ImGui::SetNextItemWidth(140 * g_scale);
-        ImGui::InputInt(names[i], &g_attr_edit[i], 1, 5);
+        ImGui::InputInt(Id(names[i], names[i]).c_str(), &g_attr_edit[i], 1, 5);
         g_attr_edit[i] = std::clamp(g_attr_edit[i], 1, 99);
     }
     int sum = 0;
     for (int v : g_attr_edit) sum += v;
-    ImGui::Text("Level: %u  ->  %d", ci.level, std::max(1, sum - 79));
-    if (ImGui::Button("Apply attributes")) {
+    ImGui::Text(T("Level: %u  ->  %d"), ci.level, std::max(1, sum - 79));
+    if (ImGui::Button(Id("Apply attributes", "apply_attr").c_str())) {
         uint32_t attrs[8];
         for (int i = 0; i < 8; ++i) attrs[i] = static_cast<uint32_t>(g_attr_edit[i]);
-        Notify(game::WriteAttributes(attrs) ? "Attributes applied." : "Could not write attributes.");
+        Notify(game::WriteAttributes(attrs) ? T("Attributes applied.") : T("Could not write attributes."));
     }
     ImGui::SameLine();
-    if (ImGui::Button("Reload from game")) g_attr_loaded = false;
-    ImGui::TextDisabled("Max HP/FP/stamina update after changing equipment or resting at a grace.");
+    if (ImGui::Button(Id("Reload from game", "reload_attr").c_str())) g_attr_loaded = false;
+    ImGui::TextDisabled("%s", T("Max HP/FP/stamina update after changing equipment or resting at a grace."));
 
-    ImGui::SeparatorText("Shadow of the Erdtree blessings");
+    Separator("Shadow of the Erdtree blessings");
     if (!g_bless_loaded) {
         g_scadutree_edit = ci.scadutree;
         g_revered_edit = ci.revered_ash;
         g_bless_loaded = true;
     }
     ImGui::SetNextItemWidth(220 * g_scale);
-    ImGui::SliderInt("Scadutree Blessing", &g_scadutree_edit, 0, 20);
+    ImGui::SliderInt(Id("Scadutree Blessing", "scadutree").c_str(), &g_scadutree_edit, 0, 20);
     ImGui::SetNextItemWidth(220 * g_scale);
-    ImGui::SliderInt("Revered Spirit Ash Blessing", &g_revered_edit, 0, 10);
-    if (ImGui::Button("Apply blessings")) {
+    ImGui::SliderInt(Id("Revered Spirit Ash Blessing", "revered").c_str(), &g_revered_edit, 0, 10);
+    if (ImGui::Button(Id("Apply blessings", "apply_bless").c_str())) {
         bool ok = game::WriteBlessings(static_cast<uint8_t>(g_scadutree_edit),
                                        static_cast<uint8_t>(g_revered_edit));
-        Notify(ok ? "Blessings applied." : "Could not write blessings.");
+        Notify(ok ? T("Blessings applied.") : T("Could not write blessings."));
     }
 
-    ImGui::SeparatorText("Status");
-    ImGui::Text("HP %d / %d    FP %d / %d    Stamina %d / %d", ci.hp, ci.max_hp, ci.fp, ci.max_fp,
-                ci.stamina, ci.max_stamina);
+    Separator("Status");
+    ImGui::Text(T("HP %d / %d    FP %d / %d    Stamina %d / %d"), ci.hp, ci.max_hp, ci.fp,
+                ci.max_fp, ci.stamina, ci.max_stamina);
 }
 
 // ---- Shortcuts ----------------------------------------------------------------------------
 
 void DrawShortcutsTab() {
     const pad::RawState raw = pad::ReadRaw();
-    ImGui::TextWrapped(
-        "Controller: L3 + R3 (click both sticks) opens/closes the menu. Shortcuts: hold L3 and "
-        "press A/B/X/Y/RB/RT, or hold R3 and press the D-pad/LB/LT. A short L3 or R3 press on its "
-        "own still reaches the game (crouch / lock-on).");
-    ImGui::TextWrapped(
-        "In the menu: D-pad / left stick to move, A to select, B to go back, LB/RB to switch tabs, "
-        "Start to close. In fly mode RT rises and LT sinks.");
-    ImGui::TextDisabled(
-        "PlayStation: A=Cross, B=Circle, X=Square, Y=Triangle, LB/RB=L1/R1, LT/RT=L2/R2.");
-    ImGui::Text("Controller: ");
+    ImGui::TextWrapped("%s", T("Controller: L3 + R3 (click both sticks) opens/closes the menu. "
+                               "Shortcuts: hold L3 and press A/B/X/Y/RB/RT, or hold R3 and press "
+                               "the D-pad/LB/LT. A short L3 or R3 press on its own still reaches "
+                               "the game (crouch / lock-on)."));
+    ImGui::TextWrapped("%s", T("In the menu: D-pad / left stick to move, A to select, B to go back, "
+                               "LB/RB to switch tabs, Start to close. In fly mode RT rises and LT "
+                               "sinks."));
+    ImGui::TextDisabled("%s", T("PlayStation: A=Cross, B=Circle, X=Square, Y=Triangle, LB/RB=L1/R1, "
+                                "LT/RT=L2/R2."));
+    ImGui::Text("%s ", T("Controller:"));
     ImGui::SameLine(0, 0);
     if (!pad::Installed())
-        ImGui::TextColored(kRed, "XInput not available");
+        ImGui::TextColored(kRed, "%s", T("XInput not available"));
     else if (raw.connected)
-        ImGui::TextColored(kGreen, "connected");
+        ImGui::TextColored(kGreen, "%s", T("connected"));
     else
-        ImGui::TextDisabled("not detected");
+        ImGui::TextDisabled("%s", T("not detected"));
 
     const int capturing = hotkeys::CaptureAction();
     if (capturing >= 0) {
         ImGui::Spacing();
-        ImGui::TextColored(kGold, "\"%s\": %s", hotkeys::GetAction(capturing).label,
+        ImGui::TextColored(kGold, "\"%s\": %s", T(hotkeys::GetAction(capturing).label),
                            hotkeys::CaptureController()
-                               ? "hold L3 or R3 on the controller and press a button..."
-                               : "press a key... (Esc: cancel, Backspace: clear)");
+                               ? T("hold L3 or R3 on the controller and press a button...")
+                               : T("press a key... (Esc: cancel, Backspace: clear)"));
         ImGui::SameLine();
-        if (ImGui::SmallButton("Cancel")) hotkeys::CancelCapture();
+        if (ImGui::SmallButton(Id("Cancel", "cancel_capture").c_str())) hotkeys::CancelCapture();
     }
     ImGui::Spacing();
     const float row_button = 220 * g_scale;
@@ -739,9 +772,9 @@ void DrawShortcutsTab() {
                               ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchProp,
                           ImVec2(0, ImGui::GetContentRegionAvail().y - 40 * g_scale))) {
         ImGui::TableSetupScrollFreeze(0, 1);
-        ImGui::TableSetupColumn("Action", ImGuiTableColumnFlags_WidthStretch, 2.0f);
-        ImGui::TableSetupColumn("Keyboard", ImGuiTableColumnFlags_WidthStretch, 1.3f);
-        ImGui::TableSetupColumn("Controller", ImGuiTableColumnFlags_WidthStretch, 1.6f);
+        ImGui::TableSetupColumn(T("Action"), ImGuiTableColumnFlags_WidthStretch, 2.0f);
+        ImGui::TableSetupColumn(T("Keyboard"), ImGuiTableColumnFlags_WidthStretch, 1.3f);
+        ImGui::TableSetupColumn(T("Controller"), ImGuiTableColumnFlags_WidthStretch, 1.6f);
         ImGui::TableHeadersRow();
         for (int i = 0; i < hotkeys::Count(); ++i) {
             const auto& action = hotkeys::GetAction(i);
@@ -751,9 +784,9 @@ void DrawShortcutsTab() {
             ImGui::TableNextColumn();
             ImGui::AlignTextToFramePadding();
             if (action.toggle && cheats::Get().*action.toggle)
-                ImGui::TextColored(kGreen, "%s  (on)", action.label);
+                ImGui::TextColored(kGreen, T("%s  (on)"), T(action.label));
             else
-                ImGui::TextUnformatted(action.label);
+                ImGui::TextUnformatted(T(action.label));
 
             ImGui::TableNextColumn();
             const bool cap_kb = capturing == i && !hotkeys::CaptureController();
@@ -783,10 +816,10 @@ void DrawShortcutsTab() {
         }
         ImGui::EndTable();
     }
-    if (ImGui::Button("Restore default shortcuts")) {
+    if (ImGui::Button(Id("Restore default shortcuts", "reset_shortcuts").c_str())) {
         hotkeys::ResetDefaults();
         hotkeys::Save();
-        Notify("Shortcuts restored to defaults.");
+        Notify(T("Shortcuts restored to defaults."));
     }
 }
 
@@ -799,19 +832,19 @@ void OpenFolder(const std::wstring& file) {
 
 void DrawSavesTab(const game::CharacterInfo& ci, bool in_game) {
     ImGui::TextWrapped(
-        "Items and cheats apply to the character that is loaded in the game right now. To give "
-        "items to another character, load that character. The game writes the save itself, so "
-        "normal (.sl2) and Seamless Coop (.%s) saves behave the same.",
+        T("Items and cheats apply to the character that is loaded in the game right now. To give "
+          "items to another character, load that character. The game writes the save itself, so "
+          "normal (.sl2) and Seamless Coop (.%s) saves behave the same."),
         saves::SeamlessLoaded() ? saves::ActiveExtension().c_str() : "co2");
-    ImGui::Text("Save type this session: ");
+    ImGui::Text("%s ", T("Save type this session:"));
     ImGui::SameLine(0, 0);
-    ImGui::TextColored(kGold, "%s", saves::SeamlessLoaded() ? "Seamless Coop" : "Normal (vanilla)");
-    if (ImGui::Button("Refresh") || !g_saves_scanned) {
+    ImGui::TextColored(kGold, "%s", saves::SeamlessLoaded() ? "Seamless Coop" : T("Normal (vanilla)"));
+    if (ImGui::Button(Id("Refresh", "refresh").c_str()) || !g_saves_scanned) {
         g_saves = saves::Scan();
         g_saves_scanned = true;
     }
     ImGui::Spacing();
-    if (g_saves.empty()) ImGui::TextDisabled("No save files found (%%APPDATA%%\\EldenRing).");
+    if (g_saves.empty()) ImGui::TextDisabled("%s", T("No save files found (%APPDATA%\\EldenRing)."));
 
     std::string current_steam;
     for (const auto& save : g_saves) {
@@ -819,36 +852,36 @@ void DrawSavesTab(const game::CharacterInfo& ci, bool in_game) {
         ImGui::PushID(save.steam_id.c_str());
         if (save.steam_id != current_steam) {
             current_steam = save.steam_id;
-            ImGui::SeparatorText(("Steam account " + save.steam_id).c_str());
+            ImGui::SeparatorText(Fmt(T("Steam account %s"), save.steam_id.c_str()).c_str());
         }
         ImGui::AlignTextToFramePadding();
         ImGui::TextColored(kGold, "%s", save.file_name.c_str());
         ImGui::SameLine();
-        ImGui::TextDisabled("%s  |  last saved %s", save.seamless ? "Seamless Coop" : "Normal",
+        ImGui::TextDisabled(T("%s  |  last saved %s"), save.seamless ? "Seamless Coop" : T("Normal"),
                             save.modified.c_str());
         if (save.active) {
             ImGui::SameLine();
-            ImGui::TextColored(kGreen, "[IN USE]");
+            ImGui::TextColored(kGreen, "%s", T("[IN USE]"));
         }
         ImGui::SameLine();
-        if (ImGui::SmallButton("Back up")) {
+        if (ImGui::SmallButton(Id("Back up", "backup").c_str())) {
             std::wstring dest = saves::Backup(save);
-            Notify(dest.empty() ? "Backup failed." : "Backup written to zzostoom_backups.");
+            Notify(dest.empty() ? T("Backup failed.") : T("Backup written to zzostoom_backups."));
         }
         ImGui::SameLine();
-        if (ImGui::SmallButton("Open folder")) OpenFolder(save.path);
+        if (ImGui::SmallButton(Id("Open folder", "open_folder").c_str())) OpenFolder(save.path);
 
         if (!save.error.empty()) {
-            ImGui::TextColored(kRed, "Unreadable: %s", save.error.c_str());
+            ImGui::TextColored(kRed, T("Unreadable: %s"), save.error.c_str());
         } else if (save.characters.empty()) {
-            ImGui::TextDisabled("No characters in this save.");
+            ImGui::TextDisabled("%s", T("No characters in this save."));
         } else if (ImGui::BeginTable("chars", 4,
                                      ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersInnerV |
                                          ImGuiTableFlags_SizingStretchProp)) {
-            ImGui::TableSetupColumn("Slot", ImGuiTableColumnFlags_WidthFixed, 50 * g_scale);
-            ImGui::TableSetupColumn("Character");
-            ImGui::TableSetupColumn("Level", ImGuiTableColumnFlags_WidthFixed, 70 * g_scale);
-            ImGui::TableSetupColumn("Play time");
+            ImGui::TableSetupColumn(T("Slot"), ImGuiTableColumnFlags_WidthFixed, 50 * g_scale);
+            ImGui::TableSetupColumn(T("Character"));
+            ImGui::TableSetupColumn(T("Level"), ImGuiTableColumnFlags_WidthFixed, 70 * g_scale);
+            ImGui::TableSetupColumn(T("Play time"));
             ImGui::TableHeadersRow();
             for (const auto& c : save.characters) {
                 ImGui::TableNextRow();
@@ -856,7 +889,7 @@ void DrawSavesTab(const game::CharacterInfo& ci, bool in_game) {
                 ImGui::Text("%d", c.slot + 1);
                 ImGui::TableNextColumn();
                 if (in_game && save.active && c.name == ci.name)
-                    ImGui::TextColored(kGreen, "%s  (loaded)", c.name.c_str());
+                    ImGui::TextColored(kGreen, T("%s  (loaded)"), c.name.c_str());
                 else
                     ImGui::TextUnformatted(c.name.c_str());
                 ImGui::TableNextColumn();
@@ -870,29 +903,52 @@ void DrawSavesTab(const game::CharacterInfo& ci, bool in_game) {
         ImGui::PopID();
         ImGui::PopID();
     }
-    ImGui::SeparatorText("About backups");
+    Separator("About backups");
     ImGui::TextWrapped(
-        "Backups go to the 'zzostoom_backups' folder next to the save, named with date and time. "
-        "To restore one, close the game, copy it back into the save folder and rename it to the "
-        "original file name (e.g. ER0000.%s).",
+        T("Backups go to the 'zzostoom_backups' folder next to the save, named with date and time. "
+          "To restore one, close the game, copy it back into the save folder and rename it to the "
+          "original file name (e.g. ER0000.%s)."),
         saves::ActiveExtension().c_str());
 }
 
 // ---- Settings -----------------------------------------------------------------------------
+
+std::string KeyDisplayName(const std::string& name) {
+    return name == "UNDER_ESC" ? std::string(T("\" / ~  (key under Esc)")) : name;
+}
 
 void DrawSettingsTab() {
     auto& cfg = config::Get();
     static const char* keys[] = {"UNDER_ESC", "INSERT", "HOME", "END", "DELETE", "PAGEUP", "PAGEDOWN",
                                  "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9",
                                  "F10", "F11", "F12", "PAUSE", "SCROLLLOCK"};
-    ImGui::SeparatorText("Menu");
-    ImGui::SetNextItemWidth(180 * g_scale);
-    auto key_label = [](const std::string& name) {
-        return name == "UNDER_ESC" ? std::string("\" / ~  (key under Esc)") : name;
-    };
-    if (ImGui::BeginCombo("Menu key (keyboard)", key_label(cfg.toggle_key_name).c_str())) {
+    Separator("Language");
+    ImGui::SetNextItemWidth(220 * g_scale);
+    if (ImGui::BeginCombo(Id("Menu language", "language").c_str(),
+                          i18n::Info(i18n::Language()).name)) {
+        for (int l = 0; l < i18n::kLangCount; ++l) {
+            if (ImGui::Selectable(i18n::Info(l).name, l == i18n::Language())) {
+                i18n::SetLanguage(l);
+                cfg.language = i18n::Info(l).code;
+                config::Save();
+            }
+        }
+        ImGui::EndCombo();
+    }
+    if (ImGui::Checkbox(Id("Show item names in English", "english_items").c_str(),
+                        &cfg.english_item_names)) {
+        i18n::SetEnglishItemNames(cfg.english_item_names);
+        config::Save();
+    }
+    HelpMarker("Item names normally follow the menu language, using the game's own translations. "
+               "Searching in English always works.");
+
+    Separator("Menu");
+    ImGui::SetNextItemWidth(220 * g_scale);
+    if (ImGui::BeginCombo(Id("Menu key (keyboard)", "menu_key").c_str(),
+                          KeyDisplayName(cfg.toggle_key_name).c_str())) {
         for (const char* k : keys) {
-            if (ImGui::Selectable(key_label(k).c_str(), cfg.toggle_key_name == k)) {
+            if (ImGui::Selectable(KeyDisplayName(k).c_str(), cfg.toggle_key_name == k)) {
                 cfg.toggle_key = config::KeyFromName(k);
                 cfg.toggle_key_name = k;
                 config::Save();
@@ -900,36 +956,37 @@ void DrawSettingsTab() {
         }
         ImGui::EndCombo();
     }
-    ImGui::TextDisabled("Controller: L3 + R3");
+    ImGui::TextDisabled(T("Controller: %s"), "L3 + R3");
     float scale = ImGui::GetStyle().FontScaleMain;
-    ImGui::SetNextItemWidth(180 * g_scale);
-    if (ImGui::SliderFloat("Text size", &scale, 0.75f, 2.5f, "%.2fx"))
+    ImGui::SetNextItemWidth(220 * g_scale);
+    if (ImGui::SliderFloat(Id("Text size", "text_size").c_str(), &scale, 0.75f, 2.5f, "%.2fx"))
         ImGui::GetStyle().FontScaleMain = scale;
     if (ImGui::IsItemDeactivatedAfterEdit()) {
         cfg.ui_scale = scale;
         config::Save();
     }
-    if (ImGui::Checkbox("Block game keyboard/mouse input while the menu is open",
+    if (ImGui::Checkbox(Id("Block game keyboard/mouse input while the menu is open", "block").c_str(),
                         &cfg.block_game_input))
         config::Save();
-    if (ImGui::Checkbox("Back up the save before the first item of a session", &cfg.auto_backup))
+    if (ImGui::Checkbox(Id("Back up the save before the first item of a session", "auto_backup").c_str(),
+                        &cfg.auto_backup))
         config::Save();
-    if (ImGui::Checkbox("Show a short hint when the game starts", &cfg.show_hint)) config::Save();
+    if (ImGui::Checkbox(Id("Show a short hint when the game starts", "hint").c_str(), &cfg.show_hint))
+        config::Save();
 
-    ImGui::SeparatorText("About");
+    Separator("About");
     ImGui::Text("zzostoom cheat sheet v%s", kModVersion);
-    ImGui::Text("Game version (exe): %s", game::GameVersion().c_str());
-    ImGui::Text("Memory addresses: ");
+    ImGui::Text(T("Game version (exe): %s"), game::GameVersion().c_str());
+    ImGui::Text("%s ", T("Memory addresses:"));
     ImGui::SameLine(0, 0);
     if (game::Ready())
-        ImGui::TextColored(kGreen, "ready");
+        ImGui::TextColored(kGreen, "%s", T("ready"));
     else
-        ImGui::TextColored(kRed, "missing (the game may have been updated)");
+        ImGui::TextColored(kRed, "%s", T("missing (the game may have been updated)"));
     ImGui::TextDisabled("%s", game::InitReport().c_str());
-    ImGui::TextWrapped(
-        "No Cheat Engine needed; loaded by Mod Engine 3 as a DLL. UI: Dear ImGui, hooks: MinHook. "
-        "Game structures were checked against veeenu/eldenring-practice-tool and "
-        "vswarte/fromsoftware-rs. Offline / Seamless Coop only; don't use it online.");
+    ImGui::TextWrapped("%s", T("No Cheat Engine needed; loaded by Mod Engine 3 as a DLL. Offline / "
+                               "Seamless Coop only; don't use it online."));
+    ImGui::TextDisabled("https://github.com/EneSuckSoi/zzostoom-cheat-sheet");
 }
 
 // ---- Overlay bits -------------------------------------------------------------------------
@@ -958,14 +1015,42 @@ void DrawToasts() {
 
 void DrawHint() {
     if (!config::Get().show_hint || Now() - g_start_time > 20.0) return;
-    char text[128];
     const std::string& key = config::Get().toggle_key_name;
-    std::snprintf(text, sizeof(text), "zzostoom cheat sheet ready  -  menu: %s / L3 + R3",
-                  key == "UNDER_ESC" ? "\" (under Esc)" : key.c_str());
+    const std::string text =
+        Fmt(T("zzostoom cheat sheet ready  -  menu: %s / L3 + R3"),
+            key == "UNDER_ESC" ? T("\" (under Esc)") : key.c_str());
     ImDrawList* dl = ImGui::GetForegroundDrawList();
     const ImVec2 pos(18 * g_scale, 14 * g_scale);
-    dl->AddText(ImVec2(pos.x + 1, pos.y + 1), IM_COL32(0, 0, 0, 200), text);
-    dl->AddText(pos, IM_COL32(235, 200, 110, 255), text);
+    dl->AddText(ImVec2(pos.x + 1, pos.y + 1), IM_COL32(0, 0, 0, 200), text.c_str());
+    dl->AddText(pos, IM_COL32(235, 200, 110, 255), text.c_str());
+}
+
+// Segoe UI for Latin/Cyrillic, then the Windows CJK fonts merged in for Chinese, Japanese and
+// Korean (glyphs load on demand). The menu language's own CJK font goes first so shared
+// characters look the way that language writes them.
+ImFont* LoadFonts() {
+    ImGuiIO& io = ImGui::GetIO();
+    wchar_t windir[MAX_PATH];
+    GetWindowsDirectoryW(windir, MAX_PATH);
+    auto add = [&](const wchar_t* file, bool merge, int index = 0) -> ImFont* {
+        std::wstring path = std::wstring(windir) + L"\\Fonts\\" + file;
+        if (GetFileAttributesW(path.c_str()) == INVALID_FILE_ATTRIBUTES) return nullptr;
+        char utf8[MAX_PATH * 3];
+        WideCharToMultiByte(CP_UTF8, 0, path.c_str(), -1, utf8, sizeof(utf8), nullptr, nullptr);
+        ImFontConfig cfg;
+        cfg.MergeMode = merge;
+        cfg.FontNo = index;
+        return io.Fonts->AddFontFromFileTTF(utf8, 18.0f, &cfg);
+    };
+    ImFont* font = add(L"segoeui.ttf", false);
+    if (!font) font = io.Fonts->AddFontDefault();
+    // Microsoft YaHei UI, Yu Gothic UI and Malgun Gothic (the .ttc "UI" faces have tighter spacing).
+    struct Face { const wchar_t* file; int index; };
+    Face cjk[3] = {{L"msyh.ttc", 1}, {L"YuGothR.ttc", 1}, {L"malgun.ttf", 0}};
+    if (i18n::Language() == i18n::kJapanese) std::swap(cjk[0], cjk[1]);
+    if (i18n::Language() == i18n::kKorean) std::swap(cjk[0], cjk[2]);
+    for (const Face& f : cjk) add(f.file, true, f.index);
+    return font;
 }
 
 }  // namespace
@@ -993,26 +1078,15 @@ void Init(float scale) {
     for (int s = 0; s < db::kSubCategoryCount; ++s)
         g_subs_by_top[db::kSubCategories[s].top].push_back(s);
 
-    ImGuiIO& io = ImGui::GetIO();
-    wchar_t windir[MAX_PATH];
-    GetWindowsDirectoryW(windir, MAX_PATH);
-    std::wstring font_path = std::wstring(windir) + L"\\Fonts\\segoeui.ttf";
-    char font_utf8[MAX_PATH * 3];
-    WideCharToMultiByte(CP_UTF8, 0, font_path.c_str(), -1, font_utf8, sizeof(font_utf8), nullptr,
-                        nullptr);
-    ImFont* font = nullptr;
-    if (GetFileAttributesW(font_path.c_str()) != INVALID_FILE_ATTRIBUTES)
-        font = io.Fonts->AddFontFromFileTTF(font_utf8, 18.0f);
-    if (!font) io.Fonts->AddFontDefault();
-
+    LoadFonts();
     ApplyStyle();
     ImGuiStyle& style = ImGui::GetStyle();
     style.ScaleAllSizes(scale);
     style.FontSizeBase = 18.0f;
     float saved = config::Get().ui_scale;
     style.FontScaleMain = saved > 0.0f ? saved : scale;
-    ZZ_LOG("UI ready (%d items, %d categories, %d graces, font %s)", db::kItemCount,
-           db::kSubCategoryCount, world::kGraceCount, font ? "segoeui" : "default");
+    ZZ_LOG("UI ready (%d items, %d categories, %d graces, language %s)", db::kItemCount,
+           db::kSubCategoryCount, world::kGraceCount, i18n::Info(i18n::Language()).code);
 }
 
 void Update() {
@@ -1021,14 +1095,14 @@ void Update() {
         g_queue.clear();
         g_batch_done = g_batch_failed = 0;
         g_batch_label.clear();
-        Notify("Could not give items: load a character first.");
+        Notify(T("Could not give items: load a character first."));
         return;
     }
     static bool backup_checked = false;
     if (!backup_checked) {
         backup_checked = true;
         if (config::Get().auto_backup && !saves::BackupActive(false).empty())
-            Notify("Save backed up first (zzostoom_backups).");
+            Notify(T("Save backed up first (zzostoom_backups)."));
     }
     std::string last_label;
     uint32_t last_qty = 0;
@@ -1045,12 +1119,13 @@ void Update() {
     }
     if (g_queue.empty()) {
         if (g_batch_failed)
-            Notify(std::to_string(g_batch_failed) + " item(s) could not be given (are you in game?).");
+            Notify(Fmt(T("%d item(s) could not be given (are you in game?)."), g_batch_failed));
         if (g_batch_done == 1)
-            Notify("Given: " + last_label + " x" + std::to_string(last_qty));
+            Notify(Fmt(T("Given: %s x%u"), last_label.c_str(), last_qty));
         else if (g_batch_done > 1)
-            Notify(std::to_string(g_batch_done) + " items given" +
-                   (g_batch_label.empty() ? "." : " (" + g_batch_label + ")."));
+            Notify(g_batch_label.empty()
+                       ? Fmt(T("%d items given."), g_batch_done)
+                       : Fmt(T("%d items given (%s)."), g_batch_done, g_batch_label.c_str()));
         g_batch_done = g_batch_failed = 0;
         g_batch_label.clear();
     }
@@ -1078,20 +1153,24 @@ void Draw(bool menu_open) {
             // Nexus screenshots: the harness has no game, so show a sample header instead of the warning.
             ImGui::TextColored(kGold, "Tarnished");
             ImGui::SameLine();
-            ImGui::Text("  Level 150    Runes 1,250,000");
+            ImGui::Text(T("  Level %u    Runes %s"), 150u, "1,250,000");
         } else if (!game::Ready()) {
-            ImGui::TextColored(kRed, "Game addresses not found; the game may have been updated. "
-                                     "See Settings > About.");
+            ImGui::TextColored(kRed, "%s", T("Game addresses not found; the game may have been "
+                                             "updated. See Settings > About."));
         } else if (in_game) {
             ImGui::TextColored(kGold, "%s", ci.name.c_str());
             ImGui::SameLine();
-            ImGui::Text("  Level %u    Runes %s", ci.level, FormatNumber(ci.runes).c_str());
+            ImGui::Text(T("  Level %u    Runes %s"), ci.level, FormatNumber(ci.runes).c_str());
         } else {
-            ImGui::TextDisabled("No character loaded: items and cheats work once you are in game.");
+            ImGui::TextDisabled("%s", T("No character loaded: items and cheats work once you are in game."));
         }
-        ImGui::SameLine(ImGui::GetWindowWidth() - 260 * g_scale);
-        ImGui::TextDisabled("Save: ER0000.%s (%s)", saves::ActiveExtension().c_str(),
-                            saves::SeamlessLoaded() ? "Seamless" : "Normal");
+        const std::string save_text =
+            Fmt(T("Save: ER0000.%s (%s)"), saves::ActiveExtension().c_str(),
+                saves::SeamlessLoaded() ? "Seamless" : T("Normal"));
+        ImGui::SameLine(std::max(ImGui::GetCursorPosX() + 20 * g_scale,
+                                 ImGui::GetWindowWidth() - ImGui::CalcTextSize(save_text.c_str()).x -
+                                     ImGui::GetStyle().WindowPadding.x - 20 * g_scale));
+        ImGui::TextDisabled("%s", save_text.c_str());
         ImGui::Separator();
 
         static int last_test_tab = -1;
@@ -1105,11 +1184,18 @@ void Draw(bool menu_open) {
             g_selected_sub = test_sub;
             g_selected_item = g_items_by_sub[test_sub].empty() ? -1 : g_items_by_sub[test_sub][0];
         }
+        static int last_test_lang = -1;
+        if (const int test_lang = TestEnvInt(L"ZZ_UI_TEST_LANG");
+            test_lang >= 0 && test_lang != last_test_lang) {
+            last_test_lang = test_lang;
+            i18n::SetLanguage(test_lang);
+        }
         if (ImGui::BeginTabBar("tabs")) {
             for (int t = 0; t < kTabCount; ++t) {
                 const ImGuiTabItemFlags flags =
                     requested == t ? ImGuiTabItemFlags_SetSelected : ImGuiTabItemFlags_None;
-                if (!ImGui::BeginTabItem(kTabs[t], nullptr, flags)) {
+                const std::string tab_label = std::string(T(kTabs[t])) + "###tab" + std::to_string(t);
+                if (!ImGui::BeginTabItem(tab_label.c_str(), nullptr, flags)) {
                     if (t == 6) g_saves_scanned = false;  // rescan next time the tab opens
                     continue;
                 }

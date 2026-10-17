@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "config.h"
+#include "i18n.h"
 #include "log.h"
 #include "ui.h"
 
@@ -20,13 +21,13 @@ bool g_has_saved = false;
 
 void RunSavePosition() { SavePosition(); }
 void RunLoadPosition() { LoadPosition(); }
-void RunTeleportUp() { ui::Notify(game::NudgePosition(0, 5, 0) ? "Up +5 m" : "Teleport failed."); }
+void RunTeleportUp() { ui::Notify(game::NudgePosition(0, 5, 0) ? i18n::T("Up +5 m") : i18n::T("Teleport failed.")); }
 void RunAddRunes() {
-    ui::Notify(game::AddRunes(100000) ? "+100,000 runes" : "Could not add runes.");
+    ui::Notify(game::AddRunes(100000) ? i18n::T("+100,000 runes") : i18n::T("Could not add runes."));
 }
 void RunAllOff() {
     cheats::DisableAll();
-    ui::Notify("All cheats OFF");
+    ui::Notify(i18n::T("All cheats OFF"));
 }
 
 using S = cheats::State;
@@ -85,7 +86,7 @@ void Trigger(int index) {
     if (a.toggle) {
         bool& flag = cheats::Get().*a.toggle;
         flag = !flag;
-        ui::Notify(std::string(a.label) + (flag ? ": ON" : ": OFF"));
+        ui::Notify(std::string(i18n::T(a.label)) + ": " + i18n::T(flag ? "ON" : "OFF"));
     } else if (a.run) {
         a.run();
     }
@@ -241,18 +242,18 @@ std::string KeyLabel(int vk) {
 
 bool SavePosition() {
     g_has_saved = game::ReadTransform(g_saved_transform);
-    ui::Notify(g_has_saved ? "Position saved." : "Could not read the position.");
+    ui::Notify(g_has_saved ? i18n::T("Position saved.") : i18n::T("Could not read the position."));
     return g_has_saved;
 }
 
 bool LoadPosition() {
     if (!g_has_saved) {
-        ui::Notify("No saved position yet.");
+        ui::Notify(i18n::T("No saved position yet."));
         return false;
     }
     bool ok = game::WriteTransform(g_saved_transform);
-    ui::Notify(ok ? "Teleported to the saved position."
-                  : "Saved position is in another area; go there first.");
+    ui::Notify(ok ? i18n::T("Teleported to the saved position.")
+                  : i18n::T("Saved position is in another area; go there first."));
     return ok;
 }
 
