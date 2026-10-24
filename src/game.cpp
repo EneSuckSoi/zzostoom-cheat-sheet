@@ -2,6 +2,8 @@
 
 #include <windows.h>
 
+#include <mutex>
+
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
@@ -12,6 +14,12 @@
 #include "memory.h"
 
 namespace zz::game {
+
+namespace off {
+ptrdiff_t kWcmChrCam = 0x1ECF0;
+ptrdiff_t kWcmChrsByDistance = 0x1F1E8;
+ptrdiff_t kWcmDebugChrCreator = 0x1E658;
+}  // namespace off
 
 namespace {
 
@@ -45,7 +53,8 @@ struct Target {
     std::vector<std::pair<const char*, int>> patterns;  // pattern, bytes back to target
     int disp_offset;  // -1 = direct pattern (the match itself, minus the pattern's offset)
     int insn_len;
-    uintptr_t known_rva;  // for exe 2.7.1.0 (Elden Ring 1.17.1, worldwide)
+    uintptr_t known_rva;      // exe 2.7.1.0 (Elden Ring 1.17.1)
+    uintptr_t known_rva_272;  // exe 2.7.2.0
     bool critical;
 };
 
@@ -53,8 +62,14 @@ struct Target {
 
 bool Init() {
     const auto module = mem::MainModule();
+    g_addr.module_base = module.base;
+    g_addr.module_size = module.size;
     g_version = ReadExeVersion();
-    const bool known_version = g_version == "2.7.1.0";
+    const int known = g_version == "2.7.1.0" ? 271 : g_version == "2.7.2.0" ? 272 : 0;
+    // Struct layout: 2.7.2 grew WorldChrMan by 0x10 before the camera field.
+    off::kWcmChrCam = g_version == "2.7.1.0" ? 0x1ECE0 : 0x1ECF0;
+    off::kWcmChrsByDistance = g_version == "2.7.1.0" ? 0x1F1D8 : 0x1F1E8;
+    off::kWcmDebugChrCreator = g_version == "2.7.1.0" ? 0x1E648 : 0x1E658;
     ZZ_LOG("eldenring.exe version %s, base %p, size 0x%zx", g_version.c_str(),
            reinterpret_cast<void*>(module.base), module.size);
 
@@ -65,18 +80,18 @@ bool Init() {
          {{"48 8B 05 ?? ?? ?? ?? 48 85 C0 74 0F 48 39 88 ?? ?? ?? ?? 75 06 89 B1 5C 03 00 00 0F 28 "
            "05 ?? ?? ?? ?? 4C 8D 45 E7", 0},
           {"48 8B 05 ?? ?? ?? ?? 48 85 C0 74 0F 48 39 88", 0}},
-         3, 7, 0x3d69ff8, true},
+         3, 7, 0x3d69ff8, 0x3d6d018, true},
         {"GameDataMan", &g_addr.game_data_man,
-         {{"48 8B 05 ?? ?? ?? ?? 48 85 C0 74 05 48 8B 40 58 C3 C3", 0}}, 3, 7, 0x3d61f98, true},
+         {{"48 8B 05 ?? ?? ?? ?? 48 85 C0 74 05 48 8B 40 58 C3 C3", 0}}, 3, 7, 0x3d61f98, 0x3d64fb8, true},
         {"MapItemMan", &g_addr.map_item_man,
          {{"48 8B 0D ?? ?? ?? ?? C7 44 24 50 FF FF FF FF C7 45 A0 FF FF FF FF 48 85 C9 75 2E", 0}},
-         3, 7, 0x3d6bac0, false},
+         3, 7, 0x3d6bac0, 0x3d6eae0, false},
         {"CSMenuManImp", &g_addr.cs_menu_man_imp,
          {{"48 8B 0D ?? ?? ?? ?? 48 8B 49 08 E8 ?? ?? ?? ?? 48 8B D0 48 8B CE E8 ?? ?? ?? ??", 0}},
-         3, 7, 0x3d6f820, false},
+         3, 7, 0x3d6f820, 0x3d72840, false},
         // cmp byte ptr [rip+disp], 0 (7 bytes) starting one byte after the match.
         {"ChrDbgFlags", &g_addr.dbg_flags,
-         {{"?? 80 3D ?? ?? ?? ?? 00 0F 85 ?? ?? ?? ?? 32 C0 48", 0}}, 3, 8, 0x3d6a210, false},
+         {{"?? 80 3D ?? ?? ?? ?? 00 0F 85 ?? ?? ?? ?? 32 C0 48", 0}}, 3, 8, 0x3d6a210, 0x3d6d230, false},
         // Adds a list of up to 10 items straight to the inventory ("ItemGib").
         {"ItemGive", &g_addr.fn_item_give,
          {{"40 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 70 FF FF FF 48 81 EC 90 01 00 00 48 C7 "
@@ -87,13 +102,18 @@ bool Init() {
           // mov [rsp+x],r9d ... mov eax,[rdx]; cmp eax,0Ah (list size check), 0x3C into the function
           {"44 89 4C 24 ?? 4D 8B F8 4C 89 44 24 ?? 4C 8B E9 33 FF 89 7C 24 ?? 8B 02 83 F8 0A 0F 87",
            0x3C}},
-         -1, 0, 0x561400, false},
+         -1, 0, 0x561400, 0x5618b0, false},
+        // RemoveItemFromPlayer(full id, id, count): count 0 removes every entry with that id.
+        {"ItemRemove", &g_addr.fn_item_remove,
+         {{"48 89 5C 24 08 48 89 6C 24 18 48 89 74 24 20 57 48 83 EC 20 41 8B D8 8B FA 40 32 ED E8 "
+           "?? ?? ?? ?? C1 E0 1C 48 8D 54 24 38 81 E7 FF FF FF 0F", 0}},
+         -1, 0, 0x5f40a0, 0x5f4550, false},
         {"EventFlagMan", &g_addr.event_flag_man,
-         {{"48 8B 3D ?? ?? ?? ?? 48 85 FF 74 ?? 48 8B 49", 0}}, 3, 7, 0x3d6c4b8, false},
+         {{"48 8B 3D ?? ?? ?? ?? 48 85 FF 74 ?? 48 8B 49", 0}}, 3, 7, 0x3d6c4b8, 0x3d6f4d8, false},
         {"GetEventFlag", &g_addr.fn_get_event_flag,
          {{"44 8B 41 1C 44 8B DA 33 D2 41 8B C3 41 F7 F0 4C 8B D1 45 33 C9 44 0F AF C0 45 2B D8 "
            "4C 8B 41 38", 0}},
-         -1, 0, 0x5fa250, false},
+         -1, 0, 0x5fa250, 0x5fa700, false},
     };
 
     bool critical_ok = true;
@@ -107,15 +127,16 @@ bool Init() {
                                       : mem::ResolveRip(hit, t.disp_offset, t.insn_len);
             break;
         }
-        uintptr_t known = known_version ? module.base + t.known_rva : 0;
+        const uintptr_t rva = known == 271 ? t.known_rva : known == 272 ? t.known_rva_272 : 0;
+        uintptr_t known_addr = rva ? module.base + rva : 0;
         const char* source = "pattern";
-        if (known && found != known) {
+        if (known_addr && found != known_addr) {
             // On the verified version the known address wins over a mismatching pattern hit.
             if (found)
                 ZZ_LOG("  %s: pattern hit RVA 0x%llx differs from verified 0x%llx, using verified",
                        t.name, static_cast<unsigned long long>(found - module.base),
-                       static_cast<unsigned long long>(t.known_rva));
-            found = known;
+                       static_cast<unsigned long long>(rva));
+            found = known_addr;
             source = "verified RVA";
         }
         *t.slot = found;
@@ -257,6 +278,41 @@ bool GiveItem(uint32_t full_id, uint32_t quantity) {
                                                        &out, 0);
     ZZ_LOG("GiveItem 0x%08X x%u", full_id, list.entries[0].quantity);
     return true;
+}
+
+bool RemoveItem(uint32_t full_id, int32_t count) {
+    if (!g_addr.fn_item_remove || !InGame()) return false;
+    using ItemRemoveFn = bool (*)(uint32_t full_id, uint32_t id, int32_t count);
+    const bool removed =
+        reinterpret_cast<ItemRemoveFn>(g_addr.fn_item_remove)(full_id, full_id, std::max(0, count));
+    ZZ_LOG("RemoveItem 0x%08X x%d -> %d", full_id, count, removed);
+    return removed;
+}
+
+uint32_t ItemQuantity(uint32_t full_id) {
+    // PlayerGameData + 0x2B0 = EquipGameData, + 0x158 = EquipInventoryData. Its item lists are read
+    // through two accessors {entries*, u32* length}: normal items at +0x40, key items at +0x50
+    // (the game's own index lookup, RVA 0x24c5d0, uses the same fields). Entries are 0x18 bytes:
+    // gaitem handle, item id (+4), quantity (+8), sort id...
+    const uintptr_t pgd = PlayerGameData();
+    if (!pgd || !InGame()) return 0;
+    const uintptr_t inventory = pgd + 0x2B0 + 0x158;
+    uint32_t total = 0;
+    auto scan = [&](ptrdiff_t accessor, ptrdiff_t capacity) {
+        const uintptr_t base = mem::ReadPtr(inventory + accessor);
+        const uintptr_t len_ptr = mem::ReadPtr(inventory + accessor + 8);
+        const uint32_t cap = mem::Read<uint32_t>(inventory + capacity).value_or(0);
+        uint32_t len = len_ptr ? mem::Read<uint32_t>(len_ptr).value_or(0) : 0;
+        len = std::min({len, cap, 0x1000u});
+        for (uint32_t i = 0; base && i < len; ++i) {
+            const uintptr_t e = base + i * 0x18;
+            if (mem::Read<uint32_t>(e + 4).value_or(0) == full_id)
+                total += mem::Read<uint32_t>(e + 8).value_or(0);
+        }
+    };
+    scan(0x40, 0x0C);  // normal items, capacity at items_data + 4
+    scan(0x50, 0x1C);  // key items, capacity at items_data + 0x14
+    return total;
 }
 
 void SetGameCursorVisible(bool visible) {
@@ -422,6 +478,61 @@ bool WriteTransform(const Transform& t) {
     return true;
 }
 
+namespace {
+std::string PlayerName(uintptr_t player_ins) {
+    const uintptr_t pgd = mem::ReadPtr(player_ins + off::kPlayerGameData);
+    wchar_t w[17] = {};
+    if (!pgd || !mem::ReadRaw(pgd + off::kPgdName, w, sizeof(w) - sizeof(wchar_t))) return "?";
+    char out[64];
+    WideCharToMultiByte(CP_UTF8, 0, w, -1, out, sizeof(out), nullptr, nullptr);
+    return out[0] ? out : "?";
+}
+}  // namespace
+
+// Remote players: only their physics position is kept live in this game (the global block
+// position at +0x6C0 is updated for the local player only), so distance and teleport use it.
+std::vector<OtherPlayer> OtherPlayers() {
+    std::vector<OtherPlayer> out;
+    const uintptr_t wcm = WorldChrMan(), me = PlayerIns();
+    float my_pos[3];
+    if (!wcm || !me || !InGame() || !ChunkPos(me, my_pos)) return out;
+    const uintptr_t set = wcm + off::kWcmPlayerChrSet;
+    const uint32_t cap = std::min(mem::Read<uint32_t>(set + off::kChrSetCapacity).value_or(0), 64u);
+    const uintptr_t entries = mem::ReadPtr(set + off::kChrSetEntries);
+    for (uint32_t i = 0; entries && i < cap; ++i) {
+        const uintptr_t chr = mem::ReadPtr(entries + i * 0x10);
+        float pos[3];
+        if (!chr || chr == me || !ChunkPos(chr, pos)) continue;
+        OtherPlayer p;
+        p.chr = chr;
+        p.name = PlayerName(chr);
+        const float dx = pos[0] - my_pos[0], dy = pos[1] - my_pos[1], dz = pos[2] - my_pos[2];
+        p.distance = std::sqrt(dx * dx + dy * dy + dz * dz);
+        // Far beyond any loaded map piece: their position is not in our space (loading, or a
+        // different region), so teleporting there would drop you into the void.
+        p.same_area = p.distance < 4000.0f;
+        out.push_back(p);
+    }
+    return out;
+}
+
+bool TeleportToPlayer(uintptr_t chr) {
+    const OtherPlayer* target = nullptr;
+    const auto players = OtherPlayers();
+    for (const auto& p : players)
+        if (p.chr == chr) target = &p;
+    float me[3], them[3];
+    const uintptr_t physics = PlayerModule(off::kModPhysics);
+    if (!target || !target->same_area || !physics || !ChunkPos(PlayerIns(), me) || !ChunkPos(chr, them))
+        return false;
+    // Land beside them, slightly above the ground, and bring Torrent along when riding.
+    const float dx = them[0] + 1.0f - me[0], dy = them[1] + 0.3f - me[1], dz = them[2] - me[2];
+    MoveChunk(physics, dx, dy, dz);
+    MoveChunk(RiddenTorrentPhysics(), dx, dy, dz);
+    ZZ_LOG("TeleportToPlayer: moved %.1f m", target->distance);
+    return true;
+}
+
 bool NudgePosition(float dx, float dy, float dz) {
     uintptr_t physics = PlayerModule(off::kModPhysics);
     if (!physics) return false;
@@ -495,6 +606,220 @@ bool SetEventFlag(uint32_t flag, bool on) {
     const uint8_t mask = static_cast<uint8_t>(1u << (7 - (offset & 7)));
     if (!mem::SetBits(byte, mask, on)) return false;
     return !g_addr.fn_get_event_flag || GetEventFlag(flag) == on;
+}
+
+int ListCharacters(uintptr_t* out, int max) {
+    const uintptr_t wcm = WorldChrMan();
+    if (!wcm) return 0;
+    const uintptr_t first = mem::ReadPtr(wcm + off::kWcmChrsByDistance);
+    const uintptr_t last = mem::ReadPtr(wcm + off::kWcmChrsByDistance + 8);
+    if (!first || last < first || (last - first) % 0x10 || (last - first) / 0x10 > 4096) return 0;
+    int n = 0;
+    for (uintptr_t e = first; e < last && n < max; e += 0x10)
+        if (uintptr_t chr = mem::ReadPtr(e)) out[n++] = chr;
+    // Characters made by the debug creator (spawned enemies) live in their own ChrSet and are
+    // not in the distance list.
+    const uintptr_t set = wcm + off::kWcmDebugChrSet;
+    const uint32_t cap = std::min(mem::Read<uint32_t>(set + off::kChrSetCapacity).value_or(0), 1024u);
+    const uintptr_t entries = mem::ReadPtr(set + off::kChrSetEntries);
+    for (uint32_t i = 0; entries && i < cap && n < max; ++i)
+        if (uintptr_t chr = mem::ReadPtr(entries + i * 0x10); chr && std::find(out, out + n, chr) == out + n)
+            out[n++] = chr;
+    return n;
+}
+
+std::vector<uintptr_t> DebugCharacters() {
+    std::vector<uintptr_t> out;
+    const uintptr_t wcm = WorldChrMan();
+    if (!wcm) return out;
+    const uintptr_t set = wcm + off::kWcmDebugChrSet;
+    const uint32_t cap = std::min(mem::Read<uint32_t>(set + off::kChrSetCapacity).value_or(0), 1024u);
+    const uintptr_t entries = mem::ReadPtr(set + off::kChrSetEntries);
+    for (uint32_t i = 0; entries && i < cap; ++i)
+        if (uintptr_t chr = mem::ReadPtr(entries + i * 0x10)) out.push_back(chr);
+    return out;
+}
+
+void DebugChrSetUsage(int& used, int& capacity) {
+    used = capacity = 0;
+    const uintptr_t wcm = WorldChrMan();
+    if (!wcm) return;
+    const uintptr_t set = wcm + off::kWcmDebugChrSet;
+    capacity = static_cast<int>(std::min(mem::Read<uint32_t>(set + off::kChrSetCapacity).value_or(0), 1024u));
+    const uintptr_t entries = mem::ReadPtr(set + off::kChrSetEntries);
+    for (int i = 0; entries && i < capacity; ++i) used += mem::ReadPtr(entries + i * 0x10) != 0;
+}
+
+bool ChrPosition(uintptr_t chr_ins, float out[3]) { return ChunkPos(chr_ins, out); }
+
+bool ReadCamera(Camera& out) {
+    const uintptr_t wcm = WorldChrMan();
+    const uintptr_t cam = wcm ? mem::ReadPtr(wcm + off::kWcmChrCam) : 0;
+    float m[16];
+    if (!cam || !mem::ReadRaw(cam + off::kCamMatrix, m, sizeof(m))) return false;
+    for (int i = 0; i < 3; ++i) {
+        out.right[i] = m[i];
+        out.up[i] = m[4 + i];
+        out.forward[i] = m[8 + i];
+        out.pos[i] = m[12 + i];
+    }
+    out.fov = mem::Read<float>(cam + off::kCamFov).value_or(0.0f);
+    return out.fov > 0.1f && out.fov < 3.0f;
+}
+
+namespace {
+uintptr_t DebugChrCreator() {
+    const uintptr_t wcm = WorldChrMan();
+    const uintptr_t creator = wcm ? mem::ReadPtr(wcm + off::kWcmDebugChrCreator) : 0;
+    // Sanity check: a live object whose vtable lies inside the game's image.
+    const uintptr_t vtable = creator ? mem::ReadPtr(creator) : 0;
+    const auto& m = Addr();
+    if (!vtable || vtable < m.module_base || vtable >= m.module_base + m.module_size) return 0;
+    return creator;
+}
+}  // namespace
+
+bool SpawnCharacter(int chr_id, uint32_t npc_param, uint32_t think_param, const float pos[3]) {
+    const uintptr_t c = DebugChrCreator();
+    if (!c || !InGame()) {
+        ZZ_LOG("Spawn: debug character creator not available");
+        return false;
+    }
+    if (mem::Read<uint8_t>(c + off::kCreatorSpawn).value_or(1)) return false;  // still busy
+    const float p[4] = {pos[0], pos[1], pos[2], 0.0f};
+    wchar_t name[0x20] = {};
+    swprintf(name, 0x20, L"c%04d", chr_id);
+    bool ok = mem::WriteRaw(c + off::kCreatorPosition, p, sizeof(p));
+    ok &= mem::Write<uint32_t>(c + off::kCreatorNpcParam, npc_param);
+    ok &= mem::Write<uint32_t>(c + off::kCreatorThinkParam, think_param);
+    ok &= mem::Write<int32_t>(c + off::kCreatorEventEntity, 0);
+    ok &= mem::Write<int32_t>(c + off::kCreatorTalkId, 0);
+    ok &= mem::WriteRaw(c + off::kCreatorName, name, sizeof(name));
+    ok &= mem::Write<int32_t>(c + off::kCreatorCharaInit, -1);
+    if (ok) ok = mem::Write<uint8_t>(c + off::kCreatorSpawn, 1);
+    if (!ok) ZZ_LOG("Spawn c%04d (npc %u) failed", chr_id, npc_param);
+    return ok;
+}
+
+bool KillCharacter(uintptr_t chr_ins) {
+    const uintptr_t data = ChrModule(chr_ins, off::kModData);
+    if (!data || mem::Read<int32_t>(data + off::kDataHp).value_or(0) <= 0) return false;
+    return mem::Write<int32_t>(data + off::kDataHp, 0);
+}
+
+bool MoveCharacter(uintptr_t chr_ins, float dx, float dy, float dz) {
+    const uintptr_t physics = ChrModule(chr_ins, off::kModPhysics);
+    if (!physics) return false;
+    MoveChunk(physics, dx, dy, dz);
+    return true;
+}
+
+uintptr_t LastSpawnedCharacter() {
+    const uintptr_t c = DebugChrCreator();
+    return c ? mem::ReadPtr(c + off::kCreatorLastCreated) : 0;
+}
+
+namespace {
+// ---- Singletons by RTTI: the vtable of a class, then the static slot pointing at its instance.
+
+struct Section {
+    uintptr_t start = 0, end = 0;
+};
+
+Section FindSection(const char* name) {
+    const uintptr_t base = g_addr.module_base;
+    if (!base) return {};
+    const auto* dos = reinterpret_cast<const IMAGE_DOS_HEADER*>(base);
+    const auto* nt = reinterpret_cast<const IMAGE_NT_HEADERS64*>(base + dos->e_lfanew);
+    const auto* sec = IMAGE_FIRST_SECTION(nt);
+    for (int i = 0; i < nt->FileHeader.NumberOfSections; ++i, ++sec)
+        if (std::strncmp(reinterpret_cast<const char*>(sec->Name), name, 8) == 0)
+            return {base + sec->VirtualAddress, base + sec->VirtualAddress + sec->Misc.VirtualSize};
+    return {};
+}
+
+uintptr_t FindVftableByRtti(const char* mangled) {
+    const uintptr_t base = g_addr.module_base;
+    const Section rdata = FindSection(".rdata"), data = FindSection(".data");
+    if (!base || !rdata.start) return 0;
+    const size_t len = std::strlen(mangled);
+    uintptr_t td = 0;  // TypeDescriptor: {vftable*, spare, char name[]}, the name at +0x10
+    for (const Section& s : {data, rdata}) {
+        for (uintptr_t p = s.start; !td && p + len < s.end; ++p)
+            if (std::memcmp(reinterpret_cast<const void*>(p), mangled, len) == 0) td = p - 0x10;
+        if (td) break;
+    }
+    if (!td) return 0;
+    const uint32_t td_rva = static_cast<uint32_t>(td - base);
+    // CompleteObjectLocator {sig 1, offset 0, cd offset, td rva, class rva, self rva}
+    for (uintptr_t p = rdata.start; p + 24 <= rdata.end; p += 4) {
+        const auto* col = reinterpret_cast<const uint32_t*>(p);
+        if (col[0] != 1 || col[1] != 0 || col[3] != td_rva || col[5] != p - base) continue;
+        for (uintptr_t q = rdata.start; q + 16 <= rdata.end; q += 8)  // vftable[-1] = &col
+            if (*reinterpret_cast<const uintptr_t*>(q) == p) return q + 8;
+    }
+    return 0;
+}
+
+// A static pointer in .data whose object starts with `vftable`.
+uintptr_t FindSingletonSlot(uintptr_t vftable) {
+    const Section data = FindSection(".data");
+    const uintptr_t lo = g_addr.module_base, hi = lo + g_addr.module_size;
+    for (uintptr_t p = data.start; vftable && p + 8 <= data.end; p += 8) {
+        const uintptr_t v = *reinterpret_cast<const uintptr_t*>(p);
+        if (v < 0x10000 || (v & 7) || (v >= lo && v < hi)) continue;
+        if (mem::ReadPtr(v) == vftable) return p;
+    }
+    return 0;
+}
+
+std::once_flag g_feman_once;
+uintptr_t g_feman_slot = 0;
+
+uintptr_t FeMan() {
+    static uintptr_t& slot = g_feman_slot;
+    std::call_once(g_feman_once, [] {
+        const uintptr_t vft = FindVftableByRtti(".?AVCSFeManImp@CS@@");
+        slot = FindSingletonSlot(vft);
+        ZZ_LOG("CSFeManImp: vftable RVA 0x%llx, static RVA 0x%llx",
+               static_cast<unsigned long long>(vft ? vft - g_addr.module_base : 0),
+               static_cast<unsigned long long>(slot ? slot - g_addr.module_base : 0));
+    });
+    return slot ? mem::ReadPtr(slot) : 0;
+}
+
+constexpr ptrdiff_t kFeBossDisplays = 0x5BF0;  // BossHealthDisplayEntry[3]: {i32 fmg id, pad,
+constexpr ptrdiff_t kFeBossEntrySize = 0x20;   //  FieldInsHandle at +8, damage taken at +0x10...}
+uint8_t g_boss_slot_backup[3][0x20];
+bool g_boss_slot_used[3] = {};
+}  // namespace
+
+int ShowBossBar(uintptr_t chr_ins, int32_t name_fmg_id) {
+    const uintptr_t fe = FeMan();
+    if (!fe || !chr_ins || name_fmg_id < 0) return -1;
+    const uint64_t handle = mem::Read<uint64_t>(chr_ins + 0x8).value_or(~0ull);  // FieldInsHandle
+    for (int i = 0; i < 3; ++i) {
+        const uintptr_t e = fe + kFeBossDisplays + i * kFeBossEntrySize;
+        const int32_t fmg = mem::Read<int32_t>(e).value_or(0);
+        const uint64_t h = mem::Read<uint64_t>(e + 8).value_or(0);
+        if (g_boss_slot_used[i] || (fmg > 0 && h != ~0ull && h != 0)) continue;  // a real boss fight
+        mem::ReadRaw(e, g_boss_slot_backup[i], kFeBossEntrySize);
+        mem::Write<int32_t>(e, name_fmg_id);
+        mem::Write<uint64_t>(e + 8, handle);
+        mem::Write<int32_t>(e + 0x10, 0);  // damage taken
+        g_boss_slot_used[i] = true;
+        return i;
+    }
+    return -1;
+}
+
+void WarmUp() { FeMan(); }
+
+void HideBossBar(int slot) {
+    const uintptr_t fe = FeMan();
+    if (slot < 0 || slot > 2 || !g_boss_slot_used[slot]) return;
+    g_boss_slot_used[slot] = false;
+    if (fe) mem::WriteRaw(fe + kFeBossDisplays + slot * kFeBossEntrySize, g_boss_slot_backup[slot], kFeBossEntrySize);
 }
 
 }  // namespace zz::game

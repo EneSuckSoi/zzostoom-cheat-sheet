@@ -94,10 +94,13 @@ void Process(DWORD user, XINPUT_STATE* st) {
     }
     const bool fly = g_fly_active && !g_menu_open;
     // A (Cross) is jump: while flying it rises instead, since a jump without gravity never lands.
+    // L3 is crouch: held on its own (not as part of an L3 + button shortcut) it sinks.
+    const bool l3_sink = fly && l3 && !r3 && !s.l3_used;
     g_fly_up = fly ? ((raw & kA) ? 1.0f : st->Gamepad.bRightTrigger / 255.0f) : 0.0f;
-    g_fly_down = fly ? st->Gamepad.bLeftTrigger / 255.0f : 0.0f;
+    g_fly_down = fly ? (l3_sink ? 1.0f : st->Gamepad.bLeftTrigger / 255.0f) : 0.0f;
 
-    if ((released & kL3) && !s.l3_used) s.tap_l3_until = now + kTapMs;
+    // While flying an L3 tap would make the character crouch, so it is not passed on.
+    if ((released & kL3) && !s.l3_used && !fly) s.tap_l3_until = now + kTapMs;
     if ((released & kR3) && !s.r3_used) s.tap_r3_until = now + kTapMs;
     s.consumed &= raw;
     s.prev = raw;
@@ -188,6 +191,7 @@ bool Installed() { return g_installed; }
 
 void SetMenuOpen(bool open) { g_menu_open = open; }
 void SetFlyActive(bool active) { g_fly_active = active; }
+bool FlyActive() { return g_fly_active && !g_menu_open; }
 
 void FlyInput(float& up, float& down) {
     up = g_fly_up;

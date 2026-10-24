@@ -6,7 +6,6 @@
 #include <unordered_map>
 
 #include "item_db.h"
-#include "log.h"
 #include "world_db.h"
 
 namespace zz::i18n {
@@ -72,7 +71,6 @@ const char* T(const char* english) {
     if (auto it = g_by_pointer.find(english); it != g_by_pointer.end()) return it->second;
     auto it = g_by_text.find(english);
     const char* out = it != g_by_text.end() ? it->second : english;
-    if (it == g_by_text.end()) ZZ_LOG("i18n: no %s text for \"%s\"", kLanguages[g_lang].code, english);
     g_by_pointer.emplace(english, out);
     return out;
 }

@@ -63,6 +63,9 @@ DWORD WINAPI MainThread(LPVOID) {
     if (!zz::game::Init())
         ZZ_LOG("Some critical game addresses are missing; cheats/items will be disabled");
     if (!zz::overlay::Install()) ZZ_LOG("Overlay could not be installed");
+    // Memory scans that would hitch the render thread are done here, once in game.
+    while (!zz::game::InGame()) Sleep(1000);
+    zz::game::WarmUp();
     return 0;
 }
 

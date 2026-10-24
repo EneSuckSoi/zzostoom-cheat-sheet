@@ -84,7 +84,6 @@ Multiplies the rise of a jump (also Torrent's jumps while riding).	Zıplamanın 
 Fly mode (noclip)	Uçuş modu (noclip)
 Fly Mode	Uçuş Modu
 No gravity and no collision: you float and go through walls. The speed multiplies both rising/sinking and your normal running. Switching it off makes you fall normally.	Yerçekimi ve çarpışma yok: havada süzülür, duvarlardan geçersin. Hız hem yükselme/alçalmayı hem normal koşunu katlar. Kapatınca normal şekilde düşersin.
-Rise: RT (R2), A (Cross) or Page Up    Sink: LT (L2) or Page Down    Move: run as usual	Yüksel: RT (R2), A (Çarpı) veya Page Up    Alçal: LT (L2) veya Page Down    Hareket: normal koş
 Triggers are analog: press lightly to move slowly.	Tetikler analog: yavaş gitmek için hafifçe bas.
 Turns itself off when you die or hit a loading screen.	Ölünce ya da yükleme ekranına girince kendiliğinden kapanır.
 Teleport	Işınlanma
@@ -337,3 +336,47 @@ Occult	Occult
 Cold	Cold
 Poison	Poison
 Blood	Blood
+Killing aura	Öldürme aurası
+Killing Aura	Öldürme Aurası
+Enemies and bosses that come within this distance of you die instantly. Players, co-op partners, spirit ashes, Torrent and friendly NPCs are never affected. In Seamless Coop it works best when you are the host.	Bu mesafeden yakına gelen düşmanlar ve boss'lar anında ölür. Oyuncular, coop arkadaşların, ruh külleri, Torrent ve dost NPC'ler asla etkilenmez. Seamless Coop'ta en iyi sen host olduğunda çalışır.
+Show the radius	Menzili göster
+Draws the aura's edge as a faint sphere around you.	Auranın sınırını etrafında hafif bir küre olarak çizer.
+Also NPCs that turned hostile	Düşmanlaşmış NPC'ler de
+Off by default, so an NPC you hit by accident (and whose quest you still need) is not killed. Friendly NPCs are never affected.	Varsayılan olarak kapalı; böylece yanlışlıkla vurduğun (ve görevi hâlâ lazım olan) bir NPC ölmez. Dost NPC'ler asla etkilenmez.
+Remove from inventory	Envanterden sil
+Remove every %s from your inventory?	Tüm %s envanterinden silinsin mi?
+Weapons are removed at every upgrade level and affinity. Key items can be needed for progress. Your save is backed up first if automatic backups are on.	Silahlar her güçlendirme seviyesi ve affinity ile silinir. Anahtar itemler ilerleme için gerekli olabilir. Otomatik yedek açıksa önce kaydın yedeklenir.
+Removed from your inventory: %s	Envanterden silindi: %s
+You don't have %s.	Sende %s yok.
+Removed from your inventory: %s x%d	Envanterden silindi: %s x%d
+In your inventory: %d	Envanterinde: %d
+Amount to remove	Silinecek adet
+All	Hepsi
+Enemies	Düşmanlar
+Spawns any enemy or boss in front of you, for damage tests and challenges. Experimental: spawned characters exist only in your game (co-op partners don't see them), bosses have no arena, health bar or reward, and a few multi-phase bosses may not behave.	Hasar testleri ve challenge'lar için önüne istediğin düşmanı ya da boss'u spawnlar. Deneysel: spawnlanan karakterler sadece senin oyununda var olur (coop arkadaşların görmez), boss'ların arenası, can barı ve ödülü olmaz, birkaç fazlı bazı boss'lar düzgün davranmayabilir.
+Search enemies (e.g. margit, troll, knight)	Düşman ara (ör. margit, troll, knight)
+Bosses only	Sadece boss'lar
+boss	boss
+Count	Adet
+Distance	Mesafe
+Spawn: %s	Spawnla: %s
+Spawn	Spawnla
+Kill the enemies I spawned	Spawnladığım düşmanları öldür
+Spawned: %d	Spawnlanan: %d
+Double-click a name to spawn it. Enemy names are in English (from the Paramdex community project).	Spawnlamak için bir isme çift tıkla. Düşman isimleri İngilizce (Paramdex topluluk projesinden).
+Spawned: %s	Spawnlandı: %s
+Spawned enemies killed: %d	Spawnlanan düşmanlar öldürüldü: %d
+The game didn't spawn it. This enemy may not work here.	Oyun bunu spawnlamadı. Bu düşman burada çalışmıyor olabilir.
+The game's spawn limit is reached (%d). Fast travel or reload the area to clear it.	Oyunun spawn limitine ulaşıldı (%d). Sıfırlamak için fast travel yap ya da bölgeyi yeniden yükle.
+Co-op	Co-op
+Players in your Seamless Coop session. Teleport puts you next to them; it works when you are both in the same area (open world, or the same legacy dungeon).	Seamless Coop oturumundaki oyuncular. Işınlanma seni yanlarına koyar; ikiniz aynı bölgedeyken çalışır (açık dünya ya da aynı legacy dungeon).
+No other players in your world right now.	Şu an dünyanda başka oyuncu yok.
+Player	Oyuncu
+Teleport to them	Yanına ışınlan
+Teleported to %s.	%s yanına ışınlandın.
+(another area)	(başka bölge)
+Spawn limit reached (%d). Fast travel or reload the area to clear it.	Spawn limitine ulaşıldı (%d). Sıfırlamak için fast travel yap ya da bölgeyi yeniden yükle.
+Up to 50 spawned characters at a time (dead ones count too): beyond that the game stops letting you rest at Sites of Grace. Fast travel or reload the area to free them all.	Aynı anda en fazla 50 spawn (ölüler de sayılır): bunun üstünde oyun grace'lerde dinlenmene izin vermiyor. Hepsini boşaltmak için fast travel yap ya da bölgeyi yeniden yükle.
+Rise: jump (A / Cross, Space), RT (R2) or Page Up    Sink: crouch (L3, C), LT (L2) or Page Down    Move: run as usual	Yüksel: zıplama (A / Çarpı, Space), RT (R2) veya Page Up    Alçal: eğilme (L3, C), LT (L2) veya Page Down    Hareket: normal koş
+No Fall Damage	Düşme Hasarı Yok
+Falls from any height deal no damage (always on while flying). Invisible death zones under some cliffs and the void below the map still kill.	Hangi yükseklikten düşersen düş hasar almazsın (uçarken her zaman açık). Bazı uçurumların altındaki görünmez ölüm bölgeleri ve haritanın altındaki boşluk yine öldürür.

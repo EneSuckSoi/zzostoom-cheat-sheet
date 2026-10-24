@@ -11,8 +11,11 @@ Loaded by [Mod Engine 3](https://github.com/garyttierney/me3) as a DLL. Give you
 ## Features
 
 - **Items**: every item in the game, DLC included (2,700+), grouped like the in-game inventory (weapon types, armor, Runes, Smithing Stones, Flora, Spells, Spirit Ashes, Ashes of War, Key Items...). Pick quantity, upgrade level, affinity and spirit ash level. Search box and "Give all".
-- **Cheats** (applied the moment you tick them): God Mode, No Death, Attacks Pass Through, Infinite HP / FP / Stamina, No Stagger, no item / arrow consumption, One-Shot Kills, Torrent No Death, Freeze Enemy AI, Enemies Can't Move, and experimental Invisible / Silent.
-- **Movement**: player speed, Torrent speed, jump boost (all working with Seamless Coop), fly mode with noclip, teleport up/down, save a position and teleport back.
+- **Cheats** (applied the moment you tick them): God Mode, No Death, Attacks Pass Through, Infinite HP / FP / Stamina, No Stagger, **No Fall Damage**, no item / arrow consumption, One-Shot Kills, Torrent No Death, Freeze Enemy AI, Enemies Can't Move, experimental Invisible / Silent, and a **killing aura** (enemies within a radius die instantly; players, co-op partners and NPCs are safe).
+- **Remove items**: take any item out of your inventory, with an amount (even ones the game won't let you discard).
+- **Enemies**: spawn any of 935 enemies and bosses in front of you for damage tests and challenges (bosses get their health bar).
+- **Co-op**: see the players in your Seamless Coop session and teleport next to them.
+- **Movement**: player speed, Torrent speed, jump boost (all working with Seamless Coop), fly mode with noclip (jump rises, crouch sinks, no fall damage), teleport up/down, save a position and teleport back.
 - **World**: reveal the whole map, unlock all Sites of Grace (base game and Shadow of the Erdtree separately).
 - **Character**: add runes, edit attributes, Scadutree and Revered Spirit Ash blessings.
 - **Shortcuts**: bind any cheat to a key and/or a controller combo (hold L3 or R3 + a button). Saved between sessions.
@@ -27,14 +30,14 @@ Loaded by [Mod Engine 3](https://github.com/garyttierney/me3) as a DLL. Give you
 
 ## Requirements
 
-- Elden Ring **1.17.1** (Steam, `eldenring.exe` 2.7.1.0)
+- Elden Ring, latest patch (Steam, `eldenring.exe` 2.7.2.0; 2.7.1.0 also works)
 - [Mod Engine 3](https://github.com/garyttierney/me3)
 - Windows 10/11, DirectX 12
 - Optional: Seamless Coop
 
 ## Installation
 
-1. Close the game and download `zzostoom-cheat-sheet-1.3.0.zip` from [Releases](https://github.com/EneSuckSoi/zzostoom-cheat-sheet/releases/latest).
+1. Close the game and download the latest `zzostoom-cheat-sheet-<version>.zip` from [Releases](https://github.com/EneSuckSoi/zzostoom-cheat-sheet/releases/latest).
 2. Copy `zzostoom_cheat_sheet.dll` into your ME3 profile's mod folder, usually  
    `%LOCALAPPDATA%\garyttierney\me3\config\profiles\eldenring-mods\`
 3. Open the `.me3` profile you launch the game with (e.g. `eldenring-default.me3`) and add:
@@ -53,7 +56,7 @@ To uninstall, remove those two lines and delete the DLL.
 |---|---|---|
 | Open / close menu | `INSERT` (changeable, e.g. the key under Esc) | `L3 + R3` |
 | Navigate | mouse | D-pad / left stick, A select, B back, LB/RB tabs, Start close |
-| Fly mode up / down | Page Up / Page Down | RT or A / LT |
+| Fly mode up / down | Space or Page Up / C or Page Down | A or RT / L3 or LT |
 
 Default controller shortcuts: `L3+Y` God Mode, `L3+B` Infinite FP, `L3+X` Infinite Stamina, `L3+A` No Stagger, `R3+Up` Player Speed, `R3+Right` Torrent Speed, `R3+Down` Fly Mode, `R3+Left` Save Position, `R3+LB` Teleport to saved position.
 PlayStation controllers work through Steam Input.
@@ -89,4 +92,4 @@ Game addresses are found by pattern scanning (`src/game.cpp`); if a game update 
 
 Free to use. You may share, modify or build on it **only if you credit "zzostoom" and link to this repository** (https://github.com/EneSuckSoi/zzostoom-cheat-sheet). Selling it is not allowed. See [LICENSE](LICENSE).
 
-Made by **zzostoom**. Uses [Dear ImGui](https://github.com/ocornut/imgui) (MIT) and [MinHook](https://github.com/TsudaKageyu/minhook) (BSD 2-Clause), see [THIRD_PARTY_NOTICES.txt](THIRD_PARTY_NOTICES.txt).
+Made by **zzostoom**. Uses [Dear ImGui](https://github.com/ocornut/imgui) (MIT) and [MinHook](https://github.com/TsudaKageyu/minhook) (BSD 2-Clause), see [THIRD_PARTY_NOTICES.txt](THIRD_PARTY_NOTICES.txt). Enemy names in the Enemies tab come from the community project [Paramdex](https://github.com/soulsmods/Paramdex).

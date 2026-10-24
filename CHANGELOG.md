@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.5.0 - killing aura, enemy spawner, co-op teleport
+- **Killing aura** (Cheats): enemies and bosses that come within a set radius die instantly, with an
+  optional faint sphere showing the radius. Only characters the game data marks as enemies are
+  affected: players, co-op partners, spirit ashes, Torrent and NPCs are safe (NPCs that turned
+  hostile only when you ask for it).
+- **No Fall Damage** (Cheats): falls from any height deal no damage. Always on in fly mode.
+- **Remove items** (Items): "Remove from inventory" with an amount, through the game's own removal
+  function (also for items the game won't let you discard, like Golden Seeds). The save is backed up first.
+- **Enemies tab**: spawn any of 935 enemies and bosses in front of you (count, distance, "Bosses
+  only", search). Spawned bosses get their health bar. "Kill the enemies I spawned". Up to 50 at a
+  time; fast travel frees them. Spawned characters exist only in your game.
+- **Co-op tab**: lists the players in your Seamless Coop session and teleports you next to them.
+- **Fly mode**: the jump key rises and the crouch key sinks (A / L3 on a controller, Space / C on the
+  keyboard); you can steer with the stick / WASD even when you switch it on mid-fall.
+- Supports the latest game patch (eldenring.exe 2.7.2.0) as well as 2.7.1.0.
+- The log no longer contains your Windows user name or Steam ID (backup paths show the file name only).
+
 ## 1.4.0 - languages
 - The menu is now available in 10 languages: English, German, French, Spanish, Portuguese (Brazil),
   Russian, Japanese, Korean, Simplified Chinese and Turkish. English is the default; pick one in

@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cctype>
 #include <chrono>
+#include <cmath>
 #include <cstdarg>
 #include <cstdio>
 #include <cstring>
@@ -21,6 +22,7 @@
 #include "imgui.h"
 #include "item_db.h"
 #include "log.h"
+#include "memory.h"
 #include "overlay.h"
 #include "pad.h"
 #include "saves.h"
@@ -28,11 +30,13 @@
 
 namespace zz::ui {
 
+namespace mem = zz::mem;
+
 namespace {
 
 using i18n::T;
 
-constexpr const char* kModVersion = "1.4.0";
+constexpr const char* kModVersion = "1.5.0";
 
 // English names; T() turns them into the game's own word in every language.
 const char* const kAffinityNames[13] = {
@@ -40,9 +44,10 @@ const char* const kAffinityNames[13] = {
     "Sacred",   "Magic",  "Cold", "Poison",  "Blood", "Occult",
 };
 
-const char* const kTabs[] = {"Items",     "Cheats",    "Movement", "World",
-                             "Character", "Shortcuts", "Saves",    "Settings"};
-constexpr int kTabCount = 8;
+const char* const kTabs[] = {"Items",     "Cheats", "Movement",  "World", "Enemies",
+                             "Co-op",     "Character", "Shortcuts", "Saves", "Settings"};
+constexpr int kTabCount = 10;
+constexpr int kTabSaves = 8;
 
 const ImVec4 kGold(0.92f, 0.78f, 0.42f, 1.0f);
 const ImVec4 kGreen(0.45f, 0.85f, 0.45f, 1.0f);
@@ -103,6 +108,29 @@ int g_scadutree_edit = 0;
 int g_revered_edit = 0;
 bool g_bless_loaded = false;
 int g_custom_runes = 50000;
+
+// Enemy spawner
+char g_enemy_search[64] = {};
+bool g_enemy_bosses_only = false;
+int g_enemy_selected = -1;
+int g_spawn_count = 1;
+float g_spawn_distance = 6.0f;
+struct SpawnRequest {
+    int enemy;
+    float pos[3];
+};
+std::deque<SpawnRequest> g_spawn_queue;
+bool g_spawn_waiting = false;  // a request was handed to the game; collect its ChrIns
+int g_spawn_wait_frames = 0;
+int g_spawn_waiting_enemy = 0;
+uintptr_t g_spawn_last_before = 0;
+std::vector<uintptr_t> g_spawned;
+struct BossBar {
+    uintptr_t chr;
+    int slot;
+    ULONGLONG dead_since;
+};
+std::vector<BossBar> g_boss_bars;
 
 std::vector<saves::SaveFile> g_saves;
 bool g_saves_scanned = false;
@@ -202,6 +230,53 @@ void Enqueue(int index, int quantity, int upgrade, int affinity) {
     quantity = std::clamp(quantity, 1, MaxQuantity(item));
     g_queue.push_back({BuildItemId(item, upgrade, affinity), static_cast<uint32_t>(quantity),
                        ItemLabel(index, upgrade, affinity)});
+}
+
+// Every inventory id of an item: all upgrade levels and affinities for weapons / spirit ashes.
+std::vector<uint32_t> ItemVariants(const db::ItemDef& item) {
+    std::vector<uint32_t> ids;
+    const int levels =
+        (item.kind == db::kKindWeapon || item.kind == db::kKindSpiritAsh) ? item.max_upgrade : 0;
+    for (int a = 0; a < 13; ++a) {
+        if (a && !(item.kind == db::kKindWeapon && (item.affinities & (1u << a)))) continue;
+        for (int up = 0; up <= levels; ++up) ids.push_back(BuildItemId(item, up, a));
+    }
+    return ids;
+}
+
+uint32_t OwnedCount(int index) {
+    uint32_t total = 0;
+    for (uint32_t id : ItemVariants(db::kItems[index])) total += game::ItemQuantity(id);
+    return total;
+}
+
+// Removes `amount` of an item (0 = all). A stack can only be removed whole by the game, so a
+// partial amount removes the stack and gives the rest back.
+void RemoveFromInventory(int index, int amount) {
+    const db::ItemDef& item = db::kItems[index];
+    if (!game::InGame()) {
+        Notify(T("Load a character first."));
+        return;
+    }
+    if (config::Get().auto_backup) saves::BackupActive(false);
+    const bool all = amount <= 0;
+    int left = amount, removed = 0;
+    for (uint32_t id : ItemVariants(item)) {
+        if (!all && left <= 0) break;
+        const int have = static_cast<int>(game::ItemQuantity(id));
+        if (have <= 0) continue;
+        const int take = all ? have : std::min(have, left);
+        if (Stackable(item)) {
+            if (!game::RemoveItem(id, 0)) continue;
+            if (take < have) game::GiveItem(id, static_cast<uint32_t>(have - take));
+        } else if (!game::RemoveItem(id, all ? 0 : take)) {
+            continue;
+        }
+        removed += take;
+        left -= take;
+    }
+    Notify(removed ? Fmt(T("Removed from your inventory: %s x%d"), i18n::ItemName(index), removed)
+                   : Fmt(T("You don't have %s."), i18n::ItemName(index)));
 }
 
 void HelpMarker(const char* text) {
@@ -364,8 +439,38 @@ void DrawItemDetails(float height) {
         Enqueue(g_selected_item, g_quantity, g_upgrade, g_affinity);
     ImGui::PopStyleColor();
     ImGui::SameLine();
+    static int remove_owned = 0, remove_amount = 0;
+    if (ImGui::Button(Id("Remove from inventory", "remove_item").c_str())) {
+        remove_owned = static_cast<int>(OwnedCount(g_selected_item));
+        remove_amount = remove_owned;
+        ImGui::OpenPopup("###remove_item_confirm");
+    }
+    ImGui::SameLine();
     ImGui::TextDisabled("%s  x%d", ItemLabel(g_selected_item, g_upgrade, g_affinity).c_str(),
                         g_quantity);
+    if (ImGui::BeginPopupModal(Id("Remove from inventory", "remove_item_confirm").c_str(), nullptr,
+                               ImGuiWindowFlags_AlwaysAutoResize)) {
+        Header(i18n::ItemName(g_selected_item));
+        ImGui::Text(T("In your inventory: %d"), remove_owned);
+        ImGui::SetNextItemWidth(160 * g_scale);
+        ImGui::InputInt(Id("Amount to remove", "remove_amount").c_str(), &remove_amount, 1, 10);
+        remove_amount = std::clamp(remove_amount, 1, std::max(1, remove_owned));
+        ImGui::SameLine();
+        if (ImGui::SmallButton(Id("All", "remove_all").c_str())) remove_amount = std::max(1, remove_owned);
+        ImGui::TextDisabled("%s", T("Weapons are removed at every upgrade level and affinity. Key "
+                                    "items can be needed for progress. Your save is backed up first "
+                                    "if automatic backups are on."));
+        if (remove_owned <= 0) ImGui::BeginDisabled();
+        if (ImGui::Button(Id("Remove", "remove_yes").c_str(), ImVec2(140 * g_scale, 0))) {
+            RemoveFromInventory(g_selected_item, remove_amount >= remove_owned ? 0 : remove_amount);
+            ImGui::CloseCurrentPopup();
+        }
+        if (remove_owned <= 0) ImGui::EndDisabled();
+        ImGui::SameLine();
+        if (ImGui::Button(Id("Cancel", "cancel").c_str(), ImVec2(140 * g_scale, 0)))
+            ImGui::CloseCurrentPopup();
+        ImGui::EndPopup();
+    }
     ImGui::EndChild();
 }
 
@@ -517,6 +622,9 @@ void DrawCheatsTab() {
     Toggle("Infinite FP", &s.inf_fp, "Spells and skills cost no FP.");
     Toggle("Infinite Stamina", &s.inf_stamina, "Stamina stays full.");
     Toggle("No Stagger", &s.no_stagger, "Poise is kept extremely high, so hits don't stagger you.");
+    Toggle("No Fall Damage", &s.no_fall_damage,
+           "Falls from any height deal no damage (always on while flying). Invisible death zones "
+           "under some cliffs and the void below the map still kill.");
 
     Separator("Combat & items");
     Toggle("No Item Consumption", &s.no_goods_consume, "Flasks, pots, runes... are not used up.");
@@ -533,6 +641,16 @@ void DrawCheatsTab() {
     Toggle("Enemies Can't Move", &s.enemies_no_move);
     Toggle("Enemies Don't Attack (experimental)", &s.enemies_no_attack,
            "A game debug flag; in some situations it can affect your own attacks too.");
+
+    Separator("Killing aura");
+    ToggleSlider("Killing Aura", &s.kill_aura, "##kill_aura_radius", &s.kill_aura_radius, 1.0f, 50.0f,
+                 "%.0f m", "Enemies and bosses that come within this distance of you die instantly. "
+                 "Players, co-op partners, spirit ashes, Torrent and friendly NPCs are never "
+                 "affected. In Seamless Coop it works best when you are the host.");
+    Toggle("Show the radius", &s.kill_aura_show, "Draws the aura's edge as a faint sphere around you.");
+    Toggle("Also NPCs that turned hostile", &s.kill_aura_npcs,
+           "Off by default, so an NPC you hit by accident (and whose quest you still need) is not "
+           "killed. Friendly NPCs are never affected.");
 
     ImGui::Spacing();
     if (ImGui::Button(Id("Turn all cheats off", "all_off").c_str())) cheats::DisableAll();
@@ -562,8 +680,8 @@ void DrawMovementTab() {
                  "No gravity and no collision: you float and go through walls. The speed multiplies "
                  "both rising/sinking and your normal running. Switching it off makes you fall "
                  "normally.");
-    ImGui::TextDisabled("%s", T("Rise: RT (R2), A (Cross) or Page Up    Sink: LT (L2) or Page Down"
-                                "    Move: run as usual"));
+    ImGui::TextDisabled("%s", T("Rise: jump (A / Cross, Space), RT (R2) or Page Up    Sink: crouch (L3, "
+                                "C), LT (L2) or Page Down    Move: run as usual"));
     ImGui::TextDisabled("%s", T("Triggers are analog: press lightly to move slowly."));
     ImGui::TextDisabled("%s", T("Turns itself off when you die or hit a loading screen."));
 
@@ -657,6 +775,268 @@ void DrawWorldTab() {
         ImGui::EndPopup();
     }
     if (!in_game) ImGui::EndDisabled();
+}
+
+// ---- Enemies ------------------------------------------------------------------------------
+
+// Queues `count` spawns of an enemy in front of the player (camera direction), side by side.
+void QueueSpawn(int enemy, int count) {
+    game::Camera cam;
+    float me[3];
+    if (!game::InGame() || !game::ReadCamera(cam) || !game::ChrPosition(game::PlayerIns(), me)) {
+        Notify(T("Load a character first."));
+        return;
+    }
+    float fx = cam.forward[0], fz = cam.forward[2];
+    // The camera looks at the player; make sure "forward" points away from the camera.
+    if (fx * (me[0] - cam.pos[0]) + fz * (me[2] - cam.pos[2]) < 0) fx = -fx, fz = -fz;
+    float len = std::sqrt(fx * fx + fz * fz);
+    if (len < 0.01f) fx = 0, fz = 1, len = 1;
+    fx /= len, fz /= len;
+    const float rx = -fz, rz = fx;  // sideways, to spread a group out
+    for (int i = 0; i < count; ++i) {
+        const float side = (i - (count - 1) * 0.5f) * 2.5f;
+        g_spawn_queue.push_back({enemy,
+                                 {me[0] + fx * g_spawn_distance + rx * side, me[1] + 0.5f,
+                                  me[2] + fz * g_spawn_distance + rz * side}});
+    }
+}
+
+// With about 55 spawned characters alive or dead, Sites of Grace stop offering "Rest" until the
+// area reloads (tested on 2.7.2; the cause is somewhere in the game). So the menu stops at 50, with
+// a margin, below the debug ChrSet's own limit of 76.
+constexpr int kSpawnLimit = 50;
+
+// One request at a time: the game's creator handles a single character per request.
+// Boss bars of spawned bosses go away 3 s after the boss dies (or when it is unloaded).
+void UpdateBossBars() {
+    if (g_boss_bars.empty()) return;
+    const auto alive = game::DebugCharacters();
+    const ULONGLONG now = GetTickCount64();
+    for (auto it = g_boss_bars.begin(); it != g_boss_bars.end();) {
+        const bool present = std::find(alive.begin(), alive.end(), it->chr) != alive.end();
+        const uintptr_t data = present ? game::ChrModule(it->chr, game::off::kModData) : 0;
+        const bool dead = !data || mem::Read<int32_t>(data + game::off::kDataHp).value_or(0) <= 0;
+        if (dead && !it->dead_since) it->dead_since = now;
+        if (!present || !game::InGame() || (dead && now - it->dead_since > 3000)) {
+            game::HideBossBar(it->slot);
+            it = g_boss_bars.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+
+// Spawned characters never leave the game's debug ChrSet, so their corpses would keep counting
+// as "enemies nearby" (no resting at a Site of Grace). A few seconds after death they are moved
+// far below the map, out of every nearby check.
+void BuryDeadSpawns() {
+    static ULONGLONG last = 0;
+    static std::vector<std::pair<uintptr_t, ULONGLONG>> dead;  // chr, first seen dead
+    static std::vector<uintptr_t> buried;
+    const ULONGLONG now = GetTickCount64();
+    if (now - last < 1000) return;
+    last = now;
+    const auto chars = game::DebugCharacters();
+    if (chars.empty() || !game::InGame()) {
+        dead.clear();
+        buried.clear();
+        return;
+    }
+    std::vector<std::pair<uintptr_t, ULONGLONG>> still;
+    for (uintptr_t chr : chars) {
+        if (std::find(buried.begin(), buried.end(), chr) != buried.end()) continue;
+        const uintptr_t data = game::ChrModule(chr, game::off::kModData);
+        if (!data || mem::Read<int32_t>(data + game::off::kDataHp).value_or(1) > 0) continue;
+        ULONGLONG since = now;
+        for (auto& [c, t] : dead)
+            if (c == chr) since = t;
+        if (now - since >= 4000) {
+            if (game::MoveCharacter(chr, 0.0f, -2000.0f, 0.0f)) buried.push_back(chr);
+        } else {
+            still.push_back({chr, since});
+        }
+    }
+    dead.swap(still);
+    // Forget characters that are gone (fast travel clears the set).
+    buried.erase(std::remove_if(buried.begin(), buried.end(),
+                                [&](uintptr_t c) { return std::find(chars.begin(), chars.end(), c) == chars.end(); }),
+                 buried.end());
+}
+
+void UpdateSpawns() {
+    UpdateBossBars();
+    BuryDeadSpawns();
+    if (g_spawn_waiting) {
+        const uintptr_t last = game::LastSpawnedCharacter();
+        if (last && last != g_spawn_last_before) {
+            g_spawned.push_back(last);
+            g_spawn_waiting = false;
+            const auto& e = world::kEnemies[g_spawn_waiting_enemy];
+            if (e.boss && e.name_fmg >= 0) {
+                const int slot = game::ShowBossBar(last, e.name_fmg);
+                if (slot >= 0) g_boss_bars.push_back({last, slot, 0});
+            }
+        } else if (!game::InGame()) {
+            g_spawn_waiting = false;
+        } else if (++g_spawn_wait_frames > 90) {
+            // The game ignored the request: its debug ChrSet is full, or this enemy can't be made
+            // here. Drop the rest of the queue instead of retrying for minutes.
+            int used = 0, cap = 0;
+            game::DebugChrSetUsage(used, cap);
+            ZZ_LOG("Spawn ignored by the game (debug ChrSet %d/%d), %zu queued dropped", used, cap,
+                   g_spawn_queue.size());
+            g_spawn_queue.clear();
+            g_spawn_waiting = false;
+            Notify(used >= cap && cap > 0
+                       ? Fmt(T("The game's spawn limit is reached (%d). Fast travel or reload the area to clear it."), cap)
+                       : std::string(T("The game didn't spawn it. This enemy may not work here.")));
+            return;
+        } else {
+            return;
+        }
+    }
+    if (g_spawn_queue.empty()) return;
+    if (!game::InGame()) {
+        g_spawn_queue.clear();
+        return;
+    }
+    int used = 0, cap = 0;
+    game::DebugChrSetUsage(used, cap);
+    if (used >= kSpawnLimit) {
+        g_spawn_queue.clear();
+        Notify(Fmt(T("Spawn limit reached (%d). Fast travel or reload the area to clear it."), kSpawnLimit));
+        return;
+    }
+    const SpawnRequest r = g_spawn_queue.front();
+    const auto& e = world::kEnemies[r.enemy];
+    g_spawn_last_before = game::LastSpawnedCharacter();
+    if (game::SpawnCharacter(e.chr_id, e.npc_param, e.think_param, r.pos)) {
+        g_spawn_waiting = true;
+        g_spawn_waiting_enemy = r.enemy;
+        g_spawn_wait_frames = 0;
+        g_spawn_queue.pop_front();
+        if (g_spawn_queue.empty()) Notify(Fmt(T("Spawned: %s"), e.name));
+    }
+}
+
+// Kills everything in the game's debug ChrSet: the characters this menu spawned.
+void KillSpawned() {
+    int killed = 0;
+    for (uintptr_t chr : game::DebugCharacters()) killed += game::KillCharacter(chr);
+    g_spawned.clear();
+    Notify(Fmt(T("Spawned enemies killed: %d"), killed));
+}
+
+void DrawEnemiesTab() {
+    ImGui::TextWrapped("%s", T("Spawns any enemy or boss in front of you, for damage tests and "
+                               "challenges. Experimental: spawned characters exist only in your "
+                               "game (co-op partners don't see them), bosses have no arena, health "
+                               "bar or reward, and a few multi-phase bosses may not behave."));
+    ImGui::SetNextItemWidth(320 * g_scale);
+    ImGui::InputTextWithHint("##enemy_search", T("Search enemies (e.g. margit, troll, knight)"),
+                             g_enemy_search, sizeof(g_enemy_search));
+    ImGui::SameLine();
+    ImGui::Checkbox(Id("Bosses only", "bosses_only").c_str(), &g_enemy_bosses_only);
+
+    const std::string needle = Lower(g_enemy_search);
+    const float list_h = ImGui::GetContentRegionAvail().y - 110 * g_scale;
+    if (ImGui::BeginChild("enemies", ImVec2(0, list_h), ImGuiChildFlags_Borders)) {
+        for (int i = 0; i < world::kEnemyCount; ++i) {
+            const auto& e = world::kEnemies[i];
+            if (g_enemy_bosses_only && !e.boss) continue;
+            if (!needle.empty() && Lower(e.name).find(needle) == std::string::npos) continue;
+            ImGui::PushID(i);
+            if (ImGui::Selectable(e.name, i == g_enemy_selected, ImGuiSelectableFlags_AllowDoubleClick)) {
+                g_enemy_selected = i;
+                if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) QueueSpawn(i, g_spawn_count);
+            }
+            if (e.boss) {
+                ImGui::SameLine();
+                ImGui::TextColored(kGold, "%s", T("boss"));
+            }
+            ImGui::PopID();
+        }
+    }
+    ImGui::EndChild();
+
+    const bool in_game = game::InGame();
+    ImGui::SetNextItemWidth(140 * g_scale);
+    ImGui::InputInt(Id("Count", "spawn_count").c_str(), &g_spawn_count, 1, 5);
+    g_spawn_count = std::clamp(g_spawn_count, 1, 20);
+    ImGui::SameLine();
+    ImGui::SetNextItemWidth(200 * g_scale);
+    ImGui::SliderFloat(Id("Distance", "spawn_distance").c_str(), &g_spawn_distance, 2.0f, 30.0f, "%.0f m");
+    const bool can_spawn = in_game && g_enemy_selected >= 0;
+    if (!can_spawn) ImGui::BeginDisabled();
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.50f, 0.38f, 0.12f, 1.0f));
+    const std::string spawn_label =
+        g_enemy_selected >= 0 ? Fmt(T("Spawn: %s"), world::kEnemies[g_enemy_selected].name) + "###spawn"
+                              : Id("Spawn", "spawn");
+    if (ImGui::Button(spawn_label.c_str())) QueueSpawn(g_enemy_selected, g_spawn_count);
+    ImGui::PopStyleColor();
+    if (!can_spawn) ImGui::EndDisabled();
+    ImGui::SameLine();
+    if (ImGui::Button(Id("Kill the enemies I spawned", "kill_spawned").c_str())) KillSpawned();
+    ImGui::SameLine();
+    int used = 0, cap = 0;
+    game::DebugChrSetUsage(used, cap);
+    ImGui::TextDisabled(T("Spawned: %d"), used);
+    ImGui::SameLine(0, 0);
+    ImGui::TextDisabled(" / %d", kSpawnLimit);
+    (void)cap;
+    ImGui::TextDisabled("%s", T("Double-click a name to spawn it. Enemy names are in English (from "
+                                "the Paramdex community project)."));
+    ImGui::TextDisabled("%s", T("Up to 50 spawned characters at a time (dead ones count too): beyond that the game stops "
+                                "letting you rest at Sites of Grace. Fast travel or reload the area "
+                                "to free them all."));
+}
+
+// ---- Co-op --------------------------------------------------------------------------------
+
+void DrawCoopTab() {
+    ImGui::TextWrapped("%s", T("Players in your Seamless Coop session. Teleport puts you next to "
+                               "them; it works when you are both in the same area (open world, or "
+                               "the same legacy dungeon)."));
+    ImGui::Spacing();
+    const auto players = game::OtherPlayers();
+    if (!game::InGame()) {
+        ImGui::TextDisabled("%s", T("Load a character first."));
+        return;
+    }
+    if (players.empty()) {
+        ImGui::TextDisabled("%s", T("No other players in your world right now."));
+        return;
+    }
+    if (ImGui::BeginTable("players", 3, ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersInnerV |
+                                            ImGuiTableFlags_SizingStretchProp)) {
+        ImGui::TableSetupColumn(T("Player"), ImGuiTableColumnFlags_WidthStretch, 2.0f);
+        ImGui::TableSetupColumn(T("Distance"), ImGuiTableColumnFlags_WidthStretch, 1.0f);
+        ImGui::TableSetupColumn("##actions", ImGuiTableColumnFlags_WidthStretch, 2.0f);
+        ImGui::TableHeadersRow();
+        for (const auto& p : players) {
+            ImGui::PushID(reinterpret_cast<void*>(p.chr));
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::AlignTextToFramePadding();
+            ImGui::TextColored(kGold, "%s", p.name.c_str());
+            ImGui::TableNextColumn();
+            ImGui::Text("%.0f m", p.distance);
+            ImGui::TableNextColumn();
+            if (!p.same_area) ImGui::BeginDisabled();
+            if (ImGui::Button(Id("Teleport to them", "tp_to").c_str())) {
+                Notify(game::TeleportToPlayer(p.chr) ? Fmt(T("Teleported to %s."), p.name.c_str())
+                                                     : std::string(T("Teleport failed.")));
+            }
+            if (!p.same_area) {
+                ImGui::EndDisabled();
+                ImGui::SameLine();
+                ImGui::TextDisabled("%s", T("(another area)"));
+            }
+            ImGui::PopID();
+        }
+        ImGui::EndTable();
+    }
 }
 
 // ---- Character ----------------------------------------------------------------------------
@@ -1013,6 +1393,66 @@ void DrawToasts() {
     }
 }
 
+// Faint wireframe sphere (equator, two latitudes, meridians) of the killing aura around the
+// player, projected with the game's camera. Segments behind the camera are skipped.
+void DrawAuraSphere() {
+    const auto& s = cheats::Get();
+    if (!s.kill_aura || !s.kill_aura_show || !game::InGame()) return;
+    game::Camera cam;
+    float center[3];
+    if (!game::ReadCamera(cam) || !game::ChrPosition(game::PlayerIns(), center)) return;
+    center[1] += 1.0f;  // chest height
+    const ImVec2 display = ImGui::GetIO().DisplaySize;
+    const float tan_half = std::tan(cam.fov * 0.5f);
+    const float aspect = display.y > 0 ? display.x / display.y : 16.0f / 9.0f;
+    auto dot = [](const float* a, const float* b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; };
+    // The camera looks at the player; if the stored forward axis points away, flip it.
+    float to_player[3] = {center[0] - cam.pos[0], center[1] - cam.pos[1], center[2] - cam.pos[2]};
+    const float fsign = dot(to_player, cam.forward) < 0 ? -1.0f : 1.0f;
+    auto project = [&](const float p[3], ImVec2& out) {
+        const float d[3] = {p[0] - cam.pos[0], p[1] - cam.pos[1], p[2] - cam.pos[2]};
+        const float z = dot(d, cam.forward) * fsign;
+        if (z < 0.2f) return false;
+        out.x = display.x * 0.5f * (1.0f + dot(d, cam.right) / (z * tan_half * aspect));
+        out.y = display.y * 0.5f * (1.0f - dot(d, cam.up) / (z * tan_half));
+        return true;
+    };
+    ImDrawList* dl = ImGui::GetBackgroundDrawList();
+    const float r = s.kill_aura_radius;
+    constexpr int kSeg = 48;
+    constexpr float kPi = 3.14159265f;
+    auto ring = [&](auto point, ImU32 color, float thickness) {
+        ImVec2 prev;
+        bool prev_ok = false;
+        for (int i = 0; i <= kSeg; ++i) {
+            float p[3];
+            point(2.0f * kPi * i / kSeg, p);
+            ImVec2 cur;
+            const bool ok = project(p, cur);
+            if (ok && prev_ok) dl->AddLine(prev, cur, color, thickness);
+            prev = cur;
+            prev_ok = ok;
+        }
+    };
+    const float lats[3] = {0.0f, 0.6f, -0.6f};  // radians
+    for (int l = 0; l < 3; ++l) {
+        const float y = r * std::sin(lats[l]), rr = r * std::cos(lats[l]);
+        ring([&](float a, float* p) {
+            p[0] = center[0] + rr * std::cos(a);
+            p[1] = center[1] + y;
+            p[2] = center[2] + rr * std::sin(a);
+        }, l == 0 ? IM_COL32(230, 70, 50, 120) : IM_COL32(230, 70, 50, 55), l == 0 ? 2.0f : 1.2f);
+    }
+    for (int m = 0; m < 6; ++m) {
+        const float lon = kPi * m / 6;
+        ring([&](float a, float* p) {
+            p[0] = center[0] + r * std::cos(a) * std::cos(lon);
+            p[1] = center[1] + r * std::sin(a);
+            p[2] = center[2] + r * std::cos(a) * std::sin(lon);
+        }, IM_COL32(230, 70, 50, 40), 1.0f);
+    }
+}
+
 void DrawHint() {
     if (!config::Get().show_hint || Now() - g_start_time > 20.0) return;
     const std::string& key = config::Get().toggle_key_name;
@@ -1090,6 +1530,7 @@ void Init(float scale) {
 }
 
 void Update() {
+    UpdateSpawns();
     if (g_queue.empty()) return;
     if (!game::InGame()) {
         g_queue.clear();
@@ -1132,6 +1573,7 @@ void Update() {
 }
 
 void Draw(bool menu_open) {
+    DrawAuraSphere();
     DrawToasts();
     if (!menu_open) {
         DrawHint();
@@ -1196,7 +1638,7 @@ void Draw(bool menu_open) {
                     requested == t ? ImGuiTabItemFlags_SetSelected : ImGuiTabItemFlags_None;
                 const std::string tab_label = std::string(T(kTabs[t])) + "###tab" + std::to_string(t);
                 if (!ImGui::BeginTabItem(tab_label.c_str(), nullptr, flags)) {
-                    if (t == 6) g_saves_scanned = false;  // rescan next time the tab opens
+                    if (t == kTabSaves) g_saves_scanned = false;  // rescan next time the tab opens
                     continue;
                 }
                 g_current_tab = t;
@@ -1205,10 +1647,12 @@ void Draw(bool menu_open) {
                     case 1: DrawCheatsTab(); break;
                     case 2: DrawMovementTab(); break;
                     case 3: DrawWorldTab(); break;
-                    case 4: DrawCharacterTab(ci, in_game); break;
-                    case 5: DrawShortcutsTab(); break;
-                    case 6: DrawSavesTab(ci, in_game); break;
-                    case 7: DrawSettingsTab(); break;
+                    case 4: DrawEnemiesTab(); break;
+                    case 5: DrawCoopTab(); break;
+                    case 6: DrawCharacterTab(ci, in_game); break;
+                    case 7: DrawShortcutsTab(); break;
+                    case 8: DrawSavesTab(ci, in_game); break;
+                    case 9: DrawSettingsTab(); break;
                 }
                 ImGui::EndTabItem();
             }

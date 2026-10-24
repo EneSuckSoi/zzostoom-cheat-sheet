@@ -187,7 +187,9 @@ std::wstring Backup(const SaveFile& save) {
         ZZ_LOG("Backup failed (%lu)", GetLastError());
         return {};
     }
-    ZZ_LOG("Backup written: %s", Narrow(dest).c_str());
+    // File name only: the full path holds the Windows user name and the Steam ID, and people
+    // paste this log into public comments.
+    ZZ_LOG("Backup written: zzostoom_backups\\%s", Narrow(dest.substr(dest.find_last_of(L'\\') + 1)).c_str());
     return dest;
 }
 

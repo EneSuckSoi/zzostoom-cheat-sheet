@@ -84,7 +84,6 @@ Multiplies the rise of a jump (also Torrent's jumps while riding).	放大跳跃�
 Fly mode (noclip)	飞行模式（穿墙）
 Fly Mode	飞行模式
 No gravity and no collision: you float and go through walls. The speed multiplies both rising/sinking and your normal running. Switching it off makes you fall normally.	没有重力也没有碰撞：你会漂浮并能穿过墙壁。速度同时作用于上升/下降和正常奔跑。关闭后会正常落下。
-Rise: RT (R2), A (Cross) or Page Up    Sink: LT (L2) or Page Down    Move: run as usual	上升：RT (R2)、A（×）或 Page Up    下降：LT (L2) 或 Page Down    移动：照常奔跑
 Triggers are analog: press lightly to move slowly.	扳机是模拟的：轻按即可缓慢移动。
 Turns itself off when you die or hit a loading screen.	死亡或进入读取画面时会自动关闭。
 Teleport	传送
@@ -248,3 +247,47 @@ NPC Bell Bearings	NPC 的铃珠
 Notes & Letters	文件与信件
 DLC Notes & Maps	DLC 文件与地图
 About...	说明...
+Killing aura	杀戮光环
+Killing Aura	杀戮光环
+Enemies and bosses that come within this distance of you die instantly. Players, co-op partners, spirit ashes, Torrent and friendly NPCs are never affected. In Seamless Coop it works best when you are the host.	进入这个距离内的敌人和头目会立即死亡。玩家、联机队友、骨灰、托雷特和友好 NPC 永远不会受影响。在 Seamless Coop 中，你是房主时效果最好。
+Show the radius	显示范围
+Draws the aura's edge as a faint sphere around you.	在你周围用淡淡的球体显示光环的边界。
+Also NPCs that turned hostile	也包括变为敌对的 NPC
+Off by default, so an NPC you hit by accident (and whose quest you still need) is not killed. Friendly NPCs are never affected.	默认关闭，这样你不小心打到的 NPC（你还需要他的任务）不会被杀死。友好 NPC 永远不会受影响。
+Remove from inventory	从道具栏删除
+Remove every %s from your inventory?	从道具栏中删除全部 %s？
+Weapons are removed at every upgrade level and affinity. Key items can be needed for progress. Your save is backed up first if automatic backups are on.	武器会删除所有强化等级和质变的版本。贵重物品可能是推进流程所必需的。如果开启了自动备份，会先备份你的存档。
+Removed from your inventory: %s	已从道具栏删除：%s
+You don't have %s.	你没有 %s。
+Removed from your inventory: %s x%d	已从道具栏删除：%s x%d
+In your inventory: %d	道具栏中持有：%d
+Amount to remove	删除数量
+All	全部
+Enemies	敌人
+Spawns any enemy or boss in front of you, for damage tests and challenges. Experimental: spawned characters exist only in your game (co-op partners don't see them), bosses have no arena, health bar or reward, and a few multi-phase bosses may not behave.	在你面前生成任意敌人或头目，用于伤害测试和挑战。实验性功能：生成的角色只存在于你的游戏中（联机队友看不到），头目没有战斗场地、血条和奖励，部分多阶段头目可能表现异常。
+Search enemies (e.g. margit, troll, knight)	搜索敌人（例如：margit、troll、knight）
+Bosses only	仅头目
+boss	头目
+Count	数量
+Distance	距离
+Spawn: %s	生成：%s
+Spawn	生成
+Kill the enemies I spawned	杀死我生成的敌人
+Spawned: %d	已生成：%d
+Double-click a name to spawn it. Enemy names are in English (from the Paramdex community project).	双击名称即可生成。敌人名称为英文（来自社区项目 Paramdex）。
+Spawned: %s	已生成：%s
+Spawned enemies killed: %d	已杀死生成的敌人：%d
+The game didn't spawn it. This enemy may not work here.	游戏没有生成它。这个敌人可能无法在这里使用。
+The game's spawn limit is reached (%d). Fast travel or reload the area to clear it.	已达到游戏的生成上限（%d）。传送或重新载入区域即可清空。
+Co-op	联机
+Players in your Seamless Coop session. Teleport puts you next to them; it works when you are both in the same area (open world, or the same legacy dungeon).	你的 Seamless Coop 会话中的玩家。传送会把你放到对方身边；你们在同一区域（开放世界或同一个地城）时才可用。
+No other players in your world right now.	现在你的世界里没有其他玩家。
+Player	玩家
+Teleport to them	传送到对方身边
+Teleported to %s.	已传送到 %s 身边。
+(another area)	（其他区域）
+Spawn limit reached (%d). Fast travel or reload the area to clear it.	已达到生成上限（%d）。传送或重新载入区域即可清空。
+Up to 50 spawned characters at a time (dead ones count too): beyond that the game stops letting you rest at Sites of Grace. Fast travel or reload the area to free them all.	同时最多生成 50 个角色（已死亡的也算在内）：超过后游戏将无法在赐福处休息。传送或重新载入区域即可全部释放。
+Rise: jump (A / Cross, Space), RT (R2) or Page Up    Sink: crouch (L3, C), LT (L2) or Page Down    Move: run as usual	上升：跳跃（A / ×、Space）、RT (R2) 或 Page Up    下降：蹲下（L3、C）、LT (L2) 或 Page Down    移动：照常奔跑
+No Fall Damage	无坠落伤害
+Falls from any height deal no damage (always on while flying). Invisible death zones under some cliffs and the void below the map still kill.	从任何高度坠落都不受伤害（飞行时始终生效）。部分悬崖下方的隐形死亡区域和地图下方的虚空仍会致死。

@@ -84,7 +84,6 @@ Multiplies the rise of a jump (also Torrent's jumps while riding).	ジャンプ�
 Fly mode (noclip)	飛行モード（noclip）
 Fly Mode	飛行モード
 No gravity and no collision: you float and go through walls. The speed multiplies both rising/sinking and your normal running. Switching it off makes you fall normally.	重力も当たり判定もなし：宙に浮き、壁をすり抜けます。速度は上昇・下降と通常の走りの両方にかかります。オフにすると普通に落下します。
-Rise: RT (R2), A (Cross) or Page Up    Sink: LT (L2) or Page Down    Move: run as usual	上昇：RT (R2)、A（×）または Page Up    下降：LT (L2) または Page Down    移動：普段どおり走る
 Triggers are analog: press lightly to move slowly.	トリガーはアナログです。軽く押すとゆっくり動きます。
 Turns itself off when you die or hit a loading screen.	死亡時やロード画面で自動的にオフになります。
 Teleport	テレポート
@@ -248,3 +247,47 @@ NPC Bell Bearings	NPCの鈴玉
 Notes & Letters	文書・手紙
 DLC Notes & Maps	DLCの文書・地図
 About...	説明...
+Killing aura	キリングオーラ
+Killing Aura	キリングオーラ
+Enemies and bosses that come within this distance of you die instantly. Players, co-op partners, spirit ashes, Torrent and friendly NPCs are never affected. In Seamless Coop it works best when you are the host.	この距離より近づいた敵やボスは即座に倒れます。プレイヤー、協力プレイの仲間、遺灰、トレント、友好的なNPCには影響しません。Seamless Coop ではホストのときに最もよく動作します。
+Show the radius	範囲を表示
+Draws the aura's edge as a faint sphere around you.	オーラの境界をうっすらとした球体で自分の周りに表示します。
+Also NPCs that turned hostile	敵対したNPCも対象にする
+Off by default, so an NPC you hit by accident (and whose quest you still need) is not killed. Friendly NPCs are never affected.	初期設定ではオフです。うっかり攻撃してしまったNPC（まだクエストが必要な相手）が倒れないようにするためです。友好的なNPCには影響しません。
+Remove from inventory	インベントリから削除
+Remove every %s from your inventory?	%s をインベントリからすべて削除しますか？
+Weapons are removed at every upgrade level and affinity. Key items can be needed for progress. Your save is backed up first if automatic backups are on.	武器はすべての強化値と属性で削除されます。貴重品は進行に必要な場合があります。自動バックアップがオンなら、先にセーブをバックアップします。
+Removed from your inventory: %s	インベントリから削除しました：%s
+You don't have %s.	%s を持っていません。
+Removed from your inventory: %s x%d	インベントリから削除しました：%s x%d
+In your inventory: %d	所持数：%d
+Amount to remove	削除する数
+All	すべて
+Enemies	敵
+Spawns any enemy or boss in front of you, for damage tests and challenges. Experimental: spawned characters exist only in your game (co-op partners don't see them), bosses have no arena, health bar or reward, and a few multi-phase bosses may not behave.	好きな敵やボスを目の前に出現させます。ダメージテストやチャレンジ用です。実験的機能：出現したキャラクターは自分のゲームにだけ存在し（協力プレイの仲間には見えません）、ボスにはボスエリア・HPバー・報酬がなく、一部の複数フェーズのボスは正しく動かないことがあります。
+Search enemies (e.g. margit, troll, knight)	敵を検索（例：margit、troll、knight）
+Bosses only	ボスのみ
+boss	ボス
+Count	数
+Distance	距離
+Spawn: %s	出現：%s
+Spawn	出現させる
+Kill the enemies I spawned	出現させた敵を倒す
+Spawned: %d	出現数：%d
+Double-click a name to spawn it. Enemy names are in English (from the Paramdex community project).	名前をダブルクリックすると出現します。敵の名前は英語です（コミュニティプロジェクト Paramdex より）。
+Spawned: %s	出現：%s
+Spawned enemies killed: %d	出現させた敵を倒しました：%d
+The game didn't spawn it. This enemy may not work here.	ゲームが出現させませんでした。この敵はここでは使えない可能性があります。
+The game's spawn limit is reached (%d). Fast travel or reload the area to clear it.	ゲームの出現上限（%d）に達しました。ファストトラベルするかエリアを読み込み直すとリセットされます。
+Co-op	協力プレイ
+Players in your Seamless Coop session. Teleport puts you next to them; it works when you are both in the same area (open world, or the same legacy dungeon).	Seamless Coop セッションのプレイヤーです。テレポートで相手のすぐ隣に移動します。同じエリア（オープンワールド、または同じダンジョン）にいるときに使えます。
+No other players in your world right now.	今はワールドに他のプレイヤーがいません。
+Player	プレイヤー
+Teleport to them	相手のところへテレポート
+Teleported to %s.	%s のところへテレポートしました。
+(another area)	（別のエリア）
+Spawn limit reached (%d). Fast travel or reload the area to clear it.	出現上限（%d）に達しました。ファストトラベルするかエリアを読み込み直すとリセットされます。
+Up to 50 spawned characters at a time (dead ones count too): beyond that the game stops letting you rest at Sites of Grace. Fast travel or reload the area to free them all.	同時に出現させられるのは50体まで（倒した敵も含む）。それを超えると祝福で休めなくなります。ファストトラベルするかエリアを読み込み直すとすべて解放されます。
+Rise: jump (A / Cross, Space), RT (R2) or Page Up    Sink: crouch (L3, C), LT (L2) or Page Down    Move: run as usual	上昇：ジャンプ（A / ×、Space）、RT (R2) または Page Up    下降：しゃがみ（L3、C）、LT (L2) または Page Down    移動：普段どおり走る
+No Fall Damage	落下ダメージなし
+Falls from any height deal no damage (always on while flying). Invisible death zones under some cliffs and the void below the map still kill.	どんな高さから落ちてもダメージを受けません（飛行中は常に有効）。一部の崖の下にある見えない即死エリアやマップ下の奈落では死亡します。

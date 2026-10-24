@@ -84,7 +84,6 @@ Multiplies the rise of a jump (also Torrent's jumps while riding).	점프 상승
 Fly mode (noclip)	비행 모드 (noclip)
 Fly Mode	비행 모드
 No gravity and no collision: you float and go through walls. The speed multiplies both rising/sinking and your normal running. Switching it off makes you fall normally.	중력도 충돌도 없음: 공중에 떠서 벽을 통과합니다. 속도는 상승·하강과 평소 달리기 모두에 적용됩니다. 끄면 정상적으로 떨어집니다.
-Rise: RT (R2), A (Cross) or Page Up    Sink: LT (L2) or Page Down    Move: run as usual	상승: RT (R2), A (×) 또는 Page Up    하강: LT (L2) 또는 Page Down    이동: 평소처럼 달리기
 Triggers are analog: press lightly to move slowly.	트리거는 아날로그입니다. 살짝 누르면 천천히 움직입니다.
 Turns itself off when you die or hit a loading screen.	죽거나 로딩 화면이 나오면 자동으로 꺼집니다.
 Teleport	텔레포트
@@ -248,3 +247,47 @@ NPC Bell Bearings	NPC의 방울 구슬
 Notes & Letters	문서·편지
 DLC Notes & Maps	DLC 문서·지도
 About...	설명...
+Killing aura	킬링 오라
+Killing Aura	킬링 오라
+Enemies and bosses that come within this distance of you die instantly. Players, co-op partners, spirit ashes, Torrent and friendly NPCs are never affected. In Seamless Coop it works best when you are the host.	이 거리 안으로 들어온 적과 보스는 즉시 쓰러집니다. 플레이어, 협력 동료, 유회, 토렌트, 우호적인 NPC는 영향을 받지 않습니다. Seamless Coop에서는 호스트일 때 가장 잘 동작합니다.
+Show the radius	범위 표시
+Draws the aura's edge as a faint sphere around you.	오라의 경계를 내 주위에 희미한 구체로 표시합니다.
+Also NPCs that turned hostile	적대적으로 변한 NPC도 포함
+Off by default, so an NPC you hit by accident (and whose quest you still need) is not killed. Friendly NPCs are never affected.	기본값은 꺼짐입니다. 실수로 때린 NPC(아직 퀘스트가 필요한 NPC)가 죽지 않게 하기 위해서입니다. 우호적인 NPC는 영향을 받지 않습니다.
+Remove from inventory	인벤토리에서 삭제
+Remove every %s from your inventory?	%s을(를) 인벤토리에서 모두 삭제할까요?
+Weapons are removed at every upgrade level and affinity. Key items can be needed for progress. Your save is backed up first if automatic backups are on.	무기는 모든 강화 단계와 속성이 삭제됩니다. 귀중품은 진행에 필요할 수 있습니다. 자동 백업이 켜져 있으면 먼저 세이브를 백업합니다.
+Removed from your inventory: %s	인벤토리에서 삭제했습니다: %s
+You don't have %s.	%s을(를) 가지고 있지 않습니다.
+Removed from your inventory: %s x%d	인벤토리에서 삭제했습니다: %s x%d
+In your inventory: %d	소지 수: %d
+Amount to remove	삭제할 수량
+All	모두
+Enemies	적
+Spawns any enemy or boss in front of you, for damage tests and challenges. Experimental: spawned characters exist only in your game (co-op partners don't see them), bosses have no arena, health bar or reward, and a few multi-phase bosses may not behave.	원하는 적이나 보스를 눈앞에 소환합니다. 대미지 테스트와 챌린지용입니다. 실험적 기능: 소환된 캐릭터는 내 게임에만 존재하고(협력 동료에게는 보이지 않음), 보스에게는 보스 구역·체력 바·보상이 없으며, 일부 다단계 보스는 제대로 동작하지 않을 수 있습니다.
+Search enemies (e.g. margit, troll, knight)	적 검색 (예: margit, troll, knight)
+Bosses only	보스만
+boss	보스
+Count	수
+Distance	거리
+Spawn: %s	소환: %s
+Spawn	소환
+Kill the enemies I spawned	내가 소환한 적 처치
+Spawned: %d	소환 수: %d
+Double-click a name to spawn it. Enemy names are in English (from the Paramdex community project).	이름을 더블클릭하면 소환됩니다. 적 이름은 영어입니다(커뮤니티 프로젝트 Paramdex).
+Spawned: %s	소환: %s
+Spawned enemies killed: %d	소환한 적 처치: %d
+The game didn't spawn it. This enemy may not work here.	게임이 소환하지 않았습니다. 이 적은 여기서 동작하지 않을 수 있습니다.
+The game's spawn limit is reached (%d). Fast travel or reload the area to clear it.	게임의 소환 한도(%d)에 도달했습니다. 빠른 이동을 하거나 지역을 다시 불러오면 초기화됩니다.
+Co-op	협력
+Players in your Seamless Coop session. Teleport puts you next to them; it works when you are both in the same area (open world, or the same legacy dungeon).	Seamless Coop 세션의 플레이어입니다. 텔레포트하면 상대 바로 옆으로 이동합니다. 같은 지역(오픈 월드 또는 같은 던전)에 있을 때 동작합니다.
+No other players in your world right now.	지금 월드에 다른 플레이어가 없습니다.
+Player	플레이어
+Teleport to them	상대에게 텔레포트
+Teleported to %s.	%s에게 텔레포트했습니다.
+(another area)	(다른 지역)
+Spawn limit reached (%d). Fast travel or reload the area to clear it.	소환 한도(%d)에 도달했습니다. 빠른 이동을 하거나 지역을 다시 불러오면 초기화됩니다.
+Up to 50 spawned characters at a time (dead ones count too): beyond that the game stops letting you rest at Sites of Grace. Fast travel or reload the area to free them all.	한 번에 최대 50마리까지 소환할 수 있습니다(쓰러진 적 포함). 그 이상이면 축복에서 쉴 수 없게 됩니다. 빠른 이동을 하거나 지역을 다시 불러오면 모두 해제됩니다.
+Rise: jump (A / Cross, Space), RT (R2) or Page Up    Sink: crouch (L3, C), LT (L2) or Page Down    Move: run as usual	상승: 점프 (A / ×, Space), RT (R2) 또는 Page Up    하강: 웅크리기 (L3, C), LT (L2) 또는 Page Down    이동: 평소처럼 달리기
+No Fall Damage	낙하 대미지 없음
+Falls from any height deal no damage (always on while flying). Invisible death zones under some cliffs and the void below the map still kill.	어떤 높이에서 떨어져도 대미지를 받지 않습니다(비행 중에는 항상 켜짐). 일부 절벽 아래의 보이지 않는 즉사 구역과 맵 아래의 허공에서는 여전히 죽습니다.

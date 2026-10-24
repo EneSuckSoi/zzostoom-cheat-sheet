@@ -84,7 +84,6 @@ Multiplies the rise of a jump (also Torrent's jumps while riding).	Vervielfacht 
 Fly mode (noclip)	Flugmodus (Noclip)
 Fly Mode	Flugmodus
 No gravity and no collision: you float and go through walls. The speed multiplies both rising/sinking and your normal running. Switching it off makes you fall normally.	Keine Schwerkraft und keine Kollision: Du schwebst und gehst durch Wände. Das Tempo vervielfacht Steigen/Sinken und dein normales Laufen. Beim Ausschalten fällst du ganz normal.
-Rise: RT (R2), A (Cross) or Page Up    Sink: LT (L2) or Page Down    Move: run as usual	Steigen: RT (R2), A (Kreuz) oder Bild auf    Sinken: LT (L2) oder Bild ab    Bewegen: normal laufen
 Triggers are analog: press lightly to move slowly.	Die Trigger sind analog: leicht drücken, um langsam zu bewegen.
 Turns itself off when you die or hit a loading screen.	Schaltet sich ab, wenn du stirbst oder ein Ladebildschirm kommt.
 Teleport	Teleport
@@ -248,3 +247,47 @@ NPC Bell Bearings	Klangperlen von NPCs
 Notes & Letters	Notizen & Briefe
 DLC Notes & Maps	DLC-Notizen & Karten
 About...	Über...
+Killing aura	Todesaura
+Killing Aura	Todesaura
+Enemies and bosses that come within this distance of you die instantly. Players, co-op partners, spirit ashes, Torrent and friendly NPCs are never affected. In Seamless Coop it works best when you are the host.	Gegner und Bosse, die dir näher als diese Entfernung kommen, sterben sofort. Spieler, Koop-Partner, Geisteraschen, Sturmwind und freundliche NPCs sind nie betroffen. In Seamless Coop funktioniert es am besten, wenn du der Host bist.
+Show the radius	Radius anzeigen
+Draws the aura's edge as a faint sphere around you.	Zeigt den Rand der Aura als schwache Kugel um dich herum.
+Also NPCs that turned hostile	Auch feindlich gewordene NPCs
+Off by default, so an NPC you hit by accident (and whose quest you still need) is not killed. Friendly NPCs are never affected.	Standardmäßig aus, damit ein NPC, den du versehentlich getroffen hast (und dessen Quest du noch brauchst), nicht stirbt. Freundliche NPCs sind nie betroffen.
+Remove from inventory	Aus dem Inventar entfernen
+Remove every %s from your inventory?	Alle %s aus deinem Inventar entfernen?
+Weapons are removed at every upgrade level and affinity. Key items can be needed for progress. Your save is backed up first if automatic backups are on.	Waffen werden auf jeder Verbesserungsstufe und Affinität entfernt. Schlüsselobjekte können für den Fortschritt nötig sein. Dein Spielstand wird vorher gesichert, wenn automatische Backups an sind.
+Removed from your inventory: %s	Aus dem Inventar entfernt: %s
+You don't have %s.	Du hast kein %s.
+Removed from your inventory: %s x%d	Aus dem Inventar entfernt: %s x%d
+In your inventory: %d	Im Inventar: %d
+Amount to remove	Zu entfernende Anzahl
+All	Alle
+Enemies	Gegner
+Spawns any enemy or boss in front of you, for damage tests and challenges. Experimental: spawned characters exist only in your game (co-op partners don't see them), bosses have no arena, health bar or reward, and a few multi-phase bosses may not behave.	Erzeugt jeden Gegner oder Boss vor dir, für Schadenstests und Herausforderungen. Experimentell: Erzeugte Charaktere gibt es nur in deinem Spiel (Koop-Partner sehen sie nicht), Bosse haben keine Arena, keine Lebensleiste und keine Belohnung, und manche mehrphasigen Bosse verhalten sich eventuell seltsam.
+Search enemies (e.g. margit, troll, knight)	Gegner suchen (z. B. margit, troll, knight)
+Bosses only	Nur Bosse
+boss	Boss
+Count	Anzahl
+Distance	Entfernung
+Spawn: %s	Erzeugen: %s
+Spawn	Erzeugen
+Kill the enemies I spawned	Meine erzeugten Gegner töten
+Spawned: %d	Erzeugt: %d
+Double-click a name to spawn it. Enemy names are in English (from the Paramdex community project).	Doppelklick auf einen Namen erzeugt ihn. Gegnernamen sind auf Englisch (vom Community-Projekt Paramdex).
+Spawned: %s	Erzeugt: %s
+Spawned enemies killed: %d	Erzeugte Gegner getötet: %d
+The game didn't spawn it. This enemy may not work here.	Das Spiel hat ihn nicht erzeugt. Dieser Gegner funktioniert hier eventuell nicht.
+The game's spawn limit is reached (%d). Fast travel or reload the area to clear it.	Das Spawn-Limit des Spiels ist erreicht (%d). Schnellreise oder lade das Gebiet neu, um es zu leeren.
+Co-op	Koop
+Players in your Seamless Coop session. Teleport puts you next to them; it works when you are both in the same area (open world, or the same legacy dungeon).	Spieler in deiner Seamless-Coop-Sitzung. Teleport bringt dich direkt neben sie; das funktioniert, wenn ihr im selben Gebiet seid (offene Welt oder derselbe Dungeon).
+No other players in your world right now.	Gerade sind keine anderen Spieler in deiner Welt.
+Player	Spieler
+Teleport to them	Zu ihnen teleportieren
+Teleported to %s.	Zu %s teleportiert.
+(another area)	(anderes Gebiet)
+Spawn limit reached (%d). Fast travel or reload the area to clear it.	Spawn-Limit erreicht (%d). Schnellreise oder lade das Gebiet neu, um es zu leeren.
+Up to 50 spawned characters at a time (dead ones count too): beyond that the game stops letting you rest at Sites of Grace. Fast travel or reload the area to free them all.	Höchstens 50 erzeugte Charaktere gleichzeitig (tote zählen mit): darüber hinaus lässt dich das Spiel nicht mehr an Orten der Gnade ruhen. Schnellreise oder lade das Gebiet neu, um alle freizugeben.
+Rise: jump (A / Cross, Space), RT (R2) or Page Up    Sink: crouch (L3, C), LT (L2) or Page Down    Move: run as usual	Steigen: Springen (A / Kreuz, Space), RT (R2) oder Bild auf    Sinken: Ducken (L3, C), LT (L2) oder Bild ab    Bewegen: normal laufen
+No Fall Damage	Kein Fallschaden
+Falls from any height deal no damage (always on while flying). Invisible death zones under some cliffs and the void below the map still kill.	Stürze aus jeder Höhe verursachen keinen Schaden (beim Fliegen immer an). Unsichtbare Todeszonen unter manchen Klippen und die Leere unter der Karte töten trotzdem.

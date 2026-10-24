@@ -12,6 +12,7 @@ struct State {
     bool inf_fp = false;
     bool inf_stamina = false;
     bool no_stagger = false;
+    bool no_fall_damage = false;
     // Items / combat
     bool no_goods_consume = false;
     bool no_arrow_consume = false;
@@ -24,6 +25,11 @@ struct State {
     bool freeze_ai = false;
     bool enemies_no_move = false;
     bool enemies_no_attack = false;
+    // Killing aura: hostile characters that come within the radius die instantly.
+    bool kill_aura = false;
+    float kill_aura_radius = 8.0f;   // metres
+    bool kill_aura_npcs = false;     // also NPCs that turned hostile (off: a misclick can't cost a quest)
+    bool kill_aura_show = true;      // draw the radius as a faint sphere
     // Movement
     bool player_speed_on = false;
     float player_speed = 2.0f;

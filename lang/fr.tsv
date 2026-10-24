@@ -84,7 +84,6 @@ Multiplies the rise of a jump (also Torrent's jumps while riding).	Multiplie la 
 Fly mode (noclip)	Mode vol (noclip)
 Fly Mode	Mode vol
 No gravity and no collision: you float and go through walls. The speed multiplies both rising/sinking and your normal running. Switching it off makes you fall normally.	Pas de gravité ni de collision : vous flottez et traversez les murs. La vitesse multiplie la montée/descente et votre course normale. En le désactivant, vous tombez normalement.
-Rise: RT (R2), A (Cross) or Page Up    Sink: LT (L2) or Page Down    Move: run as usual	Monter : RT (R2), A (Croix) ou Page préc.    Descendre : LT (L2) ou Page suiv.    Se déplacer : courir normalement
 Triggers are analog: press lightly to move slowly.	Les gâchettes sont analogiques : appuyez légèrement pour aller lentement.
 Turns itself off when you die or hit a loading screen.	Se désactive tout seul quand vous mourez ou lors d'un écran de chargement.
 Teleport	Téléportation
@@ -248,3 +247,47 @@ NPC Bell Bearings	Perles des PNJ
 Notes & Letters	Notes & lettres
 DLC Notes & Maps	Notes & cartes du DLC
 About...	À propos...
+Killing aura	Aura mortelle
+Killing Aura	Aura mortelle
+Enemies and bosses that come within this distance of you die instantly. Players, co-op partners, spirit ashes, Torrent and friendly NPCs are never affected. In Seamless Coop it works best when you are the host.	Les ennemis et les boss qui s'approchent à moins de cette distance meurent instantanément. Les joueurs, partenaires en coop, cendres spirituelles, Torrent et PNJ amicaux ne sont jamais touchés. En Seamless Coop, cela marche mieux si vous êtes l'hôte.
+Show the radius	Afficher le rayon
+Draws the aura's edge as a faint sphere around you.	Affiche le bord de l'aura sous forme de sphère discrète autour de vous.
+Also NPCs that turned hostile	Aussi les PNJ devenus hostiles
+Off by default, so an NPC you hit by accident (and whose quest you still need) is not killed. Friendly NPCs are never affected.	Désactivé par défaut, pour qu'un PNJ frappé par erreur (dont vous avez encore besoin pour une quête) ne meure pas. Les PNJ amicaux ne sont jamais touchés.
+Remove from inventory	Retirer de l'inventaire
+Remove every %s from your inventory?	Retirer tous les %s de votre inventaire ?
+Weapons are removed at every upgrade level and affinity. Key items can be needed for progress. Your save is backed up first if automatic backups are on.	Les armes sont retirées à tous les niveaux d'amélioration et toutes les affinités. Les objets clés peuvent être nécessaires pour progresser. Votre sauvegarde est d'abord copiée si les sauvegardes automatiques sont activées.
+Removed from your inventory: %s	Retiré de l'inventaire : %s
+You don't have %s.	Vous n'avez pas %s.
+Removed from your inventory: %s x%d	Retiré de l'inventaire : %s x%d
+In your inventory: %d	Dans votre inventaire : %d
+Amount to remove	Quantité à retirer
+All	Tout
+Enemies	Ennemis
+Spawns any enemy or boss in front of you, for damage tests and challenges. Experimental: spawned characters exist only in your game (co-op partners don't see them), bosses have no arena, health bar or reward, and a few multi-phase bosses may not behave.	Fait apparaître n'importe quel ennemi ou boss devant vous, pour tester vos dégâts ou relever des défis. Expérimental : les personnages créés n'existent que dans votre jeu (vos partenaires en coop ne les voient pas), les boss n'ont ni arène, ni barre de vie, ni récompense, et certains boss à plusieurs phases peuvent mal se comporter.
+Search enemies (e.g. margit, troll, knight)	Rechercher des ennemis (ex. margit, troll, knight)
+Bosses only	Boss uniquement
+boss	boss
+Count	Nombre
+Distance	Distance
+Spawn: %s	Faire apparaître : %s
+Spawn	Faire apparaître
+Kill the enemies I spawned	Tuer les ennemis que j'ai créés
+Spawned: %d	Créés : %d
+Double-click a name to spawn it. Enemy names are in English (from the Paramdex community project).	Double-cliquez sur un nom pour le faire apparaître. Les noms des ennemis sont en anglais (projet communautaire Paramdex).
+Spawned: %s	Apparu : %s
+Spawned enemies killed: %d	Ennemis créés tués : %d
+The game didn't spawn it. This enemy may not work here.	Le jeu ne l'a pas fait apparaître. Cet ennemi ne fonctionne peut-être pas ici.
+The game's spawn limit is reached (%d). Fast travel or reload the area to clear it.	La limite d'apparition du jeu est atteinte (%d). Voyagez rapidement ou rechargez la zone pour la vider.
+Co-op	Coop
+Players in your Seamless Coop session. Teleport puts you next to them; it works when you are both in the same area (open world, or the same legacy dungeon).	Joueurs de votre session Seamless Coop. La téléportation vous place à côté d'eux ; cela marche quand vous êtes dans la même zone (monde ouvert ou même donjon).
+No other players in your world right now.	Aucun autre joueur dans votre monde pour l'instant.
+Player	Joueur
+Teleport to them	Se téléporter à eux
+Teleported to %s.	Téléporté vers %s.
+(another area)	(autre zone)
+Spawn limit reached (%d). Fast travel or reload the area to clear it.	Limite d'apparition atteinte (%d). Voyagez rapidement ou rechargez la zone pour la vider.
+Up to 50 spawned characters at a time (dead ones count too): beyond that the game stops letting you rest at Sites of Grace. Fast travel or reload the area to free them all.	Jusqu'à 50 personnages créés à la fois (morts compris) : au-delà, le jeu ne vous laisse plus vous reposer aux sites de grâce. Voyagez rapidement ou rechargez la zone pour tous les libérer.
+Rise: jump (A / Cross, Space), RT (R2) or Page Up    Sink: crouch (L3, C), LT (L2) or Page Down    Move: run as usual	Monter : sauter (A / Croix, Space), RT (R2) ou Page préc.    Descendre : s'accroupir (L3, C), LT (L2) ou Page suiv.    Se déplacer : courir normalement
+No Fall Damage	Pas de dégâts de chute
+Falls from any height deal no damage (always on while flying). Invisible death zones under some cliffs and the void below the map still kill.	Les chutes de n'importe quelle hauteur n'infligent aucun dégât (toujours actif en vol). Les zones de mort invisibles sous certaines falaises et le vide sous la carte tuent quand même.

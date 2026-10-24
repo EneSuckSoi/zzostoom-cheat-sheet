@@ -515,9 +515,19 @@ bool IsKeyboardOrMouse(IDirectInputDevice8W* dev) {
 
 bool ShouldBlock() { return g_menu_open && config::Get().block_game_input; }
 
+// Fly mode uses the jump (Space) and crouch (C) keys to rise and sink; the game must not see them.
+bool FlyKey(DWORD dik) { return dik == DIK_SPACE || dik == DIK_C; }
+
 HRESULT STDMETHODCALLTYPE HookedGetDeviceState(IDirectInputDevice8W* dev, DWORD size, LPVOID data) {
     HRESULT hr = o_get_state(dev, size, data);
-    if (SUCCEEDED(hr) && data && ShouldBlock() && IsKeyboardOrMouse(dev)) std::memset(data, 0, size);
+    if (SUCCEEDED(hr) && data && IsKeyboardOrMouse(dev)) {
+        if (ShouldBlock()) {
+            std::memset(data, 0, size);
+        } else if (size == 256 && pad::FlyActive()) {  // keyboard state: one byte per DIK code
+            static_cast<BYTE*>(data)[DIK_SPACE] = 0;
+            static_cast<BYTE*>(data)[DIK_C] = 0;
+        }
+    }
     return hr;
 }
 
@@ -525,8 +535,22 @@ HRESULT STDMETHODCALLTYPE HookedGetDeviceData(IDirectInputDevice8W* dev, DWORD o
                                               LPDIDEVICEOBJECTDATA data, LPDWORD in_out,
                                               DWORD flags) {
     HRESULT hr = o_get_data(dev, object_size, data, in_out, flags);
-    if (SUCCEEDED(hr) && in_out && !(flags & DIGDD_PEEK) && ShouldBlock() && IsKeyboardOrMouse(dev))
-        *in_out = 0;
+    if (SUCCEEDED(hr) && in_out && !(flags & DIGDD_PEEK) && IsKeyboardOrMouse(dev)) {
+        if (ShouldBlock()) {
+            *in_out = 0;
+        } else if (data && pad::FlyActive() && object_size >= sizeof(DIDEVICEOBJECTDATA)) {
+            // Buffered key events: drop F / X, keep the rest in order.
+            auto* base = reinterpret_cast<BYTE*>(data);
+            DWORD kept = 0;
+            for (DWORD i = 0; i < *in_out; ++i) {
+                auto* e = reinterpret_cast<DIDEVICEOBJECTDATA*>(base + i * object_size);
+                if (FlyKey(e->dwOfs)) continue;
+                if (kept != i) std::memmove(base + kept * object_size, e, object_size);
+                ++kept;
+            }
+            *in_out = kept;
+        }
+    }
     return hr;
 }
 

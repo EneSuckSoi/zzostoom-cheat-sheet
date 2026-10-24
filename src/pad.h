@@ -65,6 +65,7 @@ RawState ReadRaw();
 // While fly mode is on, RT rises and LT sinks (0..1, by trigger pressure); both triggers are
 // hidden from the game meanwhile.
 void SetFlyActive(bool active);
+bool FlyActive();  // fly mode on and the menu closed
 void FlyInput(float& up, float& down);
 
 std::string ComboName(const Combo& c);
